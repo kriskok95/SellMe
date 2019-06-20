@@ -14,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SellMe.Data;
 using SellMe.Data.Models;
-using SellMe.Web.Models;
 
 namespace SellMe.Web
 {

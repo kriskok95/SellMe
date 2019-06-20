@@ -1,6 +1,4 @@
-using System;
-
-namespace SellMe.Web.Models
+namespace SellMe.Web.ViewModels
 {
     public class ErrorViewModel
     {
