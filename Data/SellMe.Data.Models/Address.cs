@@ -1,7 +1,7 @@
-﻿using SellMe.Data.Common;
-
-namespace SellMe.Data.Models
+﻿namespace SellMe.Data.Models
 {
+    using SellMe.Data.Common;
+
     public class Address : BaseModel<int>
     {
         public string Country { get; set; }

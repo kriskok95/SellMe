@@ -4,8 +4,12 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using SellMe.Data.Models;
 
-    class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    /// <summary>
+    /// Configuration for category entity.
+    /// </summary>
+    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
+        /// <inheritdoc />
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(x => x.Id);
