@@ -1,6 +1,8 @@
 ﻿namespace SellMe.Data.Models
 {
-    public class SellMeUserFavoriteProduct
+    using SellMe.Data.Common;
+
+    public class SellMeUserFavoriteProduct : BaseModel<int>
     {
         public int ProductId { get; set; }
         public Product Product { get; set; }
