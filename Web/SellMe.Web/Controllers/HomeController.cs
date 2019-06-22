@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SellMe.Web.ViewModels;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
+    using System.Diagnostics;
+    using Microsoft.AspNetCore.Mvc;
+    using SellMe.Web.ViewModels;
+
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -1,4 +1,7 @@
-﻿namespace SellMe.Web
+﻿using SellMe.Services;
+using SellMe.Services.Interfaces;
+
+namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -32,7 +35,9 @@
             services.AddDbContext<SellMeDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<SellMeUser>()
+                .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<SellMeDbContext>();
 
@@ -47,6 +52,9 @@
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //Applications services
+            services.AddTransient<IProductService, ProductService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -74,6 +82,7 @@
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

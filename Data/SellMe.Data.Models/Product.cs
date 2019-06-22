@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace SellMe.Data.Models
+﻿namespace SellMe.Data.Models
 {
     using SellMe.Data.Models.Enums;
     using System.Collections.Generic;
@@ -14,6 +12,7 @@ namespace SellMe.Data.Models
             this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
             this.Reviews = new HashSet<Review>();
             this.Images = new HashSet<Image>();
+            this.Messages = new HashSet<Message>();
         }
 
         public string Title { get; set; }
@@ -35,5 +34,7 @@ namespace SellMe.Data.Models
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<Image> Images { get; set; }
+
+        public ICollection<Message> Messages { get; set; }
     }
 }

@@ -1,0 +1,21 @@
+﻿<form asp-controller="Products" asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="Enter title" width="50">
+    </div>
+    <div class="form-group">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+            </button>
+            
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                @foreach (var category in @Model.Categories)
+                {
+                    <button class="dropdown-item" type="button">@category</button>
+                }
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

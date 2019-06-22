@@ -17,6 +17,14 @@
             builder.HasMany(x => x.SellMeUserFavoriteProducts)
                 .WithOne(x => x.SellMeUser)
                 .HasForeignKey(x => x.SellMeUserId);
+
+            builder.HasMany(x => x.SentBox)
+                .WithOne(x => x.Sender)
+                .HasForeignKey(x => x.SenderId);
+
+            builder.HasMany(x => x.Inbox)
+                .WithOne(x => x.Recipient)
+                .HasForeignKey(x => x.RecipientId);
         }
     }
 }

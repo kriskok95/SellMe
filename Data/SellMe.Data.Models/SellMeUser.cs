@@ -9,11 +9,16 @@
         public SellMeUser()
         {
             this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
-        }
+            this.SentBox = new HashSet<Message>();
+        } 
 
         public int? AddressId { get; set; }
         public Address Address { get; set; }
 
         public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
+
+        public ICollection<Message> Inbox { get; set; }
+
+        public ICollection<Message> SentBox { get; set; }
     }
 }

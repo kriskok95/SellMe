@@ -22,6 +22,10 @@ namespace SellMe.Data.Configurations
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);
 
+            builder.HasMany(x => x.Messages)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
+
             builder.Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
         }
