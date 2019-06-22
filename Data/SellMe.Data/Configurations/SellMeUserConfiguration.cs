@@ -25,6 +25,10 @@
             builder.HasMany(x => x.Inbox)
                 .WithOne(x => x.Recipient)
                 .HasForeignKey(x => x.RecipientId);
+
+            builder.HasMany(x => x.Orders)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
         }
     }
 }

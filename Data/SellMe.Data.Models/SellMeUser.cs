@@ -13,6 +13,7 @@ namespace SellMe.Data.Models
         {
             this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
             this.SentBox = new HashSet<Message>();
+            this.Orders = new HashSet<Order>();
         }
 
         public bool IsDeleted { get; set; }
@@ -27,5 +28,7 @@ namespace SellMe.Data.Models
         public ICollection<Message> Inbox { get; set; }
 
         public ICollection<Message> SentBox { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
     }
 }
