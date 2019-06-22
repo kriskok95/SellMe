@@ -23,6 +23,8 @@
 
         public Condition Condition { get; set; }
 
+        public int AvailabilityCount { get; set; }
+
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
