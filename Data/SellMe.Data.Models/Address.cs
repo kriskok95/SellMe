@@ -2,7 +2,7 @@
 {
     using SellMe.Data.Common;
 
-    public class Address : BaseModel<int>
+    public class Address : BaseDeletableModel<int>
     {
         public string Country { get; set; }
 

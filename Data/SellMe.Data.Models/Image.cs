@@ -2,7 +2,7 @@
 {
     using SellMe.Data.Common;
 
-    public class Image : BaseModel<int>
+    public class Image : BaseDeletableModel<int>
     {
         public string ImageUrl { get; set; }
 

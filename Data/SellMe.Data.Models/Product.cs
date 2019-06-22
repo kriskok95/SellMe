@@ -5,7 +5,7 @@
     using SellMe.Data.Common;
 
 
-    public class Product : BaseModel<int>
+    public class Product : BaseDeletableModel<int>
     {
         public Product()
         {

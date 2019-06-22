@@ -1,7 +1,13 @@
-﻿namespace SellMe.Data.Common
+﻿using System;
+
+namespace SellMe.Data.Common
 {
-    public class BaseModel<TType>
+    public class BaseModel<TKey> : IAuditInfo 
     {
-        public TType Id { get; set; }
+        public TKey Id { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
     }
 }

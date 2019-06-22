@@ -3,7 +3,7 @@
     using SellMe.Data.Common;
     using System.Collections.Generic;
 
-    public class SubCategory : BaseModel<int>
+    public class SubCategory : BaseDeletableModel<int>
     {
         public SubCategory()
         {

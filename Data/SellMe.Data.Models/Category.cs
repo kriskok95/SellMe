@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using SellMe.Data.Common;
 
-    public class Category : BaseModel<int>
+    public class Category : BaseDeletableModel<int>
     {
         public Category()
         {

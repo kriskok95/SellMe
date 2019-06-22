@@ -2,7 +2,7 @@
 {
     using SellMe.Data.Common;
 
-    public class SellMeUserFavoriteProduct : BaseModel<int>
+    public class SellMeUserFavoriteProduct : BaseDeletableModel<int>
     {
         public int ProductId { get; set; }
         public Product Product { get; set; }

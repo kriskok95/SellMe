@@ -2,7 +2,7 @@
 {
     using SellMe.Data.Common;
 
-    public class Message : BaseModel<int>
+    public class Message : BaseDeletableModel<int>
     {
         public string Content { get; set; }
 

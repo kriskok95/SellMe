@@ -2,7 +2,7 @@
 {
     using SellMe.Data.Common;
 
-    public class Review : BaseModel<int>
+    public class Review : BaseDeletableModel<int>
     {
         public int Rating { get; set; }
 
