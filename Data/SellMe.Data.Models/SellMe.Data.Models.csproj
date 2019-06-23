@@ -12,4 +12,8 @@
     <ProjectReference Include="..\SellMe.Data.Common\SellMe.Data.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
 </Project>

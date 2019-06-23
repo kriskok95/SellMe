@@ -31,6 +31,8 @@
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<Condition> Conditions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -1,6 +1,5 @@
 ﻿namespace SellMe.Data.Models
 {
-    using SellMe.Data.Models.Enums;
     using System.Collections.Generic;
     using SellMe.Data.Common;
 
@@ -22,8 +21,6 @@
 
         public decimal Price { get; set; }
 
-        public Condition Condition { get; set; }
-
         public int AvailabilityCount { get; set; }
 
         public int CategoryId { get; set; }
@@ -31,6 +28,9 @@
 
         public int SubCategoryId { get; set; }
         public SubCategory SubCategory { get; set; }
+
+        public int ConditionId { get; set; }
+        public Condition Condition { get; set; }
 
         public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 
