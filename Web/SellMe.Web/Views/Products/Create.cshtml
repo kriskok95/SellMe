@@ -1,21 +1,37 @@
-﻿<form asp-controller="Products" asp-action="Create" method="post">
-    <div class="form-group">
-        <label for="Title">Title</label>
-        <input type="text" class="form-control" id="title" placeholder="Enter title" width="50">
-    </div>
-    <div class="form-group">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category
-            </button>
-            
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                @foreach (var category in @Model.Categories)
-                {
-                    <button class="dropdown-item" type="button">@category</button>
-                }
+﻿<div class="container">
+    <form asp-controller="Products" asp-action="Create" method="post" class="w-50">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="Enter title" width="50">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="category">Choose Category</label>
+                <select class="form-control" id="category" name="category">
+                    @foreach (var category in @Model.Categories)
+                    {
+                        <option>@category</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="subcategory">Choose Subcategory</label>
+                <select class="form-control" id="subcategory" name="subcategory">
+                    <option>category1</option>
+                    <option>category2</option>
+                    <option>category3</option>
+                </select>
             </div>
         </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" placeholder="Enter price" width="50">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" rows="5" id="description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+

@@ -21,11 +21,17 @@ namespace SellMe.Web.Controllers
 
             var categoryNamesViewModel = new CreateProductViewModel()
             {
-                Categories = categoryNames.Select(x => x).ToList()
+                Categories = categoryNames.Select(x => x).ToList(),
             };
 
 
             return this.View(categoryNamesViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Create(string category)
+        {
+            return null;
         }
     }
 }
