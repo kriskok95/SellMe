@@ -28,10 +28,18 @@ namespace SellMe.Web.Controllers
             return this.View(categoryNamesViewModel);
         }
 
-        [HttpPost]
-        public IActionResult Create(string category)
+        public IActionResult GetSubcategories(string categoryName)
         {
-            return null;
+            var subcategories = this.productService
+                .GetSubcategoriesByCategory(categoryName)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToList();
+
+            return Json(subcategories);
         }
     }
 }

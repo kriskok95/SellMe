@@ -1,4 +1,7 @@
-﻿namespace SellMe.Services
+﻿using Microsoft.EntityFrameworkCore;
+using SellMe.Data.Models;
+
+namespace SellMe.Services
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -22,6 +25,23 @@
                 .ToList();
 
             return categoryNames;
+        }
+
+        public ICollection<SubCategory> GetSubcategoriesByCategory(string categoryName)
+        {
+            Category parentCategory = this.GetCategoryByName(categoryName);
+
+            return parentCategory.SubCategories.ToList();
+        }
+
+        private Category GetCategoryByName(string categoryName)
+        {
+            Category category = this.context
+                .Categories
+                .Include(x => x.SubCategories)
+                .FirstOrDefault(x => x.Name == categoryName);
+
+            return category;
         }
     }
 }
