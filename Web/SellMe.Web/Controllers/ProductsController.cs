@@ -34,7 +34,6 @@ namespace SellMe.Web.Controllers
                 .GetSubcategoriesByCategory(categoryName)
                 .Select(x => new
                 {
-                    Id = x.Id,
                     Name = x.Name
                 })
                 .ToList();
