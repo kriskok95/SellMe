@@ -10,19 +10,24 @@
                 <select class="form-control" id="category" name="category">
                     @foreach (var category in @Model.Categories)
                     {
-                        <option value="@category">@category</option>
+                    <option value="@category">@category</option>
                     }
                 </select>
             </div>
             <div class="form-group col-md-6">
                 <label for="subcategory">Choose Subcategory</label>
-                <select class="form-control" id="subcategory" name="subcategory">
-                </select>
+                <select class="form-control" id="subcategory" name="subcategory"></select>
             </div>
         </div>
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" class="form-control" id="price" placeholder="Enter price" width="50">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" placeholder="Enter price">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="availability">Availability</label>
+                <input type="number" class="form-control" id="availability" placeholder="Enter availability">
+            </div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
@@ -46,7 +51,7 @@
                     success: function (response) {
                         $("#subcategory").empty(); //Reset subcategories
                         $("#subcategory").append("<option>--Select--</option>");
-                        $.each(response, function(key, value) {
+                        $.each(response, function (key, value) {
                             $("#subcategory").append('<option value=' + key + '>' + value.name + '</option>');
                             console.log(value.name);
                         });
