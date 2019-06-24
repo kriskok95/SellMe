@@ -34,6 +34,16 @@ namespace SellMe.Services
             return parentCategory.SubCategories.ToList();
         }
 
+        public ICollection<string> GetConditionsFromDb()
+        {
+            var conditionsFromDb = this.context
+                .Conditions
+                .Select(x => x.Name)
+                .ToList();
+
+            return conditionsFromDb;
+        }
+
         private Category GetCategoryByName(string categoryName)
         {
             Category category = this.context

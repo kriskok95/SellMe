@@ -22,6 +22,7 @@ namespace SellMe.Web.Controllers
             var categoryNamesViewModel = new CreateProductViewModel()
             {
                 Categories = categoryNames.Select(x => x).ToList(),
+                Conditions = this.productService.GetConditionsFromDb()
             };
 
 

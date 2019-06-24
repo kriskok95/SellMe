@@ -8,9 +8,10 @@
             <div class="form-group col-md-6">
                 <label for="category">Choose Category</label>
                 <select class="form-control" id="category" name="category">
+                    <option selected="true" disabled="disabled">--Select--</option>"
                     @foreach (var category in @Model.Categories)
                     {
-                    <option value="@category">@category</option>
+                        <option value="@category">@category</option>
                     }
                 </select>
             </div>
@@ -22,12 +23,22 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" placeholder="Enter price">
+                <input type="number" class="form-control" id="price" name="price" placeholder="Enter price">
             </div>
             <div class="form-group col-md-6">
                 <label for="availability">Availability</label>
-                <input type="number" class="form-control" id="availability" placeholder="Enter availability">
+                <input type="number" class="form-control" id="availability" name="availability" placeholder="Enter availability">
             </div>
+        </div>
+        <div class="form-group">
+            <label for="condition">Condition</label>
+            <select class="form-control" id="condition" name="condition">
+                <option selected="true" disabled="disabled">--Select--</option>"
+                @foreach (var condition in @Model.Conditions)
+                {
+                    <option value="@condition">@condition</option>
+                }
+            </select>
         </div>
         <div class="form-group">
             <label for="description">Description</label>

@@ -10,5 +10,7 @@ namespace SellMe.Web.ViewModels.Products
         }
 
         public ICollection<string> Categories { get; set; }
+
+        public ICollection<string> Conditions { get; set; }
     }
 }

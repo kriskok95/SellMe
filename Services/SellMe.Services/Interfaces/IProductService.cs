@@ -8,5 +8,6 @@ namespace SellMe.Services.Interfaces
         ICollection<string> GetCategoryNames();
 
         ICollection<SubCategory> GetSubcategoriesByCategory(string categoryName);
+        ICollection<string> GetConditionsFromDb();
     }
 }
