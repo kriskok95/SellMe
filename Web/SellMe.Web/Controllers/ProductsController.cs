@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using SellMe.Services.Interfaces;
-using SellMe.Web.ViewModels.Products;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using System.Linq;
+    using SellMe.Services.Interfaces;
+    using SellMe.Web.ViewModels.Products;
 
     public class ProductsController : Controller
     {
