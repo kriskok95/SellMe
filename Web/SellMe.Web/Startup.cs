@@ -1,4 +1,8 @@
-﻿namespace SellMe.Web
+﻿using System.Reflection;
+using SellMe.Services.Mapping;
+using SellMe.Web.ViewModels;
+
+namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -13,6 +17,7 @@
     using SellMe.Services.Interfaces;
     using SellMe.Data;
     using SellMe.Data.Models;
+    using SellMe.Services.Utilities;
 
     public class Startup
     {
@@ -23,6 +28,7 @@
 
         public IConfiguration Configuration { get; }
 
+        [System.Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -52,6 +58,7 @@
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+
             //Applications services
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
@@ -61,6 +68,8 @@
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

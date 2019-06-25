@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using SellMe.Data;
