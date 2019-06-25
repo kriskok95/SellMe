@@ -1,4 +1,4 @@
-﻿@model CreateProductInputModel
+﻿@model SellMe.Web.ViewModels.InputModels.Products.CreateProductInputModel
 @inject IProductService ProductService
 
 @{
@@ -6,7 +6,7 @@
     var conditions = this.ProductService.GetConditionsFromDb();
 }
 
-<div class="container">
+<div class="container-fluid">
     <form asp-controller="Products" asp-action="Create" method="post" class="w-50">
         <div class="form-group">
             <label asp-for="Title">Title</label>
@@ -51,6 +51,10 @@
         <div class="form-group">
             <label asp-for="Description">Description</label>
             <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <p class="row ml-1">Story Image</p>
+            <input asp-for="AdImage" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
