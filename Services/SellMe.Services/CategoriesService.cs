@@ -2,6 +2,8 @@
 {
     using SellMe.Data;
     using SellMe.Services.Interfaces;
+    using System.Linq;
+    using SellMe.Data.Models;
 
     public class CategoriesService : ICategoriesService
     {
@@ -12,9 +14,13 @@
             this.context = context;
         }
 
-        public bool CreateCategory()
+        public int GetCategoryIdByName(string categoryName)
         {
-            return true;
+            int categoryId = this.context
+                .Categories
+                .FirstOrDefault(x => x.Name == categoryName).Id;
+
+            return categoryId;
         }
     }
 }

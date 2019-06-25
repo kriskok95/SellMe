@@ -53,7 +53,10 @@
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Applications services
-            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IConditionsService, ConditionsService>();
+            services.AddTransient<ISubCategoriesService, SubCategoriesService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

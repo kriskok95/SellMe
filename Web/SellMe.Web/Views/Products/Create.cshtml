@@ -1,13 +1,13 @@
 ﻿@model SellMe.Web.ViewModels.InputModels.Products.CreateProductInputModel
-@inject IProductService ProductService
+@inject IProductsService ProductsService
 
 @{
-    var categories = this.ProductService.GetCategoryNames();
-    var conditions = this.ProductService.GetConditionsFromDb();
+    var categories = this.ProductsService.GetCategoryNames();
+    var conditions = this.ProductsService.GetConditionsFromDb();
 }
 
 <div class="container-fluid">
-    <form asp-controller="Products" asp-action="Create" method="post" class="w-50">
+    <form asp-controller="Products" asp-action="Create" enctype="multipart/form-data" method="post" class="w-50">
         <div class="form-group">
             <label asp-for="Title">Title</label>
             <input asp-for="Title" class="form-control">
@@ -24,8 +24,8 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
-                <label asp-for="Subcategory">Choose Subcategory</label>
-                <select asp-for="Subcategory" class="form-control"></select>
+                <label asp-for="SubCategory">Choose Subcategory</label>
+                <select asp-for="SubCategory" class="form-control"></select>
             </div>
         </div>
         <div class="form-row">
@@ -53,8 +53,11 @@
             <textarea asp-for="Description" class="form-control" rows="5"></textarea>
         </div>
         <div class="form-group">
-            <p class="row ml-1">Story Image</p>
-            <input asp-for="AdImage" />
+            @for (int i = 0; i < 6; i++)
+            {
+                <p class="row ml-1">Image</p>
+                <input asp-for="Images" type="file"/>
+            }
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -72,10 +75,10 @@
                     data: "categoryName=" + categoryName,
                     dataType: 'json',
                     success: function (response) {
-                        $("#Subcategory").empty(); //Reset subcategories
-                        $("#Subcategory").append("<option>--Select--</option>");
+                        $("#SubCategory").empty(); //Reset subcategories
+                        $("#SubCategory").append("<option>--Select--</option>");
                         $.each(response, function (key, value) {
-                            $("#Subcategory").append('<option value=' + key + '>' + value.name + '</option>');
+                            $("#SubCategory").append('<option value=' + value.name + '>' + value.name + '</option>');
                             console.log(value.name);
                         });
                     }

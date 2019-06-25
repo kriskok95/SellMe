@@ -7,9 +7,9 @@
 
     public class ProductsController : Controller
     {
-        private readonly IProductService productService;
+        private readonly IProductsService productService;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductsService productService)
         {
             this.productService = productService;
         }

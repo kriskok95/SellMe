@@ -1,7 +1,9 @@
 ﻿namespace SellMe.Services.Interfaces
 {
+    using SellMe.Data.Models;
+
     public interface ICategoriesService
     {
-        bool CreateCategory();
+        int GetCategoryIdByName(string categoryName);
     }
 }

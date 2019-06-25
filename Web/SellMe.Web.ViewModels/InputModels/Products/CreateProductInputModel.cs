@@ -1,9 +1,17 @@
-﻿namespace SellMe.Web.ViewModels.InputModels.Products
+﻿using System.Collections.Generic;
+
+namespace SellMe.Web.ViewModels.InputModels.Products
 {
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
 
     public class CreateProductInputModel
     {
+        public CreateProductInputModel()
+        {
+            this.Images = new List<IFormFile>();
+        }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -12,12 +20,13 @@
 
         public string Category { get; set; }
 
-        public string Subcategory { get; set; }
+        public string SubCategory { get; set; }
 
         public int Availability { get; set; }
 
         public string Condition { get; set; }
 
-        public IFormFile AdImage { get; set; }
+        [DataType(DataType.Upload)]
+        public ICollection<IFormFile> Images { get; set; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using SellMe.Data.Models;
-using SellMe.Web.ViewModels.InputModels.Products;
-
-namespace SellMe.Services.Interfaces
+﻿namespace SellMe.Services.Interfaces
 {
-    public interface IProductService
+    using System.Collections.Generic;
+    using SellMe.Data.Models;
+    using SellMe.Web.ViewModels.InputModels.Products;
+
+    public interface IProductsService
     {
         ICollection<string> GetCategoryNames();
 
