@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using SellMe.Services.Interfaces;
+    using SellMe.Web.ViewModels.InputModels.Products;
 
     public class ProductsController : Controller
     {
@@ -16,6 +17,19 @@
         public IActionResult Create()
         {
             return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateProductInputModel inputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+
+            }
+
+            this.productService.CreateProduct(inputModel);
+
+            return this.Redirect("/");
         }
 
         public IActionResult GetSubcategories(string categoryName)

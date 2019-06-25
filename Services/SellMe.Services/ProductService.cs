@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SellMe.Data.Models;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using System.Collections.Generic;
     using System.Linq;
     using SellMe.Data;
     using SellMe.Services.Interfaces;
+    using Microsoft.EntityFrameworkCore;
+    using SellMe.Data.Models;
+    using SellMe.Services.Utilities;
+    using SellMe.Web.ViewModels.InputModels.Products;
 
     public class ProductService : IProductService
     {
@@ -43,6 +44,12 @@ namespace SellMe.Services
 
             return conditionsFromDb;
         }
+
+        public void CreateProduct(CreateProductInputModel inputModel)
+        {
+            var cloudinary = CloudinaryHelper.SetCloudinary();
+        }
+
 
         private Category GetCategoryByName(string categoryName)
         {

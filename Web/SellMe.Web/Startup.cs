@@ -1,7 +1,4 @@
-﻿using SellMe.Services;
-using SellMe.Services.Interfaces;
-
-namespace SellMe.Web
+﻿namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -12,6 +9,8 @@ namespace SellMe.Web
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using SellMe.Services;
+    using SellMe.Services.Interfaces;
     using SellMe.Data;
     using SellMe.Data.Models;
 
