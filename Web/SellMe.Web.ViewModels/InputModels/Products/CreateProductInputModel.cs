@@ -1,4 +1,4 @@
-﻿namespace SellMe.Web.ViewModels.Products
+﻿namespace SellMe.Web.ViewModels.InputModels.Products
 {
     using Microsoft.AspNetCore.Http;
 

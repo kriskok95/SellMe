@@ -1,7 +1,7 @@
-﻿namespace SellMe.Web.ViewModels.Products
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace SellMe.Web.ViewModels.ViewModels.Products
+{
     public class CreateProductViewModel
     {
         public CreateProductViewModel()
