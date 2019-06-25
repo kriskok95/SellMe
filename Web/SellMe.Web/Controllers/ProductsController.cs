@@ -16,16 +16,7 @@
 
         public IActionResult Create()
         {
-            var categoryNames = this.productService.GetCategoryNames();
-
-            var categoryNamesViewModel = new CreateProductViewModel()
-            {
-                Categories = categoryNames.Select(x => x).ToList(),
-                Conditions = this.productService.GetConditionsFromDb()
-            };
-
-
-            return this.View(categoryNamesViewModel);
+            return this.View();
         }
 
         public IActionResult GetSubcategories(string categoryName)

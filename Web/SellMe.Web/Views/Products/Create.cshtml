@@ -1,48 +1,56 @@
-﻿<div class="container">
+﻿@model CreateProductInputModel
+@inject IProductService ProductService
+
+@{
+    var categories = this.ProductService.GetCategoryNames();
+    var conditions = this.ProductService.GetConditionsFromDb();
+}
+
+<div class="container">
     <form asp-controller="Products" asp-action="Create" method="post" class="w-50">
         <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Enter title" width="50">
+            <label asp-for="Title">Title</label>
+            <input asp-for="Title" class="form-control">
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="category">Choose Category</label>
-                <select class="form-control" id="category" name="category">
+                <label asp-for="Category">Choose Category</label>
+                <select asp-for="Category" class="form-control">
                     <option selected="true" disabled="disabled">--Select--</option>"
-                    @foreach (var category in @Model.Categories)
+                    @foreach (var category in categories)
                     {
                         <option value="@category">@category</option>
                     }
                 </select>
             </div>
             <div class="form-group col-md-6">
-                <label for="subcategory">Choose Subcategory</label>
-                <select class="form-control" id="subcategory" name="subcategory"></select>
+                <label asp-for="Subcategory">Choose Subcategory</label>
+                <select asp-for="Subcategory" class="form-control"></select>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" name="price" placeholder="Enter price">
+                <label asp-for="Price">Price</label>
+                <input asp-for="Price" type="number" class="form-control" placeholder="Enter price">
             </div>
             <div class="form-group col-md-6">
-                <label for="availability">Availability</label>
-                <input type="number" class="form-control" id="availability" name="availability" placeholder="Enter availability">
+                <label asp-for="Availability">Availability</label>
+                <input asp-for="Availability" class="form-control" placeholder="Enter availability">
             </div>
         </div>
         <div class="form-group">
-            <label for="condition">Condition</label>
-            <select class="form-control" id="condition" name="condition">
+            <label asp-for="Condition">Condition</label>
+            <select asp-for="Condition" class="form-control">
                 <option selected="true" disabled="disabled">--Select--</option>"
-                @foreach (var condition in @Model.Conditions)
+                @foreach (var condition in conditions)
                 {
-                    <option value="@condition">@condition</option>
+                    <option>@condition</option>
                 }
             </select>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" rows="5" id="description"></textarea>
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -50,7 +58,7 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(document).ready(function () {
-        $('#category').on("change",
+        $('#Category').on("change",
             function () {
                 var categoryName = $(this).find('option:selected').val();
                 console.log(categoryName);
@@ -60,10 +68,10 @@
                     data: "categoryName=" + categoryName,
                     dataType: 'json',
                     success: function (response) {
-                        $("#subcategory").empty(); //Reset subcategories
-                        $("#subcategory").append("<option>--Select--</option>");
+                        $("#Subcategory").empty(); //Reset subcategories
+                        $("#Subcategory").append("<option>--Select--</option>");
                         $.each(response, function (key, value) {
-                            $("#subcategory").append('<option value=' + key + '>' + value.name + '</option>');
+                            $("#Subcategory").append('<option value=' + key + '>' + value.name + '</option>');
                             console.log(value.name);
                         });
                     }
