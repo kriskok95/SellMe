@@ -49,7 +49,7 @@ namespace SellMe.Web.Controllers
 
         public IActionResult All()
         {
-            var allProductsViewModel = this.productService.GetAllProductsViewModels();
+            var allProductsViewModel = this.productService.GetAllProductsViewModels().ToList();
 
             return this.View(allProductsViewModel);
         }

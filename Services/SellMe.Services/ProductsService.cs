@@ -76,7 +76,8 @@ namespace SellMe.Services
                 AvailabilityCount = inputModel.Availability,
                 Condition = this.conditionsService.GetConditionByName(inputModel.Condition),
                 Images = imageUrls.Select(x => new Image { ImageUrl = x.Result }).ToList(),
-                CreatedOn = DateTime.UtcNow
+                CreatedOn = DateTime.UtcNow, 
+                Price = inputModel.Price
             };
 
             this.context.Ads.Add(product);
