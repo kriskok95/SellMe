@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services.Interfaces
+﻿using SellMe.Web.ViewModels.ViewModels.Products;
+
+namespace SellMe.Services.Interfaces
 {
     using System.Collections.Generic;
     using SellMe.Data.Models;
@@ -13,6 +15,8 @@
         ICollection<string> GetConditionsFromDb();
 
         void CreateProduct(CreateProductInputModel inputModel);
+
+        ICollection<ProductsAllViewModel> GetAllProductsViewModels();
 
     }
 }

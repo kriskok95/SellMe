@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services", "Services
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Web.ViewModels", "Web\SellMe.Web.ViewModels\SellMe.Web.ViewModels.csproj", "{7636BDD7-1A82-4E77-9EE9-29FA39DDC563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SellMe.Services.Mapping", "Services\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj", "{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services.Mapping", "Services\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj", "{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
