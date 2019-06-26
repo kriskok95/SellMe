@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\SellMe.Data.Models\SellMe.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Services\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -28,7 +28,6 @@ namespace SellMe.Web
 
         public IConfiguration Configuration { get; }
 
-        [System.Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -56,6 +55,8 @@ namespace SellMe.Web
                 options.Password.RequiredUniqueChars = 1;
             });
 
+            //services.AddAutoMapper(x => x.AddProfile<SellMeProfile>());
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 
@@ -69,6 +70,7 @@ namespace SellMe.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(Product).GetTypeInfo().Assembly);
 
             if (env.IsDevelopment())
             {

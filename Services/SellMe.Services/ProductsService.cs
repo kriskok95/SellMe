@@ -11,6 +11,7 @@
     using SellMe.Web.ViewModels.InputModels.Products;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
+    using SellMe.Services.Mapping;
 
     public class ProductsService : IProductsService
     {
@@ -61,7 +62,8 @@
                 .Select(x => this.UploadImages(x, inputModel.Title))
                 .ToList();
 
-         
+            //var product = inputModel.
+
             //TODO: Implement model mapper!
             var product = new Product
             {
@@ -71,7 +73,7 @@
                 Description = inputModel.Description,
                 AvailabilityCount = inputModel.Availability,
                 Condition = this.conditionsService.GetConditionByName(inputModel.Condition),
-                Images = imageUrls.Select(x => new Image {ImageUrl = x.Result}).ToList(),
+                Images = imageUrls.Select(x => new Image { ImageUrl = x.Result }).ToList(),
                 CreatedOn = DateTime.UtcNow
             };
 

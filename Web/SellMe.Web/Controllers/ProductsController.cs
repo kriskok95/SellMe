@@ -24,7 +24,7 @@
         {
             if (!ModelState.IsValid)
             {
-
+                return this.View(inputModel);
             }
 
             this.productService.CreateProduct(inputModel);
