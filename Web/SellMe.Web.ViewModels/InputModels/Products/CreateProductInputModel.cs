@@ -7,6 +7,9 @@
 
     public class CreateProductInputModel
     {
+        private const string PriceErrorMessage = "The price can't be a negative number!";
+        private const string AvailabilityErrorMessage = "The availability can't be a negative number!";
+
         public CreateProductInputModel()
         {
             this.Images = new List<IFormFile>();
@@ -22,6 +25,7 @@
         public string Description { get; set; }
 
         [Required]
+        [Range(typeof(decimal), "0.1", "79228162514264337593543950335", ErrorMessage = PriceErrorMessage)]
         public decimal Price { get; set; }
 
         [Required]
@@ -30,6 +34,7 @@
         [Required]
         public string SubCategory { get; set; }
 
+        [Range(typeof(int), "1", "2147483647", ErrorMessage = AvailabilityErrorMessage)]
         [Required]
         public int Availability { get; set; }
 
