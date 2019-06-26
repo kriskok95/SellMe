@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using SellMe.Web.ViewModels.ViewModels.Products;
+
+namespace SellMe.Services
 {
     using System;
     using System.Collections.Generic;
@@ -79,6 +81,19 @@
 
             this.context.Products.Add(product);
             this.context.SaveChanges();
+        }
+
+        public ICollection<ProductsAllViewModel> GetAllProductsViewModels()
+        {
+            var allProductsViewModel = this.context
+                .Products
+                .Include(x => x.Category)
+                .Include(x => x.SubCategory)
+                .Include(x => x.Images)
+                .To<ProductsAllViewModel>()
+                .ToList();
+
+            return allProductsViewModel;
         }
 
         private async Task<string> UploadImages(IFormFile inputModelImage, string title)

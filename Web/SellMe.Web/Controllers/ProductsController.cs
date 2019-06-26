@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using SellMe.Web.ViewModels.ViewModels.Products;
+
+namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
@@ -43,6 +45,13 @@
                 .ToList();
 
             return Json(subcategories);
+        }
+
+        public IActionResult All()
+        {
+            var allProductsViewModel = this.productService.GetAllProductsViewModels();
+
+            return this.View(allProductsViewModel);
         }
     }
 }

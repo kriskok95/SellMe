@@ -3,8 +3,6 @@
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
     using System.Collections.Generic;
-
-
     public class CreateProductInputModel
     {
         private const string PriceErrorMessage = "The price can't be a negative number!";
