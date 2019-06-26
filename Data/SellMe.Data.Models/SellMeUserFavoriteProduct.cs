@@ -4,8 +4,8 @@
 
     public class SellMeUserFavoriteProduct : BaseDeletableModel<int>
     {
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public int AdId { get; set; }
+        public Ad Ad { get; set; }
 
         public string SellMeUserId { get; set; }
         public SellMeUser SellMeUser { get; set; }

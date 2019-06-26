@@ -4,9 +4,9 @@
     using SellMe.Data.Common;
 
 
-    public class Product : BaseDeletableModel<int>
+    public class Ad : BaseDeletableModel<int>
     {
-        public Product()
+        public Ad()
         {
             this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
             this.Reviews = new HashSet<Review>();

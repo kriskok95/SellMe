@@ -11,7 +11,7 @@ namespace SellMe.Services.Utilities
     {
         public SellMeProfile()
         {
-            CreateMap<CreateProductInputModel, Product>()
+            CreateMap<CreateProductInputModel, Ad>()
                 .ForMember(x => x.AvailabilityCount, cfg => cfg.MapFrom(x => x.Availability))
                 .ForMember(x => x.Category, cfg => cfg.MapFrom(x => x.Category))
                 .ForMember(x => x.Condition, cfg => cfg.MapFrom(x => x.Condition))

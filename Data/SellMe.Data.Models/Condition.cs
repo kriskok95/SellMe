@@ -7,11 +7,11 @@
     {
         public Condition()
         {
-            this.Products = new HashSet<Product>();
+            this.Ads = new HashSet<Ad>();
         }
 
         public string Name { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Ad> Ads { get; set; }
     }
 }

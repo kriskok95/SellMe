@@ -67,7 +67,7 @@ namespace SellMe.Services
             //var product = inputModel.
 
             //TODO: Implement model mapper!
-            var product = new Product
+            var product = new Ad
             {
                 Title = inputModel.Title,
                 CategoryId = categoryService.GetCategoryIdByName(inputModel.Category),
@@ -79,18 +79,18 @@ namespace SellMe.Services
                 CreatedOn = DateTime.UtcNow
             };
 
-            this.context.Products.Add(product);
+            this.context.Ads.Add(product);
             this.context.SaveChanges();
         }
 
-        public ICollection<ProductsAllViewModel> GetAllProductsViewModels()
+        public ICollection<AdsAllViewModel> GetAllProductsViewModels()
         {
             var allProductsViewModel = this.context
-                .Products
+                .Ads
                 .Include(x => x.Category)
                 .Include(x => x.SubCategory)
                 .Include(x => x.Images)
-                .To<ProductsAllViewModel>()
+                .To<AdsAllViewModel>()
                 .ToList();
 
             return allProductsViewModel;

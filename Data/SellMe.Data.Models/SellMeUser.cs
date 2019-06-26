@@ -1,10 +1,10 @@
-﻿using System;
-using SellMe.Data.Common;
-
-namespace SellMe.Data.Models
+﻿namespace SellMe.Data.Models
 {
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Identity;
+    using System;
+    using SellMe.Data.Common;
+
 
     // Add profile data for application users by adding properties to the SellMeUser class
     public class SellMeUser : IdentityUser, IDeletableEntity

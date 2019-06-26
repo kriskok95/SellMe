@@ -18,7 +18,7 @@
                 .WithOne(x => x.Category)
                 .HasForeignKey(x => x.CategoryId);
 
-            builder.HasMany(x => x.Products)
+            builder.HasMany(x => x.Ads)
                 .WithOne(x => x.Category)
                 .HasForeignKey(x => x.CategoryId);
         }

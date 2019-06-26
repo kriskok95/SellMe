@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
-
-namespace SellMe.Web.ViewModels.ViewModels.Products
+﻿namespace SellMe.Web.ViewModels.ViewModels.Products
 {
     using System;
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
+    using System.Linq;
+    using AutoMapper;
 
-    public class ProductsAllViewModel : IMapFrom<Product>, IHaveCustomMappings
+
+    public class AdsAllViewModel : IMapFrom<Ad>, IHaveCustomMappings
     {
         public string Title { get; set; }
 
@@ -24,7 +23,7 @@ namespace SellMe.Web.ViewModels.ViewModels.Products
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Product, ProductsAllViewModel>()
+            configuration.CreateMap<Ad, AdsAllViewModel>()
                 .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl).FirstOrDefault()));
 
         }

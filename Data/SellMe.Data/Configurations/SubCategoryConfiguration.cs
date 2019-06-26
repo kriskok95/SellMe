@@ -9,7 +9,7 @@
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasMany(x => x.Products)
+            builder.HasMany(x => x.Ads)
                 .WithOne(x => x.SubCategory)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);

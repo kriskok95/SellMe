@@ -133,6 +133,44 @@ namespace SellMe.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("SellMe.Data.Models.Ad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AvailabilityCount");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<int>("ConditionId");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SubCategoryId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ConditionId");
+
+                    b.ToTable("Ads");
+                });
+
             modelBuilder.Entity("SellMe.Data.Models.Address", b =>
                 {
                     b.Property<int>("Id")
@@ -208,6 +246,8 @@ namespace SellMe.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AdId");
+
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
@@ -218,11 +258,9 @@ namespace SellMe.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<int>("ProductId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AdId");
 
                     b.ToTable("Images");
                 });
@@ -232,6 +270,8 @@ namespace SellMe.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdId");
 
                     b.Property<string>("Content");
 
@@ -243,15 +283,13 @@ namespace SellMe.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<int>("ProductId");
-
                     b.Property<string>("RecipientId");
 
                     b.Property<string>("SenderId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AdId");
 
                     b.HasIndex("RecipientId");
 
@@ -266,6 +304,8 @@ namespace SellMe.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AdId");
+
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
@@ -276,8 +316,6 @@ namespace SellMe.Data.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
@@ -285,49 +323,11 @@ namespace SellMe.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AdId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("SellMe.Data.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AvailabilityCount");
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<int>("ConditionId");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("SubCategoryId");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ConditionId");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SellMe.Data.Models.Review", b =>
@@ -335,6 +335,8 @@ namespace SellMe.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdId");
 
                     b.Property<string>("Comment");
 
@@ -346,13 +348,11 @@ namespace SellMe.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<int>("ProductId");
-
                     b.Property<int>("Rating");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AdId");
 
                     b.ToTable("Reviews");
                 });
@@ -424,6 +424,8 @@ namespace SellMe.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AdId");
+
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
@@ -432,13 +434,11 @@ namespace SellMe.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<int>("ProductId");
-
                     b.Property<string>("SellMeUserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AdId");
 
                     b.HasIndex("SellMeUserId");
 
@@ -515,19 +515,37 @@ namespace SellMe.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SellMe.Data.Models.Ad", b =>
+                {
+                    b.HasOne("SellMe.Data.Models.Category", "Category")
+                        .WithMany("Ads")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SellMe.Data.Models.SubCategory", "SubCategory")
+                        .WithMany("Ads")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SellMe.Data.Models.Condition", "Condition")
+                        .WithMany("Ads")
+                        .HasForeignKey("ConditionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SellMe.Data.Models.Image", b =>
                 {
-                    b.HasOne("SellMe.Data.Models.Product", "Product")
+                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
                         .WithMany("Images")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("AdId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SellMe.Data.Models.Message", b =>
                 {
-                    b.HasOne("SellMe.Data.Models.Product", "Product")
+                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
                         .WithMany("Messages")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("AdId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SellMe.Data.Models.SellMeUser", "Recipient")
@@ -541,9 +559,9 @@ namespace SellMe.Data.Migrations
 
             modelBuilder.Entity("SellMe.Data.Models.Order", b =>
                 {
-                    b.HasOne("SellMe.Data.Models.Product", "Product")
+                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
                         .WithMany("Orders")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("AdId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SellMe.Data.Models.SellMeUser", "User")
@@ -551,29 +569,11 @@ namespace SellMe.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("SellMe.Data.Models.Product", b =>
-                {
-                    b.HasOne("SellMe.Data.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SellMe.Data.Models.SubCategory", "SubCategory")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SellMe.Data.Models.Condition", "Condition")
-                        .WithMany("Products")
-                        .HasForeignKey("ConditionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SellMe.Data.Models.Review", b =>
                 {
-                    b.HasOne("SellMe.Data.Models.Product", "Product")
+                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("AdId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -586,9 +586,9 @@ namespace SellMe.Data.Migrations
 
             modelBuilder.Entity("SellMe.Data.Models.SellMeUserFavoriteProduct", b =>
                 {
-                    b.HasOne("SellMe.Data.Models.Product", "Product")
+                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
                         .WithMany("SellMeUserFavoriteProducts")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("AdId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SellMe.Data.Models.SellMeUser", "SellMeUser")

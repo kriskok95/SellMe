@@ -2,9 +2,9 @@
 
 namespace SellMe.Web.ViewModels.ViewModels.Products
 {
-    public class CreateProductViewModel
+    public class CreateAdViewModel
     {
-        public CreateProductViewModel()
+        public CreateAdViewModel()
         {
             this.Categories = new HashSet<string>();
         }

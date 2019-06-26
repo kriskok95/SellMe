@@ -4,8 +4,8 @@ namespace SellMe.Data.Models
 {
     public class Order : BaseDeletableModel<int>
     {
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public int AdId { get; set; }
+        public Ad Ad { get; set; }
 
         public string UserId { get; set; }
         public SellMeUser User { get; set; }

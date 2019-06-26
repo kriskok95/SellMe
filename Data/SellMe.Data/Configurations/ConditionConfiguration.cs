@@ -10,7 +10,7 @@ namespace SellMe.Data.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasMany(x => x.Products)
+            builder.HasMany(x => x.Ads)
                 .WithOne(x => x.Condition)
                 .HasForeignKey(x => x.ConditionId);
         }

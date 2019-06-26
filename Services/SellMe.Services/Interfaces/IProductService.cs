@@ -16,7 +16,7 @@ namespace SellMe.Services.Interfaces
 
         void CreateProduct(CreateProductInputModel inputModel);
 
-        ICollection<ProductsAllViewModel> GetAllProductsViewModels();
+        ICollection<AdsAllViewModel> GetAllProductsViewModels();
 
     }
 }

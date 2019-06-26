@@ -70,7 +70,7 @@ namespace SellMe.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-            AutoMapperConfig.RegisterMappings(typeof(Product).GetTypeInfo().Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(Ad).GetTypeInfo().Assembly);
 
             if (env.IsDevelopment())
             {

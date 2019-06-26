@@ -19,7 +19,7 @@
 
         public DbSet<Image> Images { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Ad> Ads { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
 
