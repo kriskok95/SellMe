@@ -4,15 +4,16 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using SellMe.Data.Models;
 
-    /// <summary>
-    /// Configuration for Address entity.
-    /// </summary>
     public class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
-        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<Address> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.HasMany(x => x.Ads)
+                .WithOne(x => x.Address)
+                .HasForeignKey(x => x.AddressId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -33,6 +33,8 @@
 
         public DbSet<Condition> Conditions { get; set; }
 
+        public DbSet<SellMeUserAddress> SellMeUserAddresses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

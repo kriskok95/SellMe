@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190627203806_AddedMappingTableForUserAddresses.cs" />
+    <Compile Remove="Migrations\20190627203806_AddedMappingTableForUserAddresses.Designer.cs" />
+    <Compile Remove="Migrations\20190627204529_AddedMappingTableForUserAddress.cs" />
+    <Compile Remove="Migrations\20190627204529_AddedMappingTableForUserAddress.Designer.cs" />
+    <Compile Remove="Migrations\20190627204931_AddedMappingTableForUserAddress.cs" />
+    <Compile Remove="Migrations\20190627204931_AddedMappingTableForUserAddress.Designer.cs" />
+    <Compile Remove="Migrations\20190627210139_AddedMappingTableForUserAddress.cs" />
+    <Compile Remove="Migrations\20190627210139_AddedMappingTableForUserAddress.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
   </ItemGroup>

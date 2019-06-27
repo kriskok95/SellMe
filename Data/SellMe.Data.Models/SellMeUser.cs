@@ -21,8 +21,7 @@
 
         public DateTime? DeletedOn { get; set; }
 
-        public int? AddressId { get; set; }
-        public Address Address { get; set; }
+        public ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
 
         public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 

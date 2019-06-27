@@ -10,10 +10,6 @@
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.Address)
-                .WithOne(x => x.SellMeUser)
-                .HasForeignKey<SellMeUser>(x => x.AddressId);
-
             builder.HasMany(x => x.SellMeUserFavoriteProducts)
                 .WithOne(x => x.SellMeUser)
                 .HasForeignKey(x => x.SellMeUserId);

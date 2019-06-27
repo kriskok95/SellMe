@@ -1,4 +1,6 @@
-﻿namespace SellMe.Data.Models
+﻿using System.Collections.Generic;
+
+namespace SellMe.Data.Models
 {
     using SellMe.Data.Common;
 
@@ -12,6 +14,8 @@
 
         public string ZipCode { get; set; }
 
-        public SellMeUser SellMeUser { get; set; }
+        public ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
+
+        public ICollection<Ad> Ads { get; set; }
     }
 }
