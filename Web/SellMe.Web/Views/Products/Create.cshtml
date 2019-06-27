@@ -6,69 +6,72 @@
     var conditions = this.ProductsService.GetConditionsFromDb();
 }
 
-<div class="container-fluid">
-    <form asp-controller="Products" asp-action="Create" enctype="multipart/form-data" method="post" class="w-50">
-        <div class="form-group">
-            <label asp-for="Title">Title</label>
-            <input asp-for="Title" class="form-control">
-            <span asp-validation-for="Title" class="text-danger"></span>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3"></div>
+                <form asp-controller="Products" asp-action="Create" enctype="multipart/form-data" method="post" class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Title">Title</label>
+                        <input asp-for="Title" class="form-control">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Category">Choose Category</label>
+                            <select asp-for="Category" class="form-control">
+                                <option selected="true" disabled="disabled">--Select--</option>"
+                                @foreach (var category in categories)
+                                {
+                                    <option value="@category">@category</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="SubCategory">Choose Subcategory</label>
+                            <select asp-for="SubCategory" class="form-control"></select>
+                            <span asp-validation-for="SubCategory" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Price">Price</label>
+                            <input asp-for="Price" type="number" class="form-control" placeholder="Enter price">
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Availability">Availability</label>
+                            <input asp-for="Availability" class="form-control" placeholder="Enter availability">
+                            <span asp-validation-for="Availability" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Condition">Condition</label>
+                        <select asp-for="Condition" class="form-control">
+                            <option selected="true" disabled="disabled">--Select--</option>"
+                            @foreach (var condition in conditions)
+                            {
+                                <option>@condition</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Condition" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        @for (int i = 0; i < 6; i++)
+                        {
+                            <p class="row ml-1">Image</p>
+                            <input asp-for="Images" type="file"/>
+                        }
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label asp-for="Category">Choose Category</label>
-                <select asp-for="Category" class="form-control">
-                    <option selected="true" disabled="disabled">--Select--</option>"
-                    @foreach (var category in categories)
-                    {
-                        <option value="@category">@category</option>
-                    }
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="SubCategory">Choose Subcategory</label>
-                <select asp-for="SubCategory" class="form-control"></select>
-                <span asp-validation-for="SubCategory" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label asp-for="Price">Price</label>
-                <input asp-for="Price" type="number" class="form-control" placeholder="Enter price">
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="Availability">Availability</label>
-                <input asp-for="Availability" class="form-control" placeholder="Enter availability">
-                <span asp-validation-for="Availability" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Condition">Condition</label>
-            <select asp-for="Condition" class="form-control">
-                <option selected="true" disabled="disabled">--Select--</option>"
-                @foreach (var condition in conditions)
-                {
-                    <option>@condition</option>
-                }
-            </select>
-            <span asp-validation-for="Condition" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Description">Description</label>
-            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            @for (int i = 0; i < 6; i++)
-            {
-                <p class="row ml-1">Image</p>
-                <input asp-for="Images" type="file"/>
-            }
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+    </div>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(document).ready(function () {
