@@ -14,6 +14,7 @@
             this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
             this.SentBox = new HashSet<Message>();
             this.Orders = new HashSet<Order>();
+            this.Ads = new HashSet<Ad>();
         }
 
         public bool IsDeleted { get; set; }
@@ -28,6 +29,8 @@
         public ICollection<Message> Inbox { get; set; }
 
         public ICollection<Message> SentBox { get; set; }
+
+        public ICollection<Ad> Ads { get; set; }
 
         public ICollection<Order> Orders { get; set; }
     }

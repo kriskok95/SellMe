@@ -32,6 +32,9 @@
         public int ConditionId { get; set; }
         public Condition Condition { get; set; }
 
+        public string SellerId { get; set; }
+        public SellMeUser Seller { get; set; }
+
         public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
