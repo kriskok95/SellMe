@@ -1,8 +1,9 @@
-﻿namespace SellMe.Services.Utilities
+﻿using SellMe.Web.ViewModels.InputModels.Ads;
+
+namespace SellMe.Services.Utilities
 {
     using AutoMapper;
     using SellMe.Data.Models;
-    using SellMe.Web.ViewModels.InputModels.Products;
 
     public class SellMeProfile : Profile
     {

@@ -1,12 +1,12 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using SellMe.Web.ViewModels.InputModels.Ads;
 
 namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using SellMe.Services.Interfaces;
-    using SellMe.Web.ViewModels.InputModels.Products;
 
     public class AdsController : Controller
     {

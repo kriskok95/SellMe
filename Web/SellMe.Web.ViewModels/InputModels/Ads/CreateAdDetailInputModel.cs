@@ -1,9 +1,9 @@
-﻿namespace SellMe.Web.ViewModels.InputModels.Products
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
+namespace SellMe.Web.ViewModels.InputModels.Ads
+{
     public class CreateAdDetailInputModel
     {
         private const string PriceErrorMessage = "{0} can't be a negative number!";

@@ -1,8 +1,8 @@
-﻿namespace SellMe.Web.ViewModels.InputModels.Products
+﻿namespace SellMe.Web.ViewModels.InputModels.Ads
 {
+    using System.ComponentModel.DataAnnotations;
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
-    using System.ComponentModel.DataAnnotations;
 
     public class CreateAdAddressInputModel : IMapTo<Address>
     {

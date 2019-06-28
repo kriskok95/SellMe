@@ -1,11 +1,11 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Http;
-
-namespace SellMe.Services.Utilities
+﻿namespace SellMe.Services.Utilities
 {
+    using System.IO;
+    using System.Threading.Tasks;
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
+    using Microsoft.AspNetCore.Http;
+
     public static class CloudinaryHelper
     {
         public const string CloudinaryCloudName = "dqqeaqrwy";
@@ -28,20 +28,20 @@ namespace SellMe.Services.Utilities
                 return null;
             }
 
-            byte[] storyImage;
+            byte[] image;
 
             using (var memoryStream = new MemoryStream())
             {
                 await fileForm.CopyToAsync(memoryStream);
-                storyImage = memoryStream.ToArray();
+                image = memoryStream.ToArray();
             }
 
-            var stream = new MemoryStream(storyImage);
+            var stream = new MemoryStream(image);
 
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(name, stream),
-                Transformation = new Transformation().Width(200).Height(250).Crop("fit").SetHtmlWidth(250).SetHtmlHeight(100)
+                Transformation = new Transformation().Width(1600).Height(1200).Crop("fit").SetHtmlWidth(250).SetHtmlHeight(100)
             };
 
             var uploadResult = cloudinary.Upload(uploadParams);

@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using SellMe.Web.ViewModels.InputModels.Ads;
+
+namespace SellMe.Services
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,6 @@
     using Microsoft.EntityFrameworkCore;
     using SellMe.Data.Models;
     using SellMe.Services.Utilities;
-    using SellMe.Web.ViewModels.InputModels.Products;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using SellMe.Services.Mapping;

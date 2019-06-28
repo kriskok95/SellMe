@@ -1,11 +1,12 @@
-﻿namespace SellMe.Services
+﻿using SellMe.Web.ViewModels.InputModels.Ads;
+
+namespace SellMe.Services
 {
     using System.Collections.Generic;
     using SellMe.Services.Interfaces;
     using System.Globalization;
     using AutoMapper;
     using SellMe.Data.Models;
-    using SellMe.Web.ViewModels.InputModels.Products;
     using SellMe.Data;
 
     public class AddressService : IAddressService

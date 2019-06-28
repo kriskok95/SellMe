@@ -1,4 +1,4 @@
-﻿namespace SellMe.Web.ViewModels.InputModels.Products
+﻿namespace SellMe.Web.ViewModels.InputModels.Ads
 {
     public class CreateAdInputModel
     {
