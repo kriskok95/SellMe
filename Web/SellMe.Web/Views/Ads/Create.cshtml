@@ -88,23 +88,27 @@
                 <div class="form-group">
                     <label asp-for="CreateAdAddressInputModel.Country">Country</label>
                     <select asp-for="CreateAdAddressInputModel.Country" class="form-control">
+                        <option selected="true" disabled="disabled">--Select--</option>"
                         @foreach (var country in countries)
                         {
                             <option>@country</option>
                         }
                     </select>
+                    <span asp-validation-for="CreateAdAddressInputModel.Country" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.City">City</label>
                             <input asp-for="CreateAdAddressInputModel.City" class="form-control">
+                            <span asp-validation-for="CreateAdAddressInputModel.City" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.Street">Street Address</label>
                             <input asp-for="CreateAdAddressInputModel.Street" class="form-control">
+                            <span asp-validation-for="CreateAdAddressInputModel.Street" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -113,12 +117,14 @@
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.District">District</label>
                             <input asp-for="CreateAdAddressInputModel.District" class="form-control">
+                            <span asp-validation-for="CreateAdAddressInputModel.District" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.ZipCode">Zip/Postal Code</label>
                             <input asp-for="CreateAdAddressInputModel.ZipCode" class="form-control">
+                            <span asp-validation-for="CreateAdAddressInputModel.ZipCode" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -127,12 +133,14 @@
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.PhoneNumber">Phone Number</label>
                             <input asp-for="CreateAdAddressInputModel.PhoneNumber" class="form-control">
+                            <span asp-validation-for="CreateAdAddressInputModel.PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.EmailAddress">Email Address</label>
                             <input asp-for="CreateAdAddressInputModel.EmailAddress" class="form-control">
+                            <span asp-validation-for="CreateAdAddressInputModel.EmailAddress" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
