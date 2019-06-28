@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace SellMe.Data.Models
+﻿namespace SellMe.Data.Models
 {
     using SellMe.Data.Common;
+    using System.Collections.Generic;
 
     public class Address : BaseDeletableModel<int>
     {
@@ -12,7 +11,9 @@ namespace SellMe.Data.Models
 
         public string Street { get; set; }
 
-        public string ZipCode { get; set; }
+        public string District { get; set; }
+
+        public int ZipCode { get; set; }
 
         public ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
 
