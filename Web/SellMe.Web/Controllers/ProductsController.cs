@@ -1,6 +1,4 @@
-﻿using SellMe.Web.ViewModels.ViewModels.Products;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;

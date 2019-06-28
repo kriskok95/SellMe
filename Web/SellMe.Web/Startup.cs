@@ -1,8 +1,4 @@
-﻿using System.Reflection;
-using SellMe.Services.Mapping;
-using SellMe.Web.ViewModels;
-
-namespace SellMe.Web
+﻿namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -17,7 +13,9 @@ namespace SellMe.Web
     using SellMe.Services.Interfaces;
     using SellMe.Data;
     using SellMe.Data.Models;
-    using SellMe.Services.Utilities;
+    using System.Reflection;
+    using SellMe.Services.Mapping;
+    using SellMe.Web.ViewModels;
 
     public class Startup
     {
@@ -55,9 +53,9 @@ namespace SellMe.Web
                 options.Password.RequiredUniqueChars = 1;
             });
 
-            //services.AddAutoMapper(x => x.AddProfile<SellMeProfile>());
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
             //Applications services

@@ -1,4 +1,4 @@
-﻿using SellMe.Web.ViewModels.ViewModels.Products;
+﻿using System.Security.Claims;
 
 namespace SellMe.Services
 {
@@ -14,6 +14,8 @@ namespace SellMe.Services
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using SellMe.Services.Mapping;
+    using Microsoft.AspNetCore.Identity;
+    using SellMe.Web.ViewModels.ViewModels.Products;
 
     public class ProductsService : IProductsService
     {
@@ -21,13 +23,15 @@ namespace SellMe.Services
         private readonly ICategoriesService categoryService;
         private readonly ISubCategoriesService subCategoriesService;
         private readonly IConditionsService conditionsService;
+        private readonly IHttpContextAccessor contextAccessor;
 
-        public ProductsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService)
+        public ProductsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor)
         {
             this.context = context;
             this.categoryService = categoryService;
             this.subCategoriesService = subCategoriesService;
             this.conditionsService = conditionsService;
+            this.contextAccessor = contextAccessor;
         }
 
         public ICollection<string> GetCategoryNames()
@@ -59,16 +63,18 @@ namespace SellMe.Services
 
         public void CreateProduct(CreateProductInputModel inputModel)
         {
+
             //Export this into separate method
             var imageUrls = inputModel.Images
                 .Select(x => this.UploadImages(x, inputModel.Title))
                 .ToList();
 
-            //var product = inputModel.
+            var username = this.contextAccessor.HttpContext.User.Identity.Name;
 
             //TODO: Implement model mapper!
             var product = new Ad
             {
+                SellerId = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value,
                 Title = inputModel.Title,
                 CategoryId = categoryService.GetCategoryIdByName(inputModel.Category),
                 SubCategoryId = this.subCategoriesService.GetSubCategoryIdByName(inputModel.SubCategory),
