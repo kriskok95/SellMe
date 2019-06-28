@@ -1,4 +1,7 @@
-﻿namespace SellMe.Web.Controllers
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+
+namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
@@ -8,6 +11,7 @@
     public class ProductsController : Controller
     {
         private readonly IProductsService productService;
+       
 
         public ProductsController(IProductsService productService)
         {
@@ -20,7 +24,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(CreateProductInputModel inputModel)
+        public IActionResult Create(CreateAdInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {

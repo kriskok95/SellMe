@@ -1,14 +1,15 @@
 ﻿namespace SellMe.Web.ViewModels.InputModels.Products
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
-    using System.Collections.Generic;
-    public class CreateProductInputModel
+
+    public class CreateAdDetailInputModel
     {
         private const string PriceErrorMessage = "The price can't be a negative number!";
         private const string AvailabilityErrorMessage = "The availability can't be a negative number!";
 
-        public CreateProductInputModel()
+        public CreateAdDetailInputModel()
         {
             this.Images = new List<IFormFile>();
         }

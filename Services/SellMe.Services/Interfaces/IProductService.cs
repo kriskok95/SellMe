@@ -14,7 +14,7 @@ namespace SellMe.Services.Interfaces
 
         ICollection<string> GetConditionsFromDb();
 
-        void CreateProduct(CreateProductInputModel inputModel);
+        void CreateProduct(CreateAdInputModel inputModel);
 
         ICollection<AdsAllViewModel> GetAllProductsViewModels();
 

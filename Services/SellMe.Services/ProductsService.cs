@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +14,7 @@ namespace SellMe.Services
     using SellMe.Services.Mapping;
     using Microsoft.AspNetCore.Identity;
     using SellMe.Web.ViewModels.ViewModels.Products;
+    using System.Security.Claims;
 
     public class ProductsService : IProductsService
     {
@@ -61,32 +60,31 @@ namespace SellMe.Services
             return conditionsFromDb;
         }
 
-        public void CreateProduct(CreateProductInputModel inputModel)
+        public void CreateProduct(CreateAdInputModel inputModel)
         {
 
             //Export this into separate method
-            var imageUrls = inputModel.Images
-                .Select(x => this.UploadImages(x, inputModel.Title))
+            var imageUrls = inputModel.CreateAdDetailInputModel.Images
+                .Select(x => this.UploadImages(x, inputModel.CreateAdDetailInputModel.Title))
                 .ToList();
 
-            var username = this.contextAccessor.HttpContext.User.Identity.Name;
 
             //TODO: Implement model mapper!
-            var product = new Ad
+            var ad = new Ad
             {
                 SellerId = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value,
-                Title = inputModel.Title,
-                CategoryId = categoryService.GetCategoryIdByName(inputModel.Category),
-                SubCategoryId = this.subCategoriesService.GetSubCategoryIdByName(inputModel.SubCategory),
-                Description = inputModel.Description,
-                AvailabilityCount = inputModel.Availability,
-                Condition = this.conditionsService.GetConditionByName(inputModel.Condition),
+                Title = inputModel.CreateAdDetailInputModel.Title,
+                CategoryId = categoryService.GetCategoryIdByName(inputModel.CreateAdDetailInputModel.Category),
+                SubCategoryId = this.subCategoriesService.GetSubCategoryIdByName(inputModel.CreateAdDetailInputModel.SubCategory),
+                Description = inputModel.CreateAdDetailInputModel.Description,
+                AvailabilityCount = inputModel.CreateAdDetailInputModel.Availability,
+                Condition = this.conditionsService.GetConditionByName(inputModel.CreateAdDetailInputModel.Condition),
                 Images = imageUrls.Select(x => new Image { ImageUrl = x.Result }).ToList(),
                 CreatedOn = DateTime.UtcNow, 
-                Price = inputModel.Price
+                Price = inputModel.CreateAdDetailInputModel.Price
             };
 
-            this.context.Ads.Add(product);
+            this.context.Ads.Add(ad);
             this.context.SaveChanges();
         }
 
