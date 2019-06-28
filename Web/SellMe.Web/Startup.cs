@@ -59,7 +59,7 @@
 
 
             //Applications services
-            services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<IProductsService, AdsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IConditionsService, ConditionsService>();
             services.AddTransient<ISubCategoriesService, SubCategoriesService>();

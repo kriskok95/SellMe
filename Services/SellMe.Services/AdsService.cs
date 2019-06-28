@@ -16,7 +16,7 @@
     using SellMe.Web.ViewModels.ViewModels.Products;
     using System.Security.Claims;
 
-    public class ProductsService : IProductsService
+    public class AdsService : IProductsService
     {
         private readonly SellMeDbContext context;
         private readonly ICategoriesService categoryService;
@@ -25,7 +25,7 @@
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IAddressService addressService;
 
-        public ProductsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor, IAddressService addressService)
+        public AdsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor, IAddressService addressService)
         {
             this.context = context;
             this.categoryService = categoryService;
