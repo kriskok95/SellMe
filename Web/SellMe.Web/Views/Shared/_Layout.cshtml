@@ -13,38 +13,38 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SellMe</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SellMe</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="Products" asp-action="Create" class="nav-link">Create Аd</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="Products" asp-action="All" class="nav-link">All Аds</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-            <partial name="_LoginPartial" />
-        </div>
-    </nav>
-</header>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a asp-controller="Home" asp-action="Index" class="nav-link">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Products" asp-action="Create" class="nav-link">Create Аd</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Products" asp-action="All" class="nav-link">All Аds</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
     <div class="container-fluid mt-4">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
@@ -75,15 +75,9 @@
                 crossorigin="anonymous"
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js">
-
-        </script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js">
-
-        </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
