@@ -1,6 +1,9 @@
 ﻿namespace SellMe.Web.ViewModels.InputModels.Products
 {
-    public class CreateAdAddressInputModel
+    using SellMe.Data.Models;
+    using SellMe.Services.Mapping;
+
+    public class CreateAdAddressInputModel : IMapTo<Address>
     {
         public string Country { get; set; }
 
@@ -11,5 +14,9 @@
         public string  Street { get; set; }
 
         public int ZipCode { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string EmailAddress { get; set; }
     }
 }

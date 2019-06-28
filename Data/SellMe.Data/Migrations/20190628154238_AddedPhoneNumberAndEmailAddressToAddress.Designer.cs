@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellMe.Data;
 
 namespace SellMe.Data.Migrations
 {
     [DbContext(typeof(SellMeDbContext))]
-    partial class SellMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190628154238_AddedPhoneNumberAndEmailAddressToAddress")]
+    partial class AddedPhoneNumberAndEmailAddressToAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,7 +199,7 @@ namespace SellMe.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<int>("PhoneNumber");
 
                     b.Property<string>("Street");
 

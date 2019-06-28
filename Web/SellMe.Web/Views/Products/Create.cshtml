@@ -1,16 +1,19 @@
 ﻿@model SellMe.Web.ViewModels.InputModels.Products.CreateAdInputModel
 @inject IProductsService ProductsService
+@inject IAddressService AddressService;
 
 @{
     var categories = this.ProductsService.GetCategoryNames();
     var conditions = this.ProductsService.GetConditionsFromDb();
+    var countries = this.AddressService.GetAllCountries();
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-6">
-            <form asp-controller="Products" asp-action="Create" enctype="multipart/form-data" method="post">
-                <h2>Ad Detail</h2>
+
+    <form asp-controller="Products" asp-action="Create" enctype="multipart/form-data" method="post">
+        <div class="row">
+            <div class="col-6">
+                <h2>Ad Details</h2>
                 <div class="form-group">
                     <label asp-for="CreateAdDetailInputModel.Title">Title</label>
                     <input asp-for="CreateAdDetailInputModel.Title" class="form-control">
@@ -63,20 +66,76 @@
                     <span asp-validation-for="CreateAdDetailInputModel.Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    @for (int i = 0; i < 6; i++)
+                    @for (int i = 0; i < 3; i++)
                     {
-                        <p>
-                            <input asp-for="CreateAdDetailInputModel.Images" type="file"/>
-                        </p>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><input asp-for="CreateAdDetailInputModel.Images" type="file" /> </p>
+                            </div>
+                            <div class="col-6">
+                                <p><input asp-for="CreateAdDetailInputModel.Images" type="file" /> </p>
+                            </div>
+                        </div>
                     }
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            </div>
+            <div class="col-6">
+                <h2>Contact Details</h2>
+                <div class="form-group">
+                    <label asp-for="CreateAdAddressInputModel.Country">Country</label>
+                    <select asp-for="CreateAdAddressInputModel.Country" class="form-control">
+                        @foreach (var country in countries)
+                        {
+                            <option>@country</option>
+                        }
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="CreateAdAddressInputModel.City">City</label>
+                            <input asp-for="CreateAdAddressInputModel.City" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="CreateAdAddressInputModel.Street">Street Address</label>
+                            <input asp-for="CreateAdAddressInputModel.Street" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="CreateAdAddressInputModel.District">District</label>
+                            <input asp-for="CreateAdAddressInputModel.District" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="CreateAdAddressInputModel.ZipCode">Zip/Postal Code</label>
+                            <input asp-for="CreateAdAddressInputModel.ZipCode" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="CreateAdAddressInputModel.PhoneNumber">Phone Number</label>
+                            <input asp-for="CreateAdAddressInputModel.PhoneNumber" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="CreateAdAddressInputModel.EmailAddress">Email Address</label>
+                            <input asp-for="CreateAdAddressInputModel.EmailAddress" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-        <div class="col-6">
-            <h2>Contact Detail</h2>
-        </div>
-    </div>
+    </form>
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -63,6 +63,7 @@
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IConditionsService, ConditionsService>();
             services.AddTransient<ISubCategoriesService, SubCategoriesService>();
+            services.AddTransient<IAddressService, AddressService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

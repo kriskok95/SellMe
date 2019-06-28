@@ -1,10 +1,9 @@
-﻿using SellMe.Web.ViewModels.ViewModels.Products;
-
-namespace SellMe.Services.Interfaces
+﻿namespace SellMe.Services.Interfaces
 {
     using System.Collections.Generic;
     using SellMe.Data.Models;
     using SellMe.Web.ViewModels.InputModels.Products;
+    using SellMe.Web.ViewModels.ViewModels.Products;
 
     public interface IProductsService
     {

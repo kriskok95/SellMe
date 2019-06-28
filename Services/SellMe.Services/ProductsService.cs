@@ -23,14 +23,16 @@
         private readonly ISubCategoriesService subCategoriesService;
         private readonly IConditionsService conditionsService;
         private readonly IHttpContextAccessor contextAccessor;
+        private readonly IAddressService addressService;
 
-        public ProductsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor)
+        public ProductsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor, IAddressService addressService)
         {
             this.context = context;
             this.categoryService = categoryService;
             this.subCategoriesService = subCategoriesService;
             this.conditionsService = conditionsService;
             this.contextAccessor = contextAccessor;
+            this.addressService = addressService;
         }
 
         public ICollection<string> GetCategoryNames()
@@ -81,7 +83,8 @@
                 Condition = this.conditionsService.GetConditionByName(inputModel.CreateAdDetailInputModel.Condition),
                 Images = imageUrls.Select(x => new Image { ImageUrl = x.Result }).ToList(),
                 CreatedOn = DateTime.UtcNow, 
-                Price = inputModel.CreateAdDetailInputModel.Price
+                Price = inputModel.CreateAdDetailInputModel.Price,
+                Address = this.addressService.CreateAddress(inputModel.CreateAdAddressInputModel)
             };
 
             this.context.Ads.Add(ad);
