@@ -5,7 +5,7 @@
     using SellMe.Web.ViewModels.InputModels.Products;
     using SellMe.Web.ViewModels.ViewModels.Products;
 
-    public interface IProductsService
+    public interface IAdsService
     {
         ICollection<string> GetCategoryNames();
 

@@ -8,14 +8,14 @@ namespace SellMe.Web.Controllers
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.InputModels.Products;
 
-    public class ProductsController : Controller
+    public class AdsController : Controller
     {
-        private readonly IProductsService productService;
+        private readonly IAdsService _adService;
        
 
-        public ProductsController(IProductsService productService)
+        public AdsController(IAdsService adService)
         {
-            this.productService = productService;
+            this._adService = adService;
         }
 
         public IActionResult Create()
@@ -31,14 +31,14 @@ namespace SellMe.Web.Controllers
                 return this.View(inputModel);
             }
 
-            this.productService.CreateProduct(inputModel);
+            this._adService.CreateProduct(inputModel);
 
             return this.Redirect("/");
         }
 
         public IActionResult GetSubcategories(string categoryName)
         {
-            var subcategories = this.productService
+            var subcategories = this._adService
                 .GetSubcategoriesByCategory(categoryName)
                 .Select(x => new
                 {
@@ -51,7 +51,7 @@ namespace SellMe.Web.Controllers
 
         public IActionResult All()
         {
-            var allProductsViewModel = this.productService.GetAllProductsViewModels().ToList();
+            var allProductsViewModel = this._adService.GetAllProductsViewModels().ToList();
 
             return this.View(allProductsViewModel);
         }

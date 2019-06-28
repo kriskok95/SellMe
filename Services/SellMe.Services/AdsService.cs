@@ -16,7 +16,7 @@
     using SellMe.Web.ViewModels.ViewModels.Products;
     using System.Security.Claims;
 
-    public class AdsService : IProductsService
+    public class AdsService : IAdsService
     {
         private readonly SellMeDbContext context;
         private readonly ICategoriesService categoryService;

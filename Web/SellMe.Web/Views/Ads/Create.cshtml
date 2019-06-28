@@ -1,19 +1,20 @@
 ﻿@model SellMe.Web.ViewModels.InputModels.Products.CreateAdInputModel
-@inject IProductsService ProductsService
+@inject IAdsService AdsService
 @inject IAddressService AddressService;
 
 @{
-    var categories = this.ProductsService.GetCategoryNames();
-    var conditions = this.ProductsService.GetConditionsFromDb();
+    var categories = this.AdsService.GetCategoryNames();
+    var conditions = this.AdsService.GetConditionsFromDb();
     var countries = this.AddressService.GetAllCountries();
 }
 
 <div class="container-fluid">
 
-    <form asp-controller="Products" asp-action="Create" enctype="multipart/form-data" method="post">
+    <form asp-controller="Ads" asp-action="Create" enctype="multipart/form-data" method="post">
         <div class="row">
+            <div class="col-3"></div>
             <div class="col-6">
-                <h2>Ad Details</h2>
+                <h2 class="text-center">Ad Details</h2>
                 <div class="form-group">
                     <label asp-for="CreateAdDetailInputModel.Title">Title</label>
                     <input asp-for="CreateAdDetailInputModel.Title" class="form-control">
@@ -79,8 +80,11 @@
                     }
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-3"></div>
             <div class="col-6">
-                <h2>Contact Details</h2>
+                <h2 class="text-center">Contact Details</h2>
                 <div class="form-group">
                     <label asp-for="CreateAdAddressInputModel.Country">Country</label>
                     <select asp-for="CreateAdAddressInputModel.Country" class="form-control">
@@ -133,7 +137,10 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="row">
+            <div class="col-5"></div>
+            <button type="submit" class="btn btn-dark col-2">Submit</button>
         </div>
     </form>
 </div>
