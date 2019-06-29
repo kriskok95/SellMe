@@ -1,6 +1,4 @@
-﻿using SellMe.Web.ViewModels.InputModels.Ads;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using System;
     using System.Collections.Generic;
@@ -14,8 +12,10 @@ namespace SellMe.Services
     using Microsoft.AspNetCore.Http;
     using SellMe.Services.Mapping;
     using Microsoft.AspNetCore.Identity;
-    using SellMe.Web.ViewModels.ViewModels.Products;
     using System.Security.Claims;
+    using SellMe.Web.ViewModels.InputModels.Ads;
+    using SellMe.Web.ViewModels.ViewModels.Ads;
+    using SellMe.Web.ViewModels.ViewModels.Categories;
 
     public class AdsService : IAdsService
     {
@@ -92,17 +92,51 @@ namespace SellMe.Services
             this.context.SaveChanges();
         }
 
-        public ICollection<AdsAllViewModel> GetAllProductsViewModels()
+        public AdsAllViewModel GetAllAdViewModels()
         {
-            var allProductsViewModel = this.context
+            var adsViewModel = this.GetAllAdsViewModel();
+            var allCategoriesViewModel = this.GetAllCategoryViewModel();
+
+            var adsAllViewModel = this.GetAdsAllViewModel(adsViewModel, allCategoriesViewModel);
+
+            return adsAllViewModel;
+        }
+
+        private AdsAllViewModel GetAdsAllViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
+        {
+            //TODO: Map with auto mapper
+
+            var adsAllViewModel = new AdsAllViewModel()
+            {
+                AdsViewModels = adsViewModel,
+                Categories = allCategoriesViewModel
+            };
+
+            return adsAllViewModel;
+        }
+
+        private ICollection<CategoryViewModel> GetAllCategoryViewModel()
+        {
+            var allCategories = this.context
+                .Categories
+                .To<CategoryViewModel>()
+                .ToList();
+
+            return allCategories;
+        }
+
+        private ICollection<AdViewModel> GetAllAdsViewModel()
+        {
+            var adsViewModel = this.context
                 .Ads
                 .Include(x => x.Category)
                 .Include(x => x.SubCategory)
                 .Include(x => x.Images)
-                .To<AdsAllViewModel>()
+                .To<AdViewModel>()
                 .ToList();
 
-            return allProductsViewModel;
+            return adsViewModel;
+
         }
 
         private async Task<string> UploadImages(IFormFile inputModelImage, string title)
@@ -113,7 +147,6 @@ namespace SellMe.Services
 
             return url;
         }
-
 
         private Category GetCategoryByName(string categoryName)
         {

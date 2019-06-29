@@ -1,9 +1,9 @@
-﻿@model  List<AdsAllViewModel>
+﻿@model  AdsAllViewModel
 
-@foreach (var ad in @Model)
+@foreach (var ad in @Model.AdsViewModels)
 {
     <div class="row justify-content-center mb-4">
-        <div class="card border-dark customClass" style="width: 30rem;">
+        <div class="card border-dark" style="width: 30rem;">
             <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">@ad.Title</h5>

@@ -1,21 +1,18 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using SellMe.Web.ViewModels.InputModels.Ads;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using SellMe.Services.Interfaces;
+    using SellMe.Web.ViewModels.InputModels.Ads;
 
     public class AdsController : Controller
     {
-        private readonly IAdsService _adService;
+        private readonly IAdsService adService;
        
 
         public AdsController(IAdsService adService)
         {
-            this._adService = adService;
+            this.adService = adService;
         }
 
         public IActionResult Create()
@@ -31,14 +28,14 @@ namespace SellMe.Web.Controllers
                 return this.View(inputModel);
             }
 
-            this._adService.CreateProduct(inputModel);
+            this.adService.CreateProduct(inputModel);
 
             return this.Redirect("/");
         }
 
         public IActionResult GetSubcategories(string categoryName)
         {
-            var subcategories = this._adService
+            var subcategories = this.adService
                 .GetSubcategoriesByCategory(categoryName)
                 .Select(x => new
                 {
@@ -51,9 +48,9 @@ namespace SellMe.Web.Controllers
 
         public IActionResult All()
         {
-            var allProductsViewModel = this._adService.GetAllProductsViewModels().ToList();
+            var adsAllViewModels = this.adService.GetAllAdViewModels();
 
-            return this.View(allProductsViewModel);
+            return this.View(adsAllViewModels);
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace SellMe.Web.ViewModels.ViewModels.Products
+﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     using System;
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
     using System.Linq;
     using AutoMapper;
+    using SellMe.Data.Models;
+    using SellMe.Services.Mapping;
 
-
-    public class AdsAllViewModel : IMapFrom<Ad>, IHaveCustomMappings
+    public class AdViewModel : IMapFrom<Ad>, IHaveCustomMappings
     {
         public string Title { get; set; }
 
@@ -23,7 +22,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Ad, AdsAllViewModel>()
+            configuration.CreateMap<Ad, AdViewModel>()
                 .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl).FirstOrDefault()));
 
         }

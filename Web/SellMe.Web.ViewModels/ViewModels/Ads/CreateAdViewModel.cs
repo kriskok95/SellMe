@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SellMe.Web.ViewModels.ViewModels.Products
+namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     public class CreateAdViewModel
     {
