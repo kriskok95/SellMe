@@ -52,5 +52,12 @@
 
             return this.View(adsAllViewModels);
         }
+
+        public IActionResult AdsByCategory(AdsByCategoryInputModel inputModel)
+        {
+            var adsByCategoryViewModel = this.adService.GetAdsByCategoryViewModel(inputModel.Id);
+
+             return this.View(adsByCategoryViewModel);
+        }
     }
 }

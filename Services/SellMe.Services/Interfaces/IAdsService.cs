@@ -1,10 +1,9 @@
-﻿using SellMe.Web.ViewModels.InputModels.Ads;
-using SellMe.Web.ViewModels.ViewModels.Ads;
-
-namespace SellMe.Services.Interfaces
+﻿namespace SellMe.Services.Interfaces
 {
     using System.Collections.Generic;
     using SellMe.Data.Models;
+    using SellMe.Web.ViewModels.InputModels.Ads;
+    using SellMe.Web.ViewModels.ViewModels.Ads;
 
     public interface IAdsService
     {
@@ -17,6 +16,8 @@ namespace SellMe.Services.Interfaces
         void CreateProduct(CreateAdInputModel inputModel);
 
         AdsAllViewModel GetAllAdViewModels();
+
+        AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId);
 
     }
 }

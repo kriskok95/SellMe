@@ -97,12 +97,49 @@
             var adsViewModel = this.GetAllAdsViewModel();
             var allCategoriesViewModel = this.GetAllCategoryViewModel();
 
-            var adsAllViewModel = this.GetAdsAllViewModel(adsViewModel, allCategoriesViewModel);
+            var adsAllViewModel = this.CreateAdsAllViewModel(adsViewModel, allCategoriesViewModel);
 
             return adsAllViewModel;
         }
 
-        private AdsAllViewModel GetAdsAllViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
+        public AdsByCategoryViewModel GetAdsByCategoryViewModel(int id)
+        {
+            var adsViewModel = this.GetAllAdsByCategory(id);
+            var allCategoriesViewModel = this.GetAllCategoryViewModel();
+
+            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel);
+
+            return adsByCategoryViewModel;
+        }
+
+        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
+        {
+            //TODO: Implement auto mapper!
+
+            var adsByCategoryViewModel = new AdsByCategoryViewModel
+            {
+                AdsViewModels = adsViewModel,
+                Categories = allCategoriesViewModel
+            };
+
+            return adsByCategoryViewModel;
+        }
+
+        private ICollection<AdViewModel> GetAllAdsByCategory(int categoryId)
+        {
+            var adsViewModel = this.context
+                .Ads
+                .Include(x => x.Category)
+                .Include(x => x.SubCategory)
+                .Include(x => x.Images)
+                .Where(x => x.CategoryId == categoryId)
+                .To<AdViewModel>()
+                .ToList();
+
+            return adsViewModel;
+        }
+
+        private AdsAllViewModel CreateAdsAllViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
         {
             //TODO: Map with auto mapper
 

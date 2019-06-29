@@ -1,19 +1,19 @@
-﻿@model AdsAllViewModel
+﻿@model AdsByCategoryViewModel
 
 <div class="row">
-        <div class="col-3">
-            <div class="d-flex justify-content-start card">
-                <div class="card-header">
-                    All Categories
-                </div>
-                <ul class="list-group list-group-flush">
-                    @foreach (var category in @Model.Categories)
-                    {
-                        <li class="list-group-item"><a asp-controller="Ads" asp-action="AdsByCategory" asp-route-id="@category.Id">@category.Name</a></li>
-                    }
-                </ul>
+    <div class="col-3">
+        <div class="d-flex justify-content-start card">
+            <div class="card-header">
+                All Categories
             </div>
+            <ul class="list-group list-group-flush">
+                @foreach (var category in @Model.Categories)
+                {
+                    <li class="list-group-item"><a asp-controller="Ads" asp-action="AdsByCategory" asp-route-id="@category.Id">@category.Name</a></li>
+                }
+            </ul>
         </div>
+    </div>
     <div class="col-1"></div>
     <div class="col-5">
         @foreach (var ad in @Model.AdsViewModels)
@@ -35,6 +35,3 @@
         }
     </div>
 </div>
-
-
-
