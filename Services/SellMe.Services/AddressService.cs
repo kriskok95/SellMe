@@ -1,6 +1,4 @@
-﻿using SellMe.Web.ViewModels.InputModels.Ads;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using System.Collections.Generic;
     using SellMe.Services.Interfaces;
@@ -8,6 +6,7 @@ namespace SellMe.Services
     using AutoMapper;
     using SellMe.Data.Models;
     using SellMe.Data;
+    using SellMe.Web.ViewModels.InputModels.Ads;
 
     public class AddressService : IAddressService
     {

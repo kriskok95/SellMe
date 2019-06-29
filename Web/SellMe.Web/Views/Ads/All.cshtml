@@ -1,19 +1,39 @@
-﻿@model  AdsAllViewModel
+﻿@model AdsAllViewModel
 
-@foreach (var ad in @Model.AdsViewModels)
-{
-    <div class="row justify-content-center mb-4">
-        <div class="card border-dark" style="width: 30rem;">
-            <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@ad.Title</h5>
+<div class="row">
+        <div class="col-3">
+            <div class="d-flex justify-content-start card">
+                <div class="card-header">
+                    Categories
+                </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Price:@ad.Price</strong></li>
-                    <li class="list-group-item"><strong>@ad.CategoryName/@ad.SubcategoryName</strong></li>
+                    @foreach (var category in @Model.Categories)
+                    {
+                        <li class="list-group-item"><a href="#">@category.Name</a></li>
+                    }
                 </ul>
-                <a href="#" class="btn btn-primary">Details</a>
             </div>
         </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        @foreach (var ad in @Model.AdsViewModels)
+        {
+            <div class="d-flex justify-content-center mb-4">
+                <div class="card border-dark" style="width: 30rem;">
+                    <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@ad.Title</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Price:@ad.Price</strong></li>
+                            <li class="list-group-item"><strong>@ad.CategoryName/@ad.SubcategoryName</strong></li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-}
+</div>
+
+
 

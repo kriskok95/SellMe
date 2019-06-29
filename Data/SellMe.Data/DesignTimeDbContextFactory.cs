@@ -1,11 +1,12 @@
-﻿using System.IO;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-
-namespace SellMe.Data
+﻿namespace SellMe.Data
 {
+    using System.IO;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Design;
+    using Microsoft.EntityFrameworkCore.Diagnostics;
+    using Microsoft.Extensions.Configuration;
+
+
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<SellMeDbContext>
     {
         public SellMeDbContext CreateDbContext(string[] args)
