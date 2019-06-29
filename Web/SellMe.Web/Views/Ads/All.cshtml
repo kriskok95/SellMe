@@ -4,12 +4,12 @@
         <div class="col-3">
             <div class="d-flex justify-content-start card">
                 <div class="card-header">
-                    Categories
+                    All Categories
                 </div>
                 <ul class="list-group list-group-flush">
                     @foreach (var category in @Model.Categories)
                     {
-                        <li class="list-group-item"><a href="#">@category.Name</a></li>
+                        <li class="list-group-item"><a asp-controller="Ads" asp-action="GetAdsByCategory" asp-route-id="@category.Id">@category.Name</a></li>
                     }
                 </ul>
             </div>
@@ -23,9 +23,10 @@
                     <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">@ad.Title</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Price:@ad.Price</strong></li>
-                            <li class="list-group-item"><strong>@ad.CategoryName/@ad.SubcategoryName</strong></li>
+                        <ul class="list-group list-group-flush ul-custom">
+                            <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
+                            <li class="list-group-item row"><i class="fas fa-chess-queen"></i> @ad.CategoryName/@ad.SubcategoryName</li>
+                            <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
                         </ul>
                         <a href="#" class="btn btn-primary">Details</a>
                     </div>
