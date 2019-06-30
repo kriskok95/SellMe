@@ -1,5 +1,8 @@
-﻿namespace SellMe.Services.Utilities
+﻿using SellMe.Data;
+
+namespace SellMe.Services.Utilities
 {
+    using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using AutoMapper;

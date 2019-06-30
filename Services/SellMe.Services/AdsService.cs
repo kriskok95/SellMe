@@ -67,7 +67,7 @@
             return conditionsFromDb;
         }
 
-        public void CreateProduct(CreateAdInputModel inputModel)
+        public void CreateAd(CreateAdInputModel inputModel)
         {
 
             //Export this into separate method
@@ -87,10 +87,14 @@
                 AvailabilityCount = inputModel.CreateAdDetailInputModel.Availability,
                 Condition = this.conditionsService.GetConditionByName(inputModel.CreateAdDetailInputModel.Condition),
                 Images = imageUrls.Select(x => new Image { ImageUrl = x.Result }).ToList(),
-                CreatedOn = DateTime.UtcNow, 
+                CreatedOn = DateTime.UtcNow,
                 Price = inputModel.CreateAdDetailInputModel.Price,
                 Address = this.addressService.CreateAddress(inputModel.CreateAdAddressInputModel)
             };
+
+            //var ad = this.mapper.Map<Ad>(inputModel);
+            //ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
+            //    .ToList();
 
             this.context.Ads.Add(ad);
             this.context.SaveChanges();

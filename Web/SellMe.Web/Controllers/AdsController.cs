@@ -29,7 +29,7 @@
                 return this.View(inputModel);
             }
 
-            this.adService.CreateProduct(inputModel);
+            this.adService.CreateAd(inputModel);
 
             return this.Redirect("/");
         }

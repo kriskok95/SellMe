@@ -13,7 +13,7 @@
 
         ICollection<string> GetConditionsFromDb();
 
-        void CreateProduct(CreateAdInputModel inputModel);
+        void CreateAd(CreateAdInputModel inputModel);
 
         AdsAllViewModel GetAllAdViewModels();
 
