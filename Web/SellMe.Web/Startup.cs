@@ -1,4 +1,7 @@
-﻿namespace SellMe.Web
+﻿using AutoMapper;
+using SellMe.Services.Utilities;
+
+namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -57,6 +60,7 @@
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddAutoMapper(typeof(SellMeProfile));
 
             //Applications services
             services.AddTransient<IAdsService, AdsService>();

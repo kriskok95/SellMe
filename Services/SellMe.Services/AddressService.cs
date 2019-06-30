@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services
 {
+    using System.Linq;
     using System.Collections.Generic;
     using SellMe.Services.Interfaces;
     using System.Globalization;
@@ -50,6 +51,12 @@
             this.context.Addresses.Add(address);
             this.context.SaveChanges();
 
+            return address;
+        }
+
+        public Address GetAddressByAdId(int addressId)
+        {
+            var address = this.context.Addresses.FirstOrDefault(x => x.Id == addressId);
             return address;
         }
     }

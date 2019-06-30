@@ -4,6 +4,7 @@
     using System.Linq;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.InputModels.Ads;
+    using SellMe.Web.ViewModels.ViewModels.Ads;
 
     public class AdsController : Controller
     {
@@ -58,6 +59,13 @@
             var adsByCategoryViewModel = this.adService.GetAdsByCategoryViewModel(inputModel.Id);
 
              return this.View(adsByCategoryViewModel);
+        }
+
+        public IActionResult Details(AdDetailsInputModel inputModel)
+        {
+            AdDetailsViewModel adDetailsViewModel = this.adService.GetAdDetailsViewModel(inputModel.Id);
+
+            return this.View();
         }
     }
 }

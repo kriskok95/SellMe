@@ -19,5 +19,6 @@
 
         AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId);
 
+        AdDetailsViewModel GetAdDetailsViewModel(int adId);
     }
 }

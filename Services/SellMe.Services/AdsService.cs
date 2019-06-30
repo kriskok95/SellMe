@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services
 {
+    using AutoMapper;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,6 +17,7 @@
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Categories;
+    using SellMe.Web.ViewModels.ViewModels.Addresses;
 
     public class AdsService : IAdsService
     {
@@ -25,8 +27,9 @@
         private readonly IConditionsService conditionsService;
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IAddressService addressService;
+        private readonly IMapper mapper;
 
-        public AdsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor, IAddressService addressService)
+        public AdsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor, IAddressService addressService, IMapper mapper)
         {
             this.context = context;
             this.categoryService = categoryService;
@@ -34,6 +37,7 @@
             this.conditionsService = conditionsService;
             this.contextAccessor = contextAccessor;
             this.addressService = addressService;
+            this.mapper = mapper;
         }
 
         public ICollection<string> GetCategoryNames()
@@ -110,6 +114,35 @@
             var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel);
 
             return adsByCategoryViewModel;
+        }
+
+        public AdDetailsViewModel GetAdDetailsViewModel(int adId)
+        {
+            var adFromDb = this.GetAdById(adId);
+            var addressForGivenAd = this.addressService.GetAddressByAdId(adFromDb.AddressId);
+
+            //TODO: Map with auto mapper nested objects
+            var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
+            var addressViewModel = mapper.Map<AddressViewModel>(addressForGivenAd);
+
+            adDetailsViewModel.AddressViewModel = addressViewModel;
+
+            return adDetailsViewModel;
+        }
+
+        private Ad GetAdById(int adId)
+        {
+            //TODO: Validate for null
+
+            var ad = this.context.Ads
+                .Include(x => x.Category)
+                .Include(x => x.SubCategory)
+                .Include(x => x.Address)
+                .Include(x => x.Condition)
+                .Include(x => x.Images)
+                .FirstOrDefault(x => x.Id == adId);
+
+            return ad;
         }
 
         private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)

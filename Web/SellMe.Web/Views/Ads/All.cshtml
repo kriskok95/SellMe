@@ -23,12 +23,12 @@
                         <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">@ad.Title</h5>
-                            <ul class="list-group list-group-flush ul-custom">
+                            <ul class="list-group list-group-flush">
                                 <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
                                 <li class="list-group-item row"><i class="fas fa-chess-queen"></i> @ad.CategoryName/@ad.SubcategoryName</li>
                                 <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
                             </ul>
-                            <a href="#" class="btn btn-primary btn-block mt-4">Details</a>
+                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
                         </div>
                     </div>
                 </div>
