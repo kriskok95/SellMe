@@ -35,7 +35,7 @@
         public string SellerId { get; set; }
         public SellMeUser Seller { get; set; }
 
-        public int? AddressId { get; set; }
+        public int AddressId { get; set; }
         public Address Address { get; set; }
 
         public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
