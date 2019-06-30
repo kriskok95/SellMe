@@ -1,6 +1,9 @@
 ﻿@model SellMe.Web.ViewModels.InputModels.Ads.CreateAdInputModel
 @inject IAdsService AdsService
 @inject IAddressService AddressService;
+@{
+    ViewData["Title"] = "Create ad";
+}
 
 @{
     var categories = this.AdsService.GetCategoryNames();
@@ -8,8 +11,13 @@
     var countries = this.AddressService.GetAllCountries();
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create</li>
+    </ol>
+</nav>
 <div class="container-fluid">
-
     <form asp-controller="Ads" asp-action="Create" enctype="multipart/form-data" method="post">
         <div class="row">
             <div class="col-3"></div>

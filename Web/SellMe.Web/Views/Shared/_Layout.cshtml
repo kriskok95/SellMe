@@ -21,33 +21,39 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SellMe</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SellMe</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a asp-controller="Home" asp-action="Index" class="nav-link"><i class="fas fa-home"></i> Home<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-controller="Ads" asp-action="Create" class="nav-link">Create Аd</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-controller="Ads" asp-action="All" class="nav-link">All Аds</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-                <partial name="_LoginPartial" />
-            </div>
-        </nav>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link"><i class="fas fa-home"></i> Home<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Ads" asp-action="Create" class="nav-link"><i class="fas fa-plus"></i> Create Аd</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Ads" asp-action="All" class="nav-link"><i class="fas fa-border-all"></i> All Аds</a>
+                        </li>
+                        <li>
+                            <div>
+                                <form class="form-inline my-2 my-lg-0 ml-3">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </nav>
+        </div>
     </header>
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-3">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
