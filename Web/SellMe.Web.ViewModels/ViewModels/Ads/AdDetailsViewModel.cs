@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
+    using System;
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Data.Models;
@@ -21,6 +22,8 @@
 
         //TODO: Change property name to type
         public string ConditionName { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
         public AddressViewModel AddressViewModel { get; set; }
 

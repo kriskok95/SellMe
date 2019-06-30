@@ -65,7 +65,7 @@
         {
             AdDetailsViewModel adDetailsViewModel = this.adService.GetAdDetailsViewModel(inputModel.Id);
 
-            return this.View();
+            return this.View(adDetailsViewModel);
         }
     }
 }

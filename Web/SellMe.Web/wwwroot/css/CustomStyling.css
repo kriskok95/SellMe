@@ -90,4 +90,10 @@
     margin-bottom: 0;
 }
 
-/*Upload files button*/
+
+/*SellMe image size*/
+
+.sellMe-img img{
+    height: 400px;
+    width: 150%;
+}
