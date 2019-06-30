@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SellMe.Services.Utilities;
+using SellMe.Web.Middlewares;
 
 namespace SellMe.Web
 {
@@ -91,6 +92,8 @@ namespace SellMe.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSeedDataMiddleware();
 
             app.UseMvc(routes =>
             {
