@@ -106,14 +106,21 @@
             return adsAllViewModel;
         }
 
-        public AdsByCategoryViewModel GetAdsByCategoryViewModel(int id)
+        public AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId)
         {
-            var adsViewModel = this.GetAllAdsByCategory(id);
+            var adsViewModel = this.GetAllAdsByCategory(categoryId);
             var allCategoriesViewModel = this.GetAllCategoryViewModel();
+            string categoryName = this.GetCategoryNameById(categoryId);
 
-            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel);
+            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel, categoryName);
 
             return adsByCategoryViewModel;
+        }
+
+        private string GetCategoryNameById(int categoryId)
+        {
+            var categoryName = this.context.Categories.FirstOrDefault(x => x.Id == categoryId)?.Name;
+            return categoryName;
         }
 
         public AdDetailsViewModel GetAdDetailsViewModel(int adId)
@@ -145,12 +152,13 @@
             return ad;
         }
 
-        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
+        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName)
         {
             //TODO: Implement auto mapper!
 
             var adsByCategoryViewModel = new AdsByCategoryViewModel
             {
+                CategoryName = categoryName,
                 AdsViewModels = adsViewModel,
                 Categories = allCategoriesViewModel
             };

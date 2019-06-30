@@ -14,7 +14,7 @@
 <div class="container">
     <div class="row">
         <div class="offset-2 col-4">
-            <div class="sellMe-img mt-5">
+            <div class="sellMe-img mt-3">
                 <img src="@Model.Images.FirstOrDefault()" alt="@Model.Title" />
             </div>
         </div>
@@ -22,6 +22,7 @@
     <div class="row">
         <div class="offset-2 col-6 mt-2">
             <h3 class="">@Model.Title</h3>
+            <hr class="hr-sell-me"/>
         </div>
     </div>
     <div class="row">
@@ -39,6 +40,9 @@
         <div class="col-3 mt-2">
             <h5 class="text-muted"><i class="fas fa-folder"></i> @Model.CategoryName, @Model.SubcategoryName</h5>
         </div>
+        <div class="offset-2 col-6">
+            <hr class="hr-sell-me" />
+        </div>
     </div>
     <div class="row">
         <div class="offset-2 col-6 mt-3">
@@ -49,7 +53,7 @@
     {
         <div class="row">
             <div class="offset-2 col-4 mt-1">
-                <div class="sellMe-img mt-5">
+                <div class="sellMe-img mt-3">
                     <img src="@imageUrl" alt="@Model.Title" />
                 </div>
             </div>

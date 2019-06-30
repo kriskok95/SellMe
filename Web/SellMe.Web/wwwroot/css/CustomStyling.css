@@ -93,7 +93,14 @@
 
 /*SellMe image size*/
 
-.sellMe-img img{
+.sellMe-img img {
     height: 400px;
     width: 150%;
+    border: 1px solid gray;
+}
+
+
+/*Hr line*/
+.hr-sell-me { 
+    border-width: 2px;
 }

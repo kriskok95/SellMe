@@ -1,38 +1,47 @@
 ﻿@model AdsByCategoryViewModel
+@{
+    ViewData["Title"] = "Ads by category";
+}
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        All Categories
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach (var category in @Model.Categories)
-                        {
-                            <li class="list-group-item"><a asp-controller="Ads" asp-action="AdsByCategory" asp-route-id="@category.Id"><i class="@category.FontAwesomeIcon"></i> @category.Name</a></li>
-                        }
-                    </ul>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.CategoryName</li>
+    </ol>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    All Categories
                 </div>
-            </div>
-            <div class="offset-1">
-                @foreach (var ad in @Model.AdsViewModels)
-                {
-                    <div class="mb-4">
-                        <div class="card border-dark" style="width: 30rem;">
-                            <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">@ad.Title</h5>
-                                <ul class="list-group list-group-flush ul-custom">
-                                    <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
-                                    <li class="list-group-item row"><i class="fas fa-folder"></i> @ad.CategoryName/@ad.SubcategoryName</li>
-                                    <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
-                                </ul>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
-                            </div>
-                        </div>
-                    </div>
-                }
+                <ul class="list-group list-group-flush">
+                    @foreach (var category in @Model.Categories)
+                    {
+                        <li class="list-group-item"><a asp-controller="Ads" asp-action="AdsByCategory" asp-route-id="@category.Id"><i class="@category.FontAwesomeIcon"></i> @category.Name</a></li>
+                    }
+                </ul>
             </div>
         </div>
+        <div class="offset-1">
+            @foreach (var ad in @Model.AdsViewModels)
+            {
+                <div class="mb-4">
+                    <div class="card border-dark" style="width: 30rem;">
+                        <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@ad.Title</h5>
+                            <ul class="list-group list-group-flush ul-custom">
+                                <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
+                                <li class="list-group-item row"><i class="fas fa-folder"></i> @ad.CategoryName/@ad.SubcategoryName</li>
+                                <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
+                            </ul>
+                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
+</div>
