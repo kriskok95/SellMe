@@ -11,7 +11,7 @@
 
             builder.HasMany(x => x.Ads)
                 .WithOne(x => x.SubCategory)
-                .HasForeignKey(x => x.CategoryId)
+                .HasForeignKey(x => x.SubCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }
