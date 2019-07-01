@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
-
-namespace SellMe.Web.ViewModels.InputModels.Ads
+﻿namespace SellMe.Web.ViewModels.InputModels.Ads
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Http;
+
     public class CreateAdDetailInputModel
     {
         private const string PriceErrorMessage = "{0} can't be a negative number!";
@@ -35,10 +35,10 @@ namespace SellMe.Web.ViewModels.InputModels.Ads
         public decimal Price { get; set; }
 
         [Required]
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
 
         [Required]
-        public string SubCategory { get; set; }
+        public int SubCategoryId { get; set; }
 
         [Range(AvailabilityMinValue, AvailabilityMaxValue, ErrorMessage = AvailabilityErrorMessage)]
         [Required]

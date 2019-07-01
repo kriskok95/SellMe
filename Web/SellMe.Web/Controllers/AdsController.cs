@@ -9,11 +9,13 @@
     public class AdsController : Controller
     {
         private readonly IAdsService adService;
-       
+        private readonly ISubCategoriesService subCategoriesService;
 
-        public AdsController(IAdsService adService)
+
+        public AdsController(IAdsService adService, ISubCategoriesService subCategoriesService)
         {
             this.adService = adService;
+            this.subCategoriesService = subCategoriesService;
         }
 
         public IActionResult Create()
@@ -34,15 +36,10 @@
             return this.Redirect("/");
         }
 
-        public IActionResult GetSubcategories(string categoryName)
+        public IActionResult GetSubcategories(int categoryId)
         {
-            var subcategories = this.adService
-                .GetSubcategoriesByCategory(categoryName)
-                .Select(x => new
-                {
-                    Name = x.Name
-                })
-                .ToList();
+            var subcategories = this.subCategoriesService
+                .GetSubcategoriesByCategoryId(categoryId);
 
             return Json(subcategories);
         }

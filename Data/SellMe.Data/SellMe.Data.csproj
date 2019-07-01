@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20190627210139_AddedMappingTableForUserAddress.Designer.cs" />
     <Compile Remove="Migrations\20190628154216_AddedPhoneNumberAndEmailAddressToAddres.cs" />
     <Compile Remove="Migrations\20190628154216_AddedPhoneNumberAndEmailAddressToAddres.Designer.cs" />
+    <Compile Remove="Migrations\20190701074847_newMigration.cs" />
+    <Compile Remove="Migrations\20190701074847_newMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

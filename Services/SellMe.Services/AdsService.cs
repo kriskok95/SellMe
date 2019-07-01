@@ -12,7 +12,6 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using SellMe.Services.Mapping;
-    using Microsoft.AspNetCore.Identity;
     using System.Security.Claims;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
@@ -40,23 +39,6 @@
             this.mapper = mapper;
         }
 
-        public ICollection<string> GetCategoryNames()
-        {
-            var categoryNames = this.context
-                .Categories
-                .Select(x => x.Name)
-                .ToList();
-
-            return categoryNames;
-        }
-
-        public ICollection<SubCategory> GetSubcategoriesByCategory(string categoryName)
-        {
-            Category parentCategory = this.GetCategoryByName(categoryName);
-
-            return parentCategory.SubCategories.ToList();
-        }
-
         public ICollection<string> GetConditionsFromDb()
         {
             var conditionsFromDb = this.context
@@ -81,8 +63,10 @@
             {
                 SellerId = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value,
                 Title = inputModel.CreateAdDetailInputModel.Title,
-                CategoryId = categoryService.GetCategoryIdByName(inputModel.CreateAdDetailInputModel.Category),
-                SubCategoryId = this.subCategoriesService.GetSubCategoryIdByName(inputModel.CreateAdDetailInputModel.SubCategory),
+                //CategoryId = categoryService.GetCategoryIdByName(inputModel.CreateAdDetailInputModel.CategoryId),
+                //SubCategoryId = this.subCategoriesService.GetSubCategoryIdByName(inputModel.CreateAdDetailInputModel.SubCategoryId),
+                CategoryId = inputModel.CreateAdDetailInputModel.CategoryId,
+                SubCategoryId = inputModel.CreateAdDetailInputModel.SubCategoryId,
                 Description = inputModel.CreateAdDetailInputModel.Description,
                 AvailabilityCount = inputModel.CreateAdDetailInputModel.Availability,
                 Condition = this.conditionsService.GetConditionByName(inputModel.CreateAdDetailInputModel.Condition),
@@ -228,16 +212,6 @@
             var url = await CloudinaryHelper.UploadImage(cloudinary, inputModelImage, title);
 
             return url;
-        }
-
-        private Category GetCategoryByName(string categoryName)
-        {
-            Category category = this.context
-                .Categories
-                .Include(x => x.SubCategories)
-                .FirstOrDefault(x => x.Name == categoryName);
-
-            return category;
         }
     }
 }
