@@ -18,15 +18,6 @@
             this.context = context;
         }
 
-        public int GetCategoryIdByName(string categoryName)
-        {
-            int categoryId = this.context
-                .Categories
-                .FirstOrDefault(x => x.Name == categoryName).Id;
-
-            return categoryId;
-        }
-
         public ICollection<CreateAdCategoryViewModel> GetCategoryViewModels()
         {
             var categoryViewModels = this.context

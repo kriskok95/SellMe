@@ -2,13 +2,14 @@
 @inject IAdsService AdsService
 @inject IAddressService AddressService;
 @inject ICategoriesService CategoriesService;
+@inject IConditionsService ConditionsService;
 @{
     ViewData["Title"] = "Create ad";
 }
 
 @{
     var categories = this.CategoriesService.GetCategoryViewModels();
-    var conditions = this.AdsService.GetConditionsFromDb();
+    var conditions = this.ConditionsService.GetConditionViewModels();
     var countries = this.AddressService.GetAllCountries();
 }
 
@@ -60,15 +61,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="CreateAdDetailInputModel.Condition">Condition</label>
-                    <select asp-for="CreateAdDetailInputModel.Condition" class="form-control">
+                    <label asp-for="CreateAdDetailInputModel.ConditionId">Condition</label>
+                    <select asp-for="CreateAdDetailInputModel.ConditionId" class="form-control">
                         <option selected="true" disabled="disabled">--Select--</option>"
                         @foreach (var condition in conditions)
                         {
-                            <option>@condition</option>
+                            <option value="@condition.Id">@condition.Name</option>
                         }
                     </select>
-                    <span asp-validation-for="CreateAdDetailInputModel.Condition" class="text-danger"></span>
+                    <span asp-validation-for="CreateAdDetailInputModel.ConditionId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="CreateAdDetailInputModel.Description">Description</label>

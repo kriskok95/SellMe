@@ -6,8 +6,6 @@
 
     public interface IAdsService
     {
-        ICollection<string> GetConditionsFromDb();
-
         void CreateAd(CreateAdInputModel inputModel);
 
         AdsAllViewModel GetAllAdViewModels();

@@ -4,6 +4,9 @@
     using SellMe.Data.Models;
     using System.Linq;
     using SellMe.Data;
+    using System.Collections.Generic;
+    using SellMe.Services.Mapping;
+    using SellMe.Web.ViewModels.ViewModels.Conditions;
 
     public class ConditionsService : IConditionsService
     {
@@ -14,13 +17,14 @@
             this.context = context;
         }
 
-        public Condition GetConditionByName(string conditionName)
+        public ICollection<CreateAdConditionViewModel> GetConditionViewModels()
         {
-            Condition condition = this.context
+            var conditionViewModels = this.context
                 .Conditions
-                .FirstOrDefault(x => x.Name == conditionName);
+                .To<CreateAdConditionViewModel>()
+                .ToList();
 
-            return condition;
+            return conditionViewModels;
         }
     }
 }

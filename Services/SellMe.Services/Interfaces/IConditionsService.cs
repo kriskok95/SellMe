@@ -1,9 +1,10 @@
 ﻿namespace SellMe.Services.Interfaces
 {
-    using SellMe.Data.Models;
+    using System.Collections.Generic;
+    using SellMe.Web.ViewModels.ViewModels.Conditions;
 
     public interface IConditionsService
     {
-        Condition GetConditionByName(string conditionName);
+        ICollection<CreateAdConditionViewModel> GetConditionViewModels();
     }
 }

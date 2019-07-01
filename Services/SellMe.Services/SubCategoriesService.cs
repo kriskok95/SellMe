@@ -19,16 +19,6 @@
             this.categoryService = categoryService;
         }
 
-        public int GetSubCategoryIdByName(string subCategoryName)
-        {
-            //TODO: Validate for null reference exception
-            int subCategoryId = this.context
-                .SubCategories
-                .FirstOrDefault(x => x.Name == subCategoryName).Id;
-
-            return subCategoryId;
-        }
-
         public ICollection<CreateAdSubcategoryViewModel> GetSubcategoriesByCategoryId(int categoryId)
         {
             Category category = this.categoryService.GetCategoryById(categoryId);

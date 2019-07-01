@@ -45,15 +45,6 @@
             return CultureList;
         }
 
-        public Address CreateAddress(CreateAdAddressInputModel inputModelCreateAdAddressInputModel)
-        {
-            var address = Mapper.Map<Address>(inputModelCreateAdAddressInputModel);
-            this.context.Addresses.Add(address);
-            this.context.SaveChanges();
-
-            return address;
-        }
-
         public Address GetAddressByAdId(int addressId)
         {
             var address = this.context.Addresses.FirstOrDefault(x => x.Id == addressId);

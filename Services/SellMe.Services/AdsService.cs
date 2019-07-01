@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Services
 {
+    using System.Security.Claims;
     using AutoMapper;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using SellMe.Data;
@@ -12,7 +12,6 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using SellMe.Services.Mapping;
-    using System.Security.Claims;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Categories;
@@ -39,46 +38,18 @@
             this.mapper = mapper;
         }
 
-        public ICollection<string> GetConditionsFromDb()
-        {
-            var conditionsFromDb = this.context
-                .Conditions
-                .Select(x => x.Name)
-                .ToList();
-
-            return conditionsFromDb;
-        }
-
         public void CreateAd(CreateAdInputModel inputModel)
         {
 
-            //Export this into separate method
+            //TODO: Export this into separate method
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(x => this.UploadImages(x, inputModel.CreateAdDetailInputModel.Title))
                 .ToList();
 
-
-            //TODO: Implement model mapper!
-            var ad = new Ad
-            {
-                SellerId = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value,
-                Title = inputModel.CreateAdDetailInputModel.Title,
-                //CategoryId = categoryService.GetCategoryIdByName(inputModel.CreateAdDetailInputModel.CategoryId),
-                //SubCategoryId = this.subCategoriesService.GetSubCategoryIdByName(inputModel.CreateAdDetailInputModel.SubCategoryId),
-                CategoryId = inputModel.CreateAdDetailInputModel.CategoryId,
-                SubCategoryId = inputModel.CreateAdDetailInputModel.SubCategoryId,
-                Description = inputModel.CreateAdDetailInputModel.Description,
-                AvailabilityCount = inputModel.CreateAdDetailInputModel.Availability,
-                Condition = this.conditionsService.GetConditionByName(inputModel.CreateAdDetailInputModel.Condition),
-                Images = imageUrls.Select(x => new Image { ImageUrl = x.Result }).ToList(),
-                CreatedOn = DateTime.UtcNow,
-                Price = inputModel.CreateAdDetailInputModel.Price,
-                Address = this.addressService.CreateAddress(inputModel.CreateAdAddressInputModel)
-            };
-
-            //var ad = this.mapper.Map<Ad>(inputModel);
-            //ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
-            //    .ToList();
+            var ad = this.mapper.Map<Ad>(inputModel);
+            ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
+                .ToList();
+            ad.SellerId = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             this.context.Ads.Add(ad);
             this.context.SaveChanges();

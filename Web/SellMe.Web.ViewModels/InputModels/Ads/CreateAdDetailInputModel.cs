@@ -45,7 +45,7 @@
         public int Availability { get; set; }
 
         [Required]
-        public string Condition { get; set; }
+        public int ConditionId { get; set; }
 
         //TODO: Add validations for image types
         [DataType(DataType.Upload)]
