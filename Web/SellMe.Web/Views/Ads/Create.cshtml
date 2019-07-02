@@ -1,14 +1,11 @@
 ﻿@model CreateAdInputModel
-@inject IAdsService AdsService
 @inject IAddressService AddressService;
-@inject ICategoriesService CategoriesService;
 @inject IConditionsService ConditionsService;
 @{
     ViewData["Title"] = "Create ad";
 }
 
 @{
-    var categories = this.CategoriesService.GetCategoryViewModels();
     var conditions = this.ConditionsService.GetConditionViewModels();
     var countries = this.AddressService.GetAllCountries();
 }
@@ -35,10 +32,8 @@
                         <label asp-for="CreateAdDetailInputModel.CategoryId">Choose Category</label>
                         <select asp-for="CreateAdDetailInputModel.CategoryId" class="form-control">
                             <option selected="true" disabled="disabled">--Select--</option>"
-                            @foreach (var category in categories)
-                            {
-                                <option value="@category.Id">@category.Name</option>
-                            }
+                            <vc:categories-dropdown>
+                            </vc:categories-dropdown>
                         </select>
                         <span asp-validation-for="CreateAdDetailInputModel.CategoryId" class="text-danger"></span>
                     </div>
@@ -164,30 +159,6 @@
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#CreateAdDetailInputModel_CategoryId').on("change",
-                function () {
-                    var categoryId = $(this).find('option:selected').val();
-                    console.log(categoryId);
-                    $.ajax({
-                        url: "GetSubcategories",
-                        type: "GET",
-                        data: "categoryId=" + categoryId,
-                        dataType: 'json',
-                        success: function (response) {
-                            $("#CreateAdDetailInputModel_SubCategoryId").empty(); //Reset subcategories
-                            $("#CreateAdDetailInputModel_SubCategoryId").append("<option>--Select--</option>");
-                            $.each(response, function (key, value) {
-                                $("#CreateAdDetailInputModel_SubCategoryId").append('<option value=' + value.id + '>' + value.name + '</option>');
-                                console.log(value.id);
-                            });
-                        }
-                    });
-                });
-        });
-    </script>
 }
 
 
