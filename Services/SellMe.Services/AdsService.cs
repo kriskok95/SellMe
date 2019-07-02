@@ -20,19 +20,13 @@
     public class AdsService : IAdsService
     {
         private readonly SellMeDbContext context;
-        private readonly ICategoriesService categoryService;
-        private readonly ISubCategoriesService subCategoriesService;
-        private readonly IConditionsService conditionsService;
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IAddressService addressService;
         private readonly IMapper mapper;
 
-        public AdsService(SellMeDbContext context, ICategoriesService categoryService, ISubCategoriesService subCategoriesService, IConditionsService conditionsService, IHttpContextAccessor contextAccessor, IAddressService addressService, IMapper mapper)
+        public AdsService(SellMeDbContext context, IHttpContextAccessor contextAccessor, IAddressService addressService, IMapper mapper)
         {
             this.context = context;
-            this.categoryService = categoryService;
-            this.subCategoriesService = subCategoriesService;
-            this.conditionsService = conditionsService;
             this.contextAccessor = contextAccessor;
             this.addressService = addressService;
             this.mapper = mapper;
@@ -45,7 +39,6 @@
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(x => this.UploadImages(x, inputModel.CreateAdDetailInputModel.Title))
                 .ToList();
-
             var ad = this.mapper.Map<Ad>(inputModel);
             ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
                 .ToList();

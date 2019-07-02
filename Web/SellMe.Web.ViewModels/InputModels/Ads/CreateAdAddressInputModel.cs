@@ -1,10 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.InputModels.Ads
 {
     using System.ComponentModel.DataAnnotations;
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
 
-    public class CreateAdAddressInputModel : IMapTo<Address>
+    public class CreateAdAddressInputModel
     {
         [Required]
         public string Country { get; set; }
