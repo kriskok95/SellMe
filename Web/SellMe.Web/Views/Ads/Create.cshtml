@@ -1,5 +1,4 @@
 ﻿@model CreateAdInputModel
-@inject IAddressService AddressService;
 @inject IConditionsService ConditionsService;
 @{
     ViewData["Title"] = "Create ad";
@@ -7,7 +6,6 @@
 
 @{
     var conditions = this.ConditionsService.GetConditionViewModels();
-    var countries = this.AddressService.GetAllCountries();
 }
 
 <nav aria-label="breadcrumb">

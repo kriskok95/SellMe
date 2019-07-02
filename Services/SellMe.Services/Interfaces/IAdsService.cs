@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
+    using SellMe.Data.Models;
 
     public interface IAdsService
     {
@@ -13,5 +14,7 @@
         AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId);
 
         AdDetailsViewModel GetAdDetailsViewModel(int adId);
+
+        Ad GetAdById(int adId);
     }
 }

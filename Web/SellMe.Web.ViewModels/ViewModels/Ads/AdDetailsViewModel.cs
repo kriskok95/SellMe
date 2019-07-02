@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
 
     public class AdDetailsViewModel
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }

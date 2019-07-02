@@ -177,5 +177,14 @@
 
             return url;
         }
+
+        Ad IAdsService.GetAdById(int adId)
+        {
+            var ad = this.context
+                .Ads
+                .FirstOrDefault(x => x.Id == adId);
+
+            return ad;
+        }
     }
 }

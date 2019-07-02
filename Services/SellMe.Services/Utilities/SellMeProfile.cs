@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services.Utilities
+﻿using SellMe.Web.ViewModels.ViewModels.Messages;
+
+namespace SellMe.Services.Utilities
 {
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
@@ -28,6 +30,10 @@
                 .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)));
 
             CreateMap<Address, AddressViewModel>();
+
+            CreateMap<Ad, SendMessageViewModel>()
+                .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Title))
+                .ForMember(x => x.AdPrice, cfg => cfg.MapFrom(x => x.Price));
         }
     }
 }
