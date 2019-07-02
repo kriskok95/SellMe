@@ -93,11 +93,8 @@
                 <div class="form-group">
                     <label asp-for="CreateAdAddressInputModel.Country">Country</label>
                     <select asp-for="CreateAdAddressInputModel.Country" class="form-control">
-                        <option selected="true" disabled="disabled">--Select--</option>"
-                        @foreach (var country in countries)
-                        {
-                            <option>@country</option>
-                        }
+                        <vc:countries-dropdown>
+                        </vc:countries-dropdown>
                     </select>
                     <span asp-validation-for="CreateAdAddressInputModel.Country" class="text-danger"></span>
                 </div>
