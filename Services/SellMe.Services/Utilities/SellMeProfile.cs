@@ -34,6 +34,7 @@ namespace SellMe.Services.Utilities
 
             CreateMap<Ad, SendMessageViewModel>()
                 .ForMember(x => x.AdId, cfg => cfg.MapFrom(x => x.Id))
+                .ForMember(x => x.SellerPhone, cfg => cfg.MapFrom(x => x.Address.PhoneNumber))
                 .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Title))
                 .ForMember(x => x.AdPrice, cfg => cfg.MapFrom(x => x.Price))
                 .ForMember(x => x.RecipientId, cfg => cfg.MapFrom(x => x.SellerId));
