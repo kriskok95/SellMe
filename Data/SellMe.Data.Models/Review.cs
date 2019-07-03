@@ -9,6 +9,6 @@
         public string Comment { get; set; }
 
         public int AdId { get; set; }
-        public Ad Ad { get; set; }
+        public virtual Ad Ad { get; set; }
     }
 }

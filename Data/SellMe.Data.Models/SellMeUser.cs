@@ -21,16 +21,16 @@
 
         public DateTime? DeletedOn { get; set; }
 
-        public ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
+        public virtual ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
 
-        public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
+        public virtual ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 
-        public ICollection<Message> Inbox { get; set; }
+        public virtual ICollection<Message> Inbox { get; set; }
 
-        public ICollection<Message> SentBox { get; set; }
+        public virtual ICollection<Message> SentBox { get; set; }
 
-        public ICollection<Ad> Ads { get; set; }
+        public virtual ICollection<Ad> Ads { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

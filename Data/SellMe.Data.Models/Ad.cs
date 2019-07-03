@@ -24,28 +24,28 @@
         public int AvailabilityCount { get; set; }
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public int SubCategoryId { get; set; }
-        public SubCategory SubCategory { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
 
         public int ConditionId { get; set; }
-        public Condition Condition { get; set; }
+        public virtual Condition Condition { get; set; }
 
         public string SellerId { get; set; }
-        public SellMeUser Seller { get; set; }
+        public virtual SellMeUser Seller { get; set; }
 
         public int AddressId { get; set; }
-        public Address Address { get; set; }
+        public virtual Address Address { get; set; }
 
-        public ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
+        public virtual ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
 
-        public ICollection<Image> Images { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
-        public ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -7,12 +7,12 @@
         public string Content { get; set; }
 
         public string SenderId { get; set; }
-        public SellMeUser Sender { get; set; }
+        public virtual SellMeUser Sender { get; set; }
 
         public string RecipientId { get; set; }
-        public SellMeUser Recipient { get; set; }
+        public virtual SellMeUser Recipient { get; set; }
 
         public int AdId { get; set; }
-        public Ad Ad { get; set; }
+        public virtual Ad Ad { get; set; }
     }
 }

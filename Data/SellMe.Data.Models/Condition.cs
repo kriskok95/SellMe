@@ -12,6 +12,6 @@
 
         public string Name { get; set; }
 
-        public ICollection<Ad> Ads { get; set; }
+        public virtual ICollection<Ad> Ads { get; set; }
     }
 }

@@ -19,8 +19,8 @@
 
         public string EmailAddress { get; set; }
 
-        public ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
+        public virtual ICollection<SellMeUserAddress> SellMeUserAddresses { get; set; }
 
-        public ICollection<Ad> Ads { get; set; }
+        public virtual ICollection<Ad> Ads { get; set; }
     }
 }

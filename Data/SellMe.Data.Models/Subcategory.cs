@@ -14,8 +14,8 @@
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
-        public ICollection<Ad> Ads { get; set; }
+        public virtual ICollection<Ad> Ads { get; set; }
     }
 }
