@@ -70,9 +70,23 @@
         [Authorize]
         public IActionResult MyAds()
         {
-            var myAdsViewModels = this.adService.GetMyAdsViewModels();
+            var myAdsViewModels = this.adService
+                .GetMyAdsViewModels()
+                .ToList();
 
             return this.View(myAdsViewModels);
+        }
+
+        public IActionResult ArchivedAds(int adId)
+        {
+            bool isArchived = this.adService.ArchiveAdById(adId);
+
+            var result = new
+            {
+                success = true
+            };
+
+            return Json(result);
         }
     }
 }

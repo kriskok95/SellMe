@@ -21,3 +21,27 @@ $(document).ready(function () {
 			});
 		});
 });
+
+
+//Archie Ad 
+
+$(document).ready(function () {
+	var elementForRemove;
+	$(".trElm").click(function () {
+		elementForRemove = $(this);
+	})
+	$(".archive").click(function () {
+		var adId = $(this).val();
+		console.log(adId);
+
+		$.ajax({
+			url: "ArchivedAds",
+			type: "GET",
+			data: "adId=" + adId,
+			dataType: 'json',
+			success: function (response) {
+				elementForRemove.remove();
+			}
+		});
+	});
+});

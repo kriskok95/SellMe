@@ -3,35 +3,43 @@
 <div class="container-fluid">
     <div class="row">
         <div class="offset-2 col-8">
-            <h3 class="text-center">My Ads:</h3>
-            <hr class="hr-sell-me"/>
+            <h3 class="text-center">My Active Ads:</h3>
+            <hr class="hr-sell-me" />
             <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Picture</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Show</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Remove</th>
-                </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Picture</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Show</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Remove</th>
+                    </tr>
                 </thead>
                 <tbody>
                 @for (int i = 0; i < @Model.Count; i++)
-                {
-                    <tr>
-                        <th scope="row">@i</th>
-                        <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl"/></td>
-                        <td>@Model[i].Title</td>
-                        <td>@Model[i].Price$</td>
-                        <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Show</a></td>
-                        <td><button type="button" class="btn btn-warning">Edit</button></td>
-                        <td><button type="button" class="btn btn-danger">Remove</button></td>
-                    </tr>
-                }
+                    {
+                        <tr class="trElm">
+                            <th scope="row">@i</th>
+                            <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
+                            <td>@Model[i].Title</td>
+                            <td>@Model[i].Price$</td>
+                            <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Show</a></td>
+                            <td><button type="button" class="btn btn-warning">Edit</button></td>
+                            <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        
+    </script>
+}
+

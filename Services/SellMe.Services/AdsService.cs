@@ -115,11 +115,27 @@
             return adsForCurrentUserViewModels;
         }
 
+        public bool ArchiveAdById(int adId)
+        {
+            var ad = this.GetAdById(adId);
+
+            if (ad.IsDeleted == true)
+            {
+                return false;
+            }
+            ad.IsDeleted = true;
+
+            this.context.Update(ad);
+            this.context.SaveChanges();
+
+            return true;
+        }
+
         private IQueryable<Ad> GetAdsByUserId(string userId)
         {
             var adsByUser = this.context
                 .Ads
-                .Where(x => x.SellerId == userId);
+                .Where(x => x.SellerId == userId && x.IsDeleted == false);
 
             return adsByUser;
         }
