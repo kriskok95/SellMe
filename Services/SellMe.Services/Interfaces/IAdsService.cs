@@ -16,5 +16,7 @@
         AdDetailsViewModel GetAdDetailsViewModel(int adId);
 
         Ad GetAdById(int adId);
+
+        ICollection<MyAdsViewModel> GetMyAdsViewModels();
     }
 }

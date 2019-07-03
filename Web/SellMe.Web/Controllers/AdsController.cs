@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
@@ -64,6 +66,14 @@
             AdDetailsViewModel adDetailsViewModel = this.adService.GetAdDetailsViewModel(inputModel.Id);
 
             return this.View(adDetailsViewModel);
+        }
+
+        [Authorize]
+        public IActionResult MyAds()
+        {
+            var myAdsViewModels = this.adService.GetMyAdsViewModels();
+
+            return this.View(myAdsViewModels);
         }
     }
 }

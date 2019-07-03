@@ -23,13 +23,15 @@
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IAddressService addressService;
         private readonly IMapper mapper;
+        private readonly IUsersService usersService;
 
-        public AdsService(SellMeDbContext context, IHttpContextAccessor contextAccessor, IAddressService addressService, IMapper mapper)
+        public AdsService(SellMeDbContext context, IHttpContextAccessor contextAccessor, IAddressService addressService, IMapper mapper, IUsersService usersService)
         {
             this.context = context;
             this.contextAccessor = contextAccessor;
             this.addressService = addressService;
             this.mapper = mapper;
+            this.usersService = usersService;
         }
 
         public void CreateAd(CreateAdInputModel inputModel)
@@ -39,10 +41,11 @@
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(x => this.UploadImages(x, inputModel.CreateAdDetailInputModel.Title))
                 .ToList();
+
             var ad = this.mapper.Map<Ad>(inputModel);
             ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
                 .ToList();
-            ad.SellerId = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ad.SellerId = this.usersService.GetCurrentUserId();
 
             this.context.Ads.Add(ad);
             this.context.SaveChanges();
@@ -97,6 +100,28 @@
                 .FirstOrDefault(x => x.Id == adId);
 
             return ad;
+        }
+
+        public ICollection<MyAdsViewModel> GetMyAdsViewModels()
+        {
+            string currentUserId = this.usersService.GetCurrentUserId();
+
+            var adsForCurrentUser = this.GetAdsByUserId(currentUserId);
+
+            var adsForCurrentUserViewModels = adsForCurrentUser
+                .To<MyAdsViewModel>()
+                .ToList();
+
+            return adsForCurrentUserViewModels;
+        }
+
+        private IQueryable<Ad> GetAdsByUserId(string userId)
+        {
+            var adsByUser = this.context
+                .Ads
+                .Where(x => x.SellerId == userId);
+
+            return adsByUser;
         }
 
         private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName)
