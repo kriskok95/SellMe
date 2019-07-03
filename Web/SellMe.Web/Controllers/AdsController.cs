@@ -24,6 +24,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CreateAdInputModel inputModel)
         {
             if (!ModelState.IsValid)

@@ -22,10 +22,10 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Send(SendMessageInputModel inputModel)
         {
             this.messagesService.CreateMessage(inputModel);
-
 
             return this.Redirect("/");
         }
