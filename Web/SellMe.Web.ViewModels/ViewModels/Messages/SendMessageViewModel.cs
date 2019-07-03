@@ -2,6 +2,12 @@
 {
     public class SendMessageViewModel
     {
+        public string RecipientId { get; set; }
+
+        public string SenderId { get; set; }
+
+        public int AdId { get; set; }
+
         public string AdTitle { get; set; }
 
         public decimal AdPrice { get; set; }

@@ -70,6 +70,7 @@ namespace SellMe.Web
             services.AddTransient<ISubCategoriesService, SubCategoriesService>();
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IMessagesService, MessagesService>();
+            services.AddTransient<IUsersService, UsersService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

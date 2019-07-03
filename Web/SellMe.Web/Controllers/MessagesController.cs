@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SellMe.Services.Interfaces;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using SellMe.Services.Interfaces;
+    using SellMe.Web.ViewModels.BindingModels;
+    using SellMe.Web.ViewModels.InputModels.Messages;
+
     public class MessagesController : Controller
     {
         private readonly IMessagesService messagesService;
@@ -14,9 +16,18 @@ namespace SellMe.Web.Controllers
 
         public IActionResult Send(int id)
         {
-            var sendMessageViewModel = this.messagesService.GetMessageViewModelByAdId(id);
+            var sendMessageBindingModel = this.messagesService.GetMessageBindingModelByAdId(id);
 
-            return this.View();
+            return this.View(sendMessageBindingModel);
+        }
+
+        [HttpPost]
+        public IActionResult Send(SendMessageInputModel inputModel)
+        {
+            this.messagesService.CreateMessage(inputModel);
+
+
+            return this.Redirect("/");
         }
     }
 }
