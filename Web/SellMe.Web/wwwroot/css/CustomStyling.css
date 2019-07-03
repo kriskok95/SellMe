@@ -99,8 +99,14 @@
     border: 1px solid gray;
 }
 
+.sell-img-small img {
+    height: 20px;
+    width: 20px;
+}
+
+
 
 /*Hr line*/
-.hr-sell-me { 
+.hr-sell-me {
     border-width: 2px;
 }

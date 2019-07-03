@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
+    using Microsoft.AspNetCore.Authorization;
 
     public class AdsController : Controller
     {
