@@ -32,7 +32,6 @@
         {
             Category category = this.context
                 .Categories
-                .Include(x => x.SubCategories)
                 .FirstOrDefault(x => x.Id == categoryId);
 
             return category;

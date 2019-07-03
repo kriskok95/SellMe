@@ -94,11 +94,6 @@
             //TODO: Validate for null
 
             var ad = this.context.Ads
-                .Include(x => x.Category)
-                .Include(x => x.SubCategory)
-                .Include(x => x.Address)
-                .Include(x => x.Condition)
-                .Include(x => x.Images)
                 .FirstOrDefault(x => x.Id == adId);
 
             return ad;
@@ -122,9 +117,6 @@
         {
             var adsViewModel = this.context
                 .Ads
-                .Include(x => x.Category)
-                .Include(x => x.SubCategory)
-                .Include(x => x.Images)
                 .Where(x => x.CategoryId == categoryId)
                 .To<AdViewModel>()
                 .ToList();
@@ -159,9 +151,6 @@
         {
             var adsViewModel = this.context
                 .Ads
-                .Include(x => x.Category)
-                .Include(x => x.SubCategory)
-                .Include(x => x.Images)
                 .To<AdViewModel>()
                 .ToList();
 

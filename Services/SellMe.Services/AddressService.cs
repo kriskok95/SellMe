@@ -4,10 +4,8 @@
     using System.Collections.Generic;
     using SellMe.Services.Interfaces;
     using System.Globalization;
-    using AutoMapper;
     using SellMe.Data.Models;
     using SellMe.Data;
-    using SellMe.Web.ViewModels.InputModels.Ads;
 
     public class AddressService : IAddressService
     {
@@ -47,7 +45,10 @@
 
         public Address GetAddressByAdId(int addressId)
         {
-            var address = this.context.Addresses.FirstOrDefault(x => x.Id == addressId);
+            var address = this.context
+                .Addresses
+                .FirstOrDefault(x => x.Id == addressId);
+
             return address;
         }
     }
