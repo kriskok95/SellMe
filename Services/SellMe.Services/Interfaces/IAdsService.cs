@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services.Interfaces
+﻿using SellMe.Web.ViewModels.BindingModels.Ads;
+
+namespace SellMe.Services.Interfaces
 {
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.InputModels.Ads;
@@ -25,6 +27,6 @@
 
         bool ActivateAdById(int adId);
 
-        EditAdDetailsViewModel GetEditAdViewModelById(int adId);
+        EditAdBindingModel GetEditAdBindingModelById(int adId);
     }
 }

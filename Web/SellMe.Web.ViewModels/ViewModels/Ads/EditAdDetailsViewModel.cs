@@ -16,7 +16,7 @@
 
         public string SubcategoryName { get; set; }
 
-        public int ConditionName { get; set; }
+        public string ConditionName { get; set; }
 
         public ICollection<string> Images { get; set; }
     }

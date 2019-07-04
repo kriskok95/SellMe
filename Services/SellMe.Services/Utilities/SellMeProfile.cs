@@ -1,10 +1,9 @@
-﻿using SellMe.Web.ViewModels.InputModels.Messages;
-
-namespace SellMe.Services.Utilities
+﻿namespace SellMe.Services.Utilities
 {
     using SellMe.Web.ViewModels.ViewModels.Messages;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
+    using SellMe.Web.ViewModels.InputModels.Messages;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using AutoMapper;
     using SellMe.Data.Models;
@@ -42,7 +41,10 @@ namespace SellMe.Services.Utilities
             //Map message
             CreateMap<SendMessageInputModel, Message>();
 
-            CreateMap<Ad, EditAdDetailsViewModel>();
+            CreateMap<Ad, EditAdDetailsViewModel>()
+                .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl)));
+
+            CreateMap<Address, EditAdAddressViewModel>();
         }
     }
 }

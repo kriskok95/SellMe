@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using SellMe.Web.ViewModels.BindingModels.Ads;
+
+namespace SellMe.Services
 {
     using System.Security.Claims;
     using AutoMapper;
@@ -157,13 +159,49 @@
             return true;
         }
 
-        public EditAdDetailsViewModel GetEditAdViewModelById(int adId)
+        private EditAdDetailsViewModel GetEditAdViewModelById(int adId)
         {
             var adFromDb = this.GetAdById(adId);
 
-            var editAdViewModel = this.mapper.Map<EditAdDetailsViewModel>(adFromDb);
+            var editAdDetailsViewModel = this.mapper.Map<EditAdDetailsViewModel>(adFromDb);
+
+            return editAdDetailsViewModel;
+        }
+
+        public EditAdBindingModel GetEditAdBindingModelById(int adId)
+        {
+            var editAdDetailsViewModel = this.GetEditAdViewModelById(adId);
+
+            var editAdAddressViewModel = this.GetEditAdAddressViewModelById(adId);
+
+            var editAdViewModel = this.GetEditAdViewModel(editAdDetailsViewModel, editAdAddressViewModel);
+
+            var editAdBindingModel = new EditAdBindingModel
+            {
+                EditAdViewModel = editAdViewModel
+            };
+
+            return editAdBindingModel;
+        }
+
+        private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel, EditAdAddressViewModel editAdAddressViewModel)
+        {
+            var editAdViewModel = new EditAdViewModel
+            {
+                EditAdDetailsViewModel = editAdDetailsViewModel,
+                EditAdAddressViewModel = editAdAddressViewModel
+            };
 
             return editAdViewModel;
+        }
+
+        private EditAdAddressViewModel GetEditAdAddressViewModelById(int adId)
+        {
+            var addressFromDb = this.addressService.GetAddressByAdId(adId);
+
+            var editAdAddressViewModel = this.mapper.Map<EditAdAddressViewModel>(addressFromDb);
+
+            return editAdAddressViewModel;
         }
 
         private IQueryable<Ad> GetArchivedAdsByUserId(string userId)

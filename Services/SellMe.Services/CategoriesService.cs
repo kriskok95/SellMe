@@ -6,7 +6,6 @@
     using SellMe.Data.Models;
     using System.Collections.Generic;
     using SellMe.Services.Mapping;
-    using Microsoft.EntityFrameworkCore;
     using SellMe.Web.ViewModels.ViewModels.Categories;
 
     public class CategoriesService : ICategoriesService
