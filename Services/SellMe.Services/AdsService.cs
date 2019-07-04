@@ -144,6 +144,22 @@
             return archivedAdsForCurrentUserViewModels;
         }
 
+        public bool ActivateAdById(int adId)
+        {
+            var ad = this.GetAdById(adId);
+
+            if (!ad.IsDeleted)
+            {
+                return false;
+            }
+            ad.IsDeleted = false;
+
+            this.context.Update(ad);
+            this.context.SaveChanges();
+
+            return true;
+        }
+
         private IQueryable<Ad> GetArchivedAdsByUserId(string userId)
         {
             var adsByUser = this.context

@@ -15,9 +15,10 @@
         public decimal Price { get; set; }
 
         public string ImageUrl { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Ad, MyActiveAdsViewModel>()
+            configuration.CreateMap<Ad, MyArchivedAdsViewModel>()
                 .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.FirstOrDefault().ImageUrl));
         }
     }

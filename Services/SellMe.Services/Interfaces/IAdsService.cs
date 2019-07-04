@@ -22,5 +22,7 @@
         bool ArchiveAdById(int adId);
 
         ICollection<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels();
+
+        bool ActivateAdById(int adId);
     }
 }

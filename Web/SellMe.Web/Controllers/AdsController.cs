@@ -97,5 +97,17 @@
 
             return this.View(myArchivedAds);
         }
+
+        public IActionResult ActivateAd(int adId)
+        {
+            bool isActivated = this.adService.ActivateAdById(adId);
+
+            var result = new
+            {
+                success = true
+            };
+
+            return Json(result);
+        }
     }
 }

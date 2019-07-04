@@ -1,4 +1,6 @@
-﻿<div class="container-fluid">
+﻿@model List<MyArchivedAdsViewModel>
+
+<div class="container-fluid">
     <div class="row">
         <div class="offset-2 col-8">
             <h3 class="text-center">My Active Ads:</h3>
@@ -7,10 +9,10 @@
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Active</a>
+                            <a class="nav-link" asp-controller="Ads" asp-action="ActiveAds">Active</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Archived</a>
+                            <a class="nav-link active" href="#">Archived</a>
                         </li>
                     </ul>
                     <div class="card-body">
@@ -21,24 +23,22 @@
                                     <th scope="col">Picture</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Show</th>
                                     <th scope="col">Edit</th>
-                                    <th scope="col">Archive</th>
+                                    <th scope="col">Activate</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @*@for (int i = 0; i < @Model.Count; i++)
+                                @for (int i = 0; i < @Model.Count; i++)
                                 {
-                                    <tr class="trElm">
+                                    <tr class="removeElement">
                                         <th scope="row">@i</th>
                                         <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
                                         <td>@Model[i].Title</td>
                                         <td>@Model[i].Price$</td>
-                                        <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Show</a></td>
                                         <td><button type="button" class="btn btn-warning">Edit</button></td>
-                                        <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
+                                        <td><button type="button" value="@Model[i].Id" class="btn btn-primary activate">Activate</button></td>
                                     </tr>
-                                }*@
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -50,5 +50,28 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            var elementForRemove;
+            $(".removeElement").click(function() {
+                elementForRemove = $(this);
+            });
+            $(".activate").click(function () {
+                var adId = $(this).val();
+                console.log(adId);
+
+                $.ajax({
+                    url: "ActivateAd",
+                    type: "GET",
+                    data: "adId=" + adId,
+                    dataType: 'json',
+                    success: function (response) {
+                        elementForRemove.hide('slow', function () { elementForRemove.remove(); });
+                    }
+                });
+            });
+        });
+
+    </script>
 }
 
