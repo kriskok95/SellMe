@@ -17,8 +17,10 @@
 
         Ad GetAdById(int adId);
 
-        ICollection<MyAdsViewModel> GetMyAdsViewModels();
+        ICollection<MyActiveAdsViewModel> GetMyAdsViewModels();
 
         bool ArchiveAdById(int adId);
+
+        ICollection<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels();
     }
 }

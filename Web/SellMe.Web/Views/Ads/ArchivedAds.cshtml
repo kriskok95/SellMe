@@ -1,1 +1,54 @@
-﻿
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="offset-2 col-8">
+            <h3 class="text-center">My Active Ads:</h3>
+            <hr class="hr-sell-me" />
+            <div class="card text-center">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Active</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Archived</a>
+                        </li>
+                    </ul>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Picture</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Show</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Archive</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@for (int i = 0; i < @Model.Count; i++)
+                                {
+                                    <tr class="trElm">
+                                        <th scope="row">@i</th>
+                                        <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
+                                        <td>@Model[i].Title</td>
+                                        <td>@Model[i].Price$</td>
+                                        <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Show</a></td>
+                                        <td><button type="button" class="btn btn-warning">Edit</button></td>
+                                        <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
+                                    </tr>
+                                }*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

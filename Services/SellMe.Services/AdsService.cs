@@ -102,14 +102,14 @@
             return ad;
         }
 
-        public ICollection<MyAdsViewModel> GetMyAdsViewModels()
+        public ICollection<MyActiveAdsViewModel> GetMyAdsViewModels()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
-            var adsForCurrentUser = this.GetAdsByUserId(currentUserId);
+            var adsForCurrentUser = this.GetActiveAdsByUserId(currentUserId);
 
             var adsForCurrentUserViewModels = adsForCurrentUser
-                .To<MyAdsViewModel>()
+                .To<MyActiveAdsViewModel>()
                 .ToList();
 
             return adsForCurrentUserViewModels;
@@ -131,11 +131,33 @@
             return true;
         }
 
-        private IQueryable<Ad> GetAdsByUserId(string userId)
+        public ICollection<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels()
+        {
+            string currentUserId = this.usersService.GetCurrentUserId();
+
+            var archivedAds = this.GetArchivedAdsByUserId(currentUserId);
+
+            var archivedAdsForCurrentUserViewModels = archivedAds
+                .To<MyArchivedAdsViewModel>()
+                .ToList();
+
+            return archivedAdsForCurrentUserViewModels;
+        }
+
+        private IQueryable<Ad> GetArchivedAdsByUserId(string userId)
         {
             var adsByUser = this.context
                 .Ads
-                .Where(x => x.SellerId == userId && x.IsDeleted == false);
+                .Where(x => x.SellerId == userId && x.IsDeleted);
+
+            return adsByUser;
+        }
+
+        private IQueryable<Ad> GetActiveAdsByUserId(string userId)
+        {
+            var adsByUser = this.context
+                .Ads
+                .Where(x => x.SellerId == userId && !x.IsDeleted);
 
             return adsByUser;
         }

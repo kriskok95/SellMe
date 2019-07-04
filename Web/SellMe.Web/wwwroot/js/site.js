@@ -35,12 +35,12 @@ $(document).ready(function () {
 		console.log(adId);
 
 		$.ajax({
-			url: "ArchivedAds",
+            url: "ArchiveAd",
 			type: "GET",
 			data: "adId=" + adId,
 			dataType: 'json',
 			success: function (response) {
-				elementForRemove.remove();
+                elementForRemove.hide('slow', function () { elementForRemove.remove(); });
 			}
 		});
 	});
