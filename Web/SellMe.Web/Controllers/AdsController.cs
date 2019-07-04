@@ -112,5 +112,12 @@
 
             return Json(result);
         }
+
+        public IActionResult Edit(int id)
+        {
+
+
+            return this.View();
+        }
     }
 }

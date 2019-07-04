@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using SellMe.Services.Utilities;
-using SellMe.Web.Middlewares;
-
-namespace SellMe.Web
+﻿namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -20,6 +16,10 @@ namespace SellMe.Web
     using System.Reflection;
     using SellMe.Services.Mapping;
     using SellMe.Web.ViewModels;
+    using AutoMapper;
+    using SellMe.Services.Utilities;
+    using SellMe.Web.Middlewares;
+
 
     public class Startup
     {

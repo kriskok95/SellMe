@@ -6,7 +6,6 @@
     using System.Linq;
     using SellMe.Data;
     using SellMe.Services.Interfaces;
-    using Microsoft.EntityFrameworkCore;
     using SellMe.Data.Models;
     using SellMe.Services.Utilities;
     using System.Threading.Tasks;
@@ -20,15 +19,13 @@
     public class AdsService : IAdsService
     {
         private readonly SellMeDbContext context;
-        private readonly IHttpContextAccessor contextAccessor;
         private readonly IAddressService addressService;
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
 
-        public AdsService(SellMeDbContext context, IHttpContextAccessor contextAccessor, IAddressService addressService, IMapper mapper, IUsersService usersService)
+        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService)
         {
             this.context = context;
-            this.contextAccessor = contextAccessor;
             this.addressService = addressService;
             this.mapper = mapper;
             this.usersService = usersService;

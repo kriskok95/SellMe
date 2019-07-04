@@ -37,7 +37,7 @@
                                     <td>@Model[i].Title</td>
                                     <td>@Model[i].Price$</td>
                                     <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Show</a></td>
-                                    <td><button type="button" class="btn btn-warning">Edit</button></td>
+                                    <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning">Edit</a></td>
                                     <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
                                 </tr>
                             }
