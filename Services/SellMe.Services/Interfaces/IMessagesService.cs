@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services.Interfaces
+﻿using SellMe.Web.ViewModels.BindingModels.Messages;
+
+namespace SellMe.Services.Interfaces
 {
     using SellMe.Web.ViewModels.ViewModels.Messages;
     using SellMe.Web.ViewModels.BindingModels;

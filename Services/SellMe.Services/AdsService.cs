@@ -157,6 +157,15 @@
             return true;
         }
 
+        public EditAdDetailsViewModel GetEditAdViewModelById(int adId)
+        {
+            var adFromDb = this.GetAdById(adId);
+
+            var editAdViewModel = this.mapper.Map<EditAdDetailsViewModel>(adFromDb);
+
+            return editAdViewModel;
+        }
+
         private IQueryable<Ad> GetArchivedAdsByUserId(string userId)
         {
             var adsByUser = this.context

@@ -115,7 +115,7 @@
 
         public IActionResult Edit(int id)
         {
-
+            var editAdViewModel = this.adService.GetEditAdViewModelById(id);
 
             return this.View();
         }

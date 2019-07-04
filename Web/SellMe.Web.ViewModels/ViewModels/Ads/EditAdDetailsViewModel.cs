@@ -1,7 +1,23 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
-    public class EditAdViewModel
+    using System.Collections.Generic;
+
+    public class EditAdDetailsViewModel
     {
         public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Price { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public string SubcategoryName { get; set; }
+
+        public int ConditionName { get; set; }
+
+        public ICollection<string> Images { get; set; }
     }
 }

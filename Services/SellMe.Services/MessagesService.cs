@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using SellMe.Web.ViewModels.BindingModels.Messages;
+
+namespace SellMe.Services
 {
     using AutoMapper;
     using SellMe.Data;

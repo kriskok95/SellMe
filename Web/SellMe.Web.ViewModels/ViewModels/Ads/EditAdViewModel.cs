@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SellMe.Web.ViewModels.ViewModels.Ads
+﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
-    class EditAdViewModel
+    public class EditAdViewModel
     {
+        public EditAdDetailsViewModel EditAdDetailsViewModel { get; set; }
+
+        public EditAdAddressViewModel EditAdAddressViewModel { get; set; }
     }
 }

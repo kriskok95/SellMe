@@ -41,6 +41,8 @@ namespace SellMe.Services.Utilities
 
             //Map message
             CreateMap<SendMessageInputModel, Message>();
+
+            CreateMap<Ad, EditAdDetailsViewModel>();
         }
     }
 }

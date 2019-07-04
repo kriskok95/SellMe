@@ -24,5 +24,7 @@
         ICollection<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels();
 
         bool ActivateAdById(int adId);
+
+        EditAdDetailsViewModel GetEditAdViewModelById(int adId);
     }
 }
