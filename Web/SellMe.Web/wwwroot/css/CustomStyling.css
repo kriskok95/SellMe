@@ -95,7 +95,7 @@
 
 .sellMe-img img {
     height: 450px;
-    width: 100%;
+    width: 85%;
     border: 1px solid gray;
 }
 
@@ -104,9 +104,8 @@
     width: 20px;
 }
 
-
-
 /*Hr line*/
 .hr-sell-me {
     border-width: 2px;
 }
+

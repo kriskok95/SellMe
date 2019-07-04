@@ -11,14 +11,15 @@
         <li class="breadcrumb-item active" aria-current="page">Log in</li>
     </ol>
 </nav>
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center mb-3">@ViewData["Title"]</h1>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="offset-4 col-md-4">
+        <hr class="hr-sell-me" />
         <section>
             <form id="account" method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
+                <h4 class="">Use a local account to log in.</h4>
+                <hr class="hr-sell-me" />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Input.Email"></label>
@@ -52,8 +53,8 @@
             </form>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
+    @*<div class="col-md-6 col-md-offset-2">*@
+        @*<section>
             <h4>Use another service to log in.</h4>
             <hr />
             @{
@@ -80,8 +81,8 @@
                     </form>
                 }
             }
-        </section>
-    </div>
+        </section>*@
+    @*</div>*@
 </div>
 
 @section Scripts {

@@ -2,8 +2,8 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
-    using SellMe.Web.ViewModels.BindingModels;
     using SellMe.Web.ViewModels.InputModels.Messages;
+    using Microsoft.AspNetCore.Authorization;
 
     public class MessagesController : Controller
     {
@@ -14,6 +14,7 @@
             this.messagesService = messagesService;
         }
 
+        [Authorize]
         public IActionResult Send(int id)
         {
             var sendMessageBindingModel = this.messagesService.GetMessageBindingModelByAdId(id);
@@ -22,6 +23,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Send(SendMessageInputModel inputModel)
         {

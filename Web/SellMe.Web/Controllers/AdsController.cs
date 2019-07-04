@@ -77,6 +77,7 @@
             return this.View(myAdsViewModels);
         }
 
+        [Authorize]
         public IActionResult ArchiveAd(int adId)
         {
             bool isArchived = this.adService.ArchiveAdById(adId);
@@ -89,6 +90,7 @@
             return Json(result);
         }
 
+        [Authorize]
         public IActionResult ArchivedAds()
         {
             var myArchivedAds = this.adService
@@ -98,6 +100,7 @@
             return this.View(myArchivedAds);
         }
 
+        [Authorize]
         public IActionResult ActivateAd(int adId)
         {
             bool isActivated = this.adService.ActivateAdById(adId);

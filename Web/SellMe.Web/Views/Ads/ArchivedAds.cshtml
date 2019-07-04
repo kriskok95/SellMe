@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="offset-2 col-8">
-            <h3 class="text-center">My Active Ads:</h3>
+            <h3 class="text-center">My Archived Ads:</h3>
             <hr class="hr-sell-me" />
             <div class="card text-center">
                 <div class="card-header">
@@ -36,7 +36,7 @@
                                         <td>@Model[i].Title</td>
                                         <td>@Model[i].Price$</td>
                                         <td><button type="button" class="btn btn-warning">Edit</button></td>
-                                        <td><button type="button" value="@Model[i].Id" class="btn btn-primary activate">Activate</button></td>
+                                        <td><button type="button" value="@Model[i].Id" class="btn btn-success activate">Activate</button></td>
                                     </tr>
                                 }
                             </tbody>
@@ -49,29 +49,6 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function () {
-            var elementForRemove;
-            $(".removeElement").click(function() {
-                elementForRemove = $(this);
-            });
-            $(".activate").click(function () {
-                var adId = $(this).val();
-                console.log(adId);
-
-                $.ajax({
-                    url: "ActivateAd",
-                    type: "GET",
-                    data: "adId=" + adId,
-                    dataType: 'json',
-                    success: function (response) {
-                        elementForRemove.hide('slow', function () { elementForRemove.remove(); });
-                    }
-                });
-            });
-        });
-
-    </script>
+    <partial name="_ValidationScriptsPartial"/>
 }
 
