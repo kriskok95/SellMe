@@ -109,3 +109,10 @@
     border-width: 2px;
 }
 
+/*Badge info style*/
+
+.badge-edit {
+    line-height:normal;
+    vertical-align: middle;
+    display: inline-block;
+}
