@@ -18,10 +18,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="offset-2 col-6">
-            <div class="sellMe-img mt-2">
-                <img src="@Model.Images.FirstOrDefault()" alt="@Model.Title" />
-            </div>
+        <div class="offset-2 col-5">
+            <hr class="hr-sell-me"/>
+            <img class="img-fluid rounded" src="@Model.Images.FirstOrDefault()" alt="@Model.Title"/>
         </div>
         <div class="col-2">
             <a class="btn btn-info btn-lg btn-block mt-2" asp-controller="Messages" asp-action="Send" asp-route-id="@Model.Id" role="button"><i class="fas fa-envelope"></i> Contact Seller</a>
