@@ -14,6 +14,8 @@
 
         public decimal Price { get; set; }
 
+        public string Phone { get; set; }
+
         public int AvailabilityCount { get; set; }
 
         public string CategoryName { get; set; }

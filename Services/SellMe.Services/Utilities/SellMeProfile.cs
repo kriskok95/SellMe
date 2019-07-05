@@ -27,7 +27,8 @@
 
 
             CreateMap<Ad, AdDetailsViewModel>()
-                .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)));
+                .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)))
+                .ForMember(x => x.Phone, cfg => cfg.MapFrom(x => x.Address.PhoneNumber));
 
             CreateMap<Address, AddressViewModel>();
 
