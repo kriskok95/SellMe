@@ -117,7 +117,8 @@
         {
             var editAdBindingModel = this.adService.GetEditAdBindingModelById(id);
 
-            return this.View();
+            return this.View(editAdBindingModel);
         }
+
     }
 }

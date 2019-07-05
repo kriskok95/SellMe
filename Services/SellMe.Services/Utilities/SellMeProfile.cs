@@ -43,7 +43,8 @@
             CreateMap<SendMessageInputModel, Message>();
 
             CreateMap<Ad, EditAdDetailsViewModel>()
-                .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl)));
+                .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl)))
+                .ForMember(x => x.Availability, cfg => cfg.MapFrom(x => x.AvailabilityCount));
 
             CreateMap<Address, EditAdAddressViewModel>();
         }

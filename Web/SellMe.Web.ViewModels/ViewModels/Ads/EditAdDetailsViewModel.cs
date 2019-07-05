@@ -18,6 +18,8 @@
 
         public string ConditionName { get; set; }
 
+        public int Availability { get; set; }
+
         public ICollection<string> Images { get; set; }
     }
 }
