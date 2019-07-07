@@ -28,5 +28,7 @@ namespace SellMe.Services.Interfaces
         bool ActivateAdById(int adId);
 
         EditAdBindingModel GetEditAdBindingModelById(int adId);
+
+        object GetFavoriteAdsByUserId(string loggedInUserId);
     }
 }

@@ -35,5 +35,15 @@
 
             return category;
         }
+
+        public ICollection<CategoryViewModel> GetAllCategoryViewModel()
+        {
+            var allCategories = this.context
+                .Categories
+                .To<CategoryViewModel>()
+                .ToList();
+
+            return allCategories;
+        }
     }
 }

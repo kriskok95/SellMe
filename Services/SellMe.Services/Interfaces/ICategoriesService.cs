@@ -9,5 +9,7 @@
         ICollection<CreateAdCategoryViewModel> GetCategoryViewModels();
 
         Category GetCategoryById(int categoryId);
+
+        ICollection<CategoryViewModel> GetAllCategoryViewModel();
     }
 }

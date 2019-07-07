@@ -24,13 +24,15 @@ namespace SellMe.Services
         private readonly IAddressService addressService;
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
+        private readonly ICategoriesService categoriesService;
 
-        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService)
+        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService)
         {
             this.context = context;
             this.addressService = addressService;
             this.mapper = mapper;
             this.usersService = usersService;
+            this.categoriesService = categoriesService;
         }
 
         public void CreateAd(CreateAdInputModel inputModel)
@@ -53,7 +55,7 @@ namespace SellMe.Services
         public AdsAllViewModel GetAllAdViewModels()
         {
             var adsViewModel = this.GetAllAdsViewModel();
-            var allCategoriesViewModel = this.GetAllCategoryViewModel();
+            var allCategoriesViewModel = this.categoriesService.GetAllCategoryViewModel();
 
             var adsAllViewModel = this.CreateAdsAllViewModel(adsViewModel, allCategoriesViewModel);
 
@@ -63,7 +65,7 @@ namespace SellMe.Services
         public AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId)
         {
             var adsViewModel = this.GetAllAdsByCategory(categoryId);
-            var allCategoriesViewModel = this.GetAllCategoryViewModel();
+            var allCategoriesViewModel = this.categoriesService.GetAllCategoryViewModel();
             string categoryName = this.GetCategoryNameById(categoryId);
 
             var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel, categoryName);
@@ -184,6 +186,11 @@ namespace SellMe.Services
             return editAdBindingModel;
         }
 
+        public object GetFavoriteAdsByUserId(string loggedInUserId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel, EditAdAddressViewModel editAdAddressViewModel)
         {
             var editAdViewModel = new EditAdViewModel
@@ -229,8 +236,7 @@ namespace SellMe.Services
             var adsByCategoryViewModel = new AdsByCategoryViewModel
             {
                 CategoryName = categoryName,
-                AdsViewModels = adsViewModel,
-                Categories = allCategoriesViewModel
+                AdsViewModels = adsViewModel
             };
 
             return adsByCategoryViewModel;
@@ -249,25 +255,12 @@ namespace SellMe.Services
 
         private AdsAllViewModel CreateAdsAllViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
         {
-            //TODO: Map with auto mapper
-
             var adsAllViewModel = new AdsAllViewModel()
             {
-                AdsViewModels = adsViewModel,
-                Categories = allCategoriesViewModel
+                AdsViewModels = adsViewModel
             };
 
             return adsAllViewModel;
-        }
-
-        private ICollection<CategoryViewModel> GetAllCategoryViewModel()
-        {
-            var allCategories = this.context
-                .Categories
-                .To<CategoryViewModel>()
-                .ToList();
-
-            return allCategories;
         }
 
         private ICollection<AdViewModel> GetAllAdsViewModel()

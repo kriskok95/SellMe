@@ -11,7 +11,8 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <partial name="_CategoriesPartial" model="@Model.Categories"/>
+        <vc:categories-side-bar>
+        </vc:categories-side-bar>
         <div class="offset-1">
             @foreach (var ad in @Model.AdsViewModels)
             {

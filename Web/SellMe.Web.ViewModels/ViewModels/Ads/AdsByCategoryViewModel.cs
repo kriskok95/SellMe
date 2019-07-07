@@ -8,7 +8,5 @@
         public string CategoryName { get; set; }
 
         public ICollection<AdViewModel> AdsViewModels { get; set; }
-
-        public ICollection<CategoryViewModel> Categories { get; set; }
     }
 }
