@@ -71,6 +71,7 @@
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IMessagesService, MessagesService>();
             services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IFavoritesService, FavoritesService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

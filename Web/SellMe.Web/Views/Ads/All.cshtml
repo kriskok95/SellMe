@@ -13,25 +13,57 @@
     <div class="row">
         <vc:categories-side-bar>
         </vc:categories-side-bar>
-            <div class="offset-1 col-4 pl-0">
-                @foreach (var ad in @Model.AdsViewModels)
-                {
-                    <div class="mb-4">
-                        <div class="card border-dark" style="width: 30rem;">
-                            <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">@ad.Title</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
-                                    <li class="list-group-item row"><i class="fas fa-folder"></i> @ad.CategoryName/@ad.SubcategoryName</li>
-                                    <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
-                                </ul>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
+        <div class="offset-1 col-4 pl-0">
+            @foreach (var ad in @Model.AdsViewModels)
+            {
+                <div class="mb-4">
+                    <div class="card border-dark" style="width: 30rem;">
+                        <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@ad.Title</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
+                                <li class="list-group-item row"><i class="fas fa-folder"></i> @ad.CategoryName/@ad.SubcategoryName</li>
+                                <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
+                            </ul>
+                            <div class="row">
+                                <div class="col-6">
+                                    <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" value="@ad.Id" class="btn btn-primary btn-block mt-4 addToFavorites">Add To Favorites</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".addToFavorites").click(function() {
+            var adId = $(this).val();
+            console.log(adId);
+
+            $.ajax({
+                url: "/Favorites/Add",
+                type: "GET",
+                data: "adId=" + adId,
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    if (response === true) {
+                        alert("You have successfully added this ad to favorites!");
+                    } else {
+                        alert("You have already added this ad to favorites!");
+                    }
                 }
-            </div>
-</div>
-</div>
+            });
+        });
+    });
+
+</script>
 
