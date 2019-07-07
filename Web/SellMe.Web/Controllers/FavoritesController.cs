@@ -21,9 +21,9 @@
         {
             var loggedInUserId = this.userManager.GetUserId(this.User);
 
-            var favoriteAdViewModels = this.adsService.GetFavoriteAdsByUserId(loggedInUserId);
+            var favoriteAdViewModels = this.adsService.GetFavoriteAdsByUserIdAsync(loggedInUserId);
 
-            return this.View();
+            return this.View(favoriteAdViewModels);
         }
     }
 }

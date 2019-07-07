@@ -1,4 +1,4 @@
-﻿using SellMe.Web.ViewModels.BindingModels.Ads;
+﻿using System.Threading.Tasks;
 
 namespace SellMe.Services.Interfaces
 {
@@ -6,6 +6,7 @@ namespace SellMe.Services.Interfaces
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Data.Models;
+    using SellMe.Web.ViewModels.BindingModels.Ads;
 
     public interface IAdsService
     {
@@ -29,6 +30,6 @@ namespace SellMe.Services.Interfaces
 
         EditAdBindingModel GetEditAdBindingModelById(int adId);
 
-        object GetFavoriteAdsByUserId(string loggedInUserId);
+        Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId);
     }
 }

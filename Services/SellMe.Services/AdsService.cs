@@ -1,6 +1,4 @@
-﻿using SellMe.Web.ViewModels.BindingModels.Ads;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using System.Security.Claims;
     using AutoMapper;
@@ -17,6 +15,8 @@ namespace SellMe.Services
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Categories;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
+    using SellMe.Web.ViewModels.BindingModels.Ads;
+    using Microsoft.AspNetCore.Identity;
 
     public class AdsService : IAdsService
     {
@@ -25,14 +25,16 @@ namespace SellMe.Services
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
         private readonly ICategoriesService categoriesService;
+        private readonly UserManager<SellMeUser> userManager;
 
-        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService)
+        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor)
         {
             this.context = context;
             this.addressService = addressService;
             this.mapper = mapper;
             this.usersService = usersService;
             this.categoriesService = categoriesService;
+            this.userManager = userManager;
         }
 
         public void CreateAd(CreateAdInputModel inputModel)
@@ -186,9 +188,16 @@ namespace SellMe.Services
             return editAdBindingModel;
         }
 
-        public object GetFavoriteAdsByUserId(string loggedInUserId)
+        public async Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId)
         {
-            throw new System.NotImplementedException();
+            var currentUser = await this.userManager.FindByIdAsync(loggedInUserId);
+            var favoriteAdsViewModels = currentUser
+                .SellMeUserFavoriteProducts.Select(x => x.Ad)
+                .AsQueryable()
+                .To<FavoriteAdViewModel>()
+                .ToList();
+
+            return favoriteAdsViewModels;
         }
 
         private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel, EditAdAddressViewModel editAdAddressViewModel)
@@ -231,8 +240,6 @@ namespace SellMe.Services
 
         private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName)
         {
-            //TODO: Implement auto mapper!
-
             var adsByCategoryViewModel = new AdsByCategoryViewModel
             {
                 CategoryName = categoryName,
