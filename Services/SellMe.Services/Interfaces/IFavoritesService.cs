@@ -3,5 +3,7 @@
     public interface IFavoritesService
     {
         bool AddToFavorites(int adId);
+
+        bool RemoveFromFavorites(int adId);
     }
 }

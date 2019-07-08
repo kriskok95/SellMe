@@ -1,6 +1,10 @@
-﻿@model AdsAllViewModel
+﻿@using Microsoft.IdentityModel.Protocols.OpenIdConnect
+@model AdsAllViewModel
+@inject IUsersService UsersService
+
 @{
     ViewData["Title"] = "Ads all";
+    var currentUser = this.UsersService.GetCurrentUser();
 }
 
 <nav aria-label="breadcrumb">
@@ -31,7 +35,16 @@
                                     <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" value="@ad.Id" class="btn btn-primary btn-block mt-4 addToFavorites">Add To Favorites</button>
+                                    @if (!currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == ad.Id && x.SellMeUserId == currentUser.Id))
+                                    {
+                                        <button type="button" value="@ad.Id" class="btn btn-primary btn-block mt-4 addToFavorites" id="@ad.Id">Add To Favorites</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" value="@ad.Id" class="btn btn-danger btn-block mt-4 removeFromFavorites" id="@ad.Id">Remove From Favorites</button>
+                                    }
+                                    @*<vc:add-to-favorites-button ad-id="@ad.Id">
+                                    </vc:add-to-favorites-button>*@
                                 </div>
                             </div>
                         </div>
@@ -41,12 +54,12 @@
         </div>
     </div>
 </div>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(document).ready(function () {
-        $(".addToFavorites").click(function() {
+        $(".container-fluid").on('click', '.addToFavorites', function () {
             var adId = $(this).val();
-            console.log(adId);
 
             $.ajax({
                 url: "/Favorites/Add",
@@ -54,16 +67,25 @@
                 data: "adId=" + adId,
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
-                    if (response === true) {
-                        alert("You have successfully added this ad to favorites!");
-                    } else {
-                        alert("You have already added this ad to favorites!");
-                    }
+                    alert("You have successfully added this ad to favorites!");
+                    $("#" + adId).replaceWith('<button type="button" value="' + adId + '"' + 'class="btn btn-danger btn-block mt-4 removeFromFavorites" id="' + adId + '">Remove From Favorites</button>');
+                }
+            });
+        });
+        $(".container-fluid").on('click', '.removeFromFavorites', function () {
+            var adId = $(this).val();
+
+            $.ajax({
+                url: "/Favorites/Remove",
+                type: "GET",
+                data: "adId=" + adId,
+                dataType: 'json',
+                success: function (response) {
+                    alert("You have successfully removed this ad from favorites!");
+                    $("#" + adId).replaceWith('<button type="button" value="' + adId + '"' + 'class="btn btn-primary btn-block mt-4 addToFavorites" id="' + adId + '">Add To Favorites</button>');
                 }
             });
         });
     });
-
 </script>
 

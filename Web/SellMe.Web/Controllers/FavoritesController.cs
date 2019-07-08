@@ -40,5 +40,12 @@
 
             return Json(isAdded);
         }
+
+        public IActionResult Remove(int adId)
+        {
+            bool isRemoved = this.favoritesService.RemoveFromFavorites(adId);
+
+            return Json(isRemoved);
+        }
     }
 }

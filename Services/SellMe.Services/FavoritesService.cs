@@ -1,13 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using SellMe.Data;
-using SellMe.Data.Models;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using SellMe.Services.Interfaces;
+    using System.Linq;
+    using SellMe.Data;
+    using SellMe.Data.Models;
+
 
     public class FavoritesService : IFavoritesService
     {
@@ -41,7 +38,36 @@ namespace SellMe.Services
             return true;
         }
 
-        private async void CreateSellMeUserFavoriteProductAsync(int adId, string currentUserId)
+        public bool RemoveFromFavorites(int adId)
+        {
+            var currentUser = this.usersService.GetCurrentUser();
+
+            if (currentUser == null)
+            {
+                return false;
+            }
+
+            var isInFavorites = currentUser.SellMeUserFavoriteProducts
+                .Any(x => x.AdId == adId);
+
+            if (!isInFavorites)
+            {
+                return false;
+            }
+
+            this.RemoveSellMeUserFavoriteProduct(adId, currentUser.Id);
+            return true;
+        }
+
+        private void RemoveSellMeUserFavoriteProduct(int adId, string currentUserId)
+        {
+            var sellMeUserFavoriteProduct = this.context.SellMeUserFavoriteProducts.First(x => x.AdId == adId && x.SellMeUserId == currentUserId);
+
+            this.context.Remove(sellMeUserFavoriteProduct);
+            this.context.SaveChanges();
+        }
+
+        private void CreateSellMeUserFavoriteProductAsync(int adId, string currentUserId)
         {
             var sellMeUserFavoriteProduct = new SellMeUserFavoriteProduct()
             {
@@ -49,9 +75,8 @@ namespace SellMe.Services
                 SellMeUserId = currentUserId
             };
 
-            await this.context.SellMeUserFavoriteProducts.AddAsync(sellMeUserFavoriteProduct);
-
-            await this.context.SaveChangesAsync();
+           this.context.SellMeUserFavoriteProducts.Add(sellMeUserFavoriteProduct);
+           this.context.SaveChanges();
         }
     }
 }
