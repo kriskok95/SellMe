@@ -35,7 +35,7 @@
                                     <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
                                 </div>
                                 <div class="col-6">
-                                    @if (!currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == ad.Id && x.SellMeUserId == currentUser.Id))
+                                    @if (currentUser == null || !currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == ad.Id && x.SellMeUserId == currentUser.Id))
                                     {
                                         <button type="button" value="@ad.Id" class="btn btn-primary btn-block mt-4 addToFavorites" id="@ad.Id">Add To Favorites</button>
                                     }
@@ -43,8 +43,6 @@
                                     {
                                         <button type="button" value="@ad.Id" class="btn btn-danger btn-block mt-4 removeFromFavorites" id="@ad.Id">Remove From Favorites</button>
                                     }
-                                    @*<vc:add-to-favorites-button ad-id="@ad.Id">
-                                    </vc:add-to-favorites-button>*@
                                 </div>
                             </div>
                         </div>
@@ -57,38 +55,6 @@
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-    $(document).ready(function () {
-        $(".container-fluid").on('click', '.addToFavorites', function () {
-            event.stopImmediatePropagation();
-            var adId = $(this).val();
-
-            $.ajax({
-                url: "/Favorites/Add",
-                type: "GET",
-                data: "adId=" + adId,
-                dataType: 'json',
-                success: function (response) {
-                    alert("You have successfully added this ad to favorites!");
-                    $("#" + adId).replaceWith('<button type="button" value="' + adId + '"' + 'class="btn btn-danger btn-block mt-4 removeFromFavorites" id="' + adId + '">Remove From Favorites</button>');
-                }
-            });
-        });
-        $(".container-fluid").on('click', '.removeFromFavorites', function
-            () {
-                event.stopImmediatePropagation();
-            var adId = $(this).val();
-
-            $.ajax({
-                url: "/Favorites/Remove",
-                type: "GET",
-                data: "adId=" + adId,
-                dataType: 'json',
-                success: function (response) {
-                    alert("You have successfully removed this ad from favorites!");
-                    $("#" + adId).replaceWith('<button type="button" value="' + adId + '"' + 'class="btn btn-primary btn-block mt-4 addToFavorites" id="' + adId + '">Add To Favorites</button>');
-                }
-            });
-        });
-    });
+   
 </script>
 
