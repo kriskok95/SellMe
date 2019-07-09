@@ -59,6 +59,7 @@
 <script>
     $(document).ready(function () {
         $(".container-fluid").on('click', '.addToFavorites', function () {
+            event.stopImmediatePropagation();
             var adId = $(this).val();
 
             $.ajax({
@@ -72,7 +73,9 @@
                 }
             });
         });
-        $(".container-fluid").on('click', '.removeFromFavorites', function () {
+        $(".container-fluid").on('click', '.removeFromFavorites', function
+            () {
+                event.stopImmediatePropagation();
             var adId = $(this).val();
 
             $.ajax({
