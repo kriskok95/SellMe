@@ -1,4 +1,8 @@
-﻿using SellMe.Web.ViewModels.BindingModels.Messages;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Remotion.Linq;
+using SellMe.Services.Mapping;
+using SellMe.Web.ViewModels.BindingModels.Messages;
 
 namespace SellMe.Services
 {
@@ -7,7 +11,6 @@ namespace SellMe.Services
     using SellMe.Data.Models;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.ViewModels.Messages;
-    using SellMe.Web.ViewModels.BindingModels;
     using SellMe.Web.ViewModels.InputModels.Messages;
 
     public class MessagesService : IMessagesService
@@ -57,6 +60,29 @@ namespace SellMe.Services
 
             this.context.Messages.Add(message);
             this.context.SaveChanges();
+        }
+
+        public ICollection<InboxMessageViewModel> GetInboxViewModelsByCurrentUser()
+        {
+            var currentUserId = this.usersService.GetCurrentUserId();
+
+            var inboxMessagesFromDb = this.GetInboxMessagesByUserId(currentUserId);
+            var inboxMessageViewModels = inboxMessagesFromDb
+                .To<InboxMessageViewModel>()
+                .ToList();
+
+            return inboxMessageViewModels;
+        }
+
+        private IQueryable<Message> GetInboxMessagesByUserId(string currentUserId)
+        {
+
+            var inboxMessages = this.context
+                .Ads
+                .Where(x => x.Messages.Any(y => y.RecipientId == currentUserId))
+                .Select(x => x.Messages.OrderByDescending(y => y.CreatedOn).FirstOrDefault());
+
+            return inboxMessages;
         }
     }
 }

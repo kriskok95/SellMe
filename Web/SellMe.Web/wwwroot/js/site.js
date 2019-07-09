@@ -111,10 +111,3 @@ $(document).ready(function () {
 		});
 });
 
-$(document).ready(function () {
-	$(".removeAdFromDom").click(function () {
-		let adId = $(this).val();
-		console.log(adId);
-		$(this).remove();
-	});
-});

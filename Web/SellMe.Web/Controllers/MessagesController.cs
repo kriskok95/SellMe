@@ -31,5 +31,18 @@
 
             return this.Redirect("/");
         }
+
+        public IActionResult Inbox()
+        {
+            var inboxMessageViewModels = this.messagesService.GetInboxViewModelsByCurrentUser();
+
+            return this.View(inboxMessageViewModels);
+        }
+
+        public IActionResult SentBox()
+        {
+            return this.View();
+        }
+        
     }
 }
