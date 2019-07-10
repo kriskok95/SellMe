@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using System.Linq;
+
+namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
@@ -34,14 +36,20 @@
 
         public IActionResult Inbox()
         {
-            var inboxMessageViewModels = this.messagesService.GetInboxViewModelsByCurrentUser();
+            var inboxMessageViewModels = this.messagesService
+                .GetInboxViewModelsByCurrentUser()
+                .ToList();
 
             return this.View(inboxMessageViewModels);
         }
 
         public IActionResult SentBox()
         {
-            return this.View();
+            var sentBoxMessageViewModel = this.messagesService
+                .GetSentBoxViewModelByCurrentUser()
+                .ToList();
+
+            return this.View(sentBoxMessageViewModel);
         }
         
     }

@@ -15,5 +15,7 @@
         void CreateMessage(SendMessageInputModel inputModel);
 
         ICollection<InboxMessageViewModel> GetInboxViewModelsByCurrentUser();
+
+        ICollection<SentBoxMessageViewModel> GetSentBoxViewModelByCurrentUser();
     }
 }
