@@ -7,7 +7,13 @@
 
     public class InboxMessageViewModel : IMapFrom<Message>, IHaveCustomMappings
     {
+        public string SenderId { get; set; }
+
         public string Sender { get; set; }
+
+        public string RecipientId { get; set; }
+
+        public int AdId { get; set; }
 
         public string AdTitle { get; set; }
 
@@ -16,8 +22,6 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Message, InboxMessageViewModel>()
-                .ForMember(x => x.Sender, cfg => cfg.MapFrom(x => x.Sender.UserName))
-                .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Ad.Title))
                 .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn));
         }
     }

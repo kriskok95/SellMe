@@ -1,11 +1,11 @@
-﻿using System.Linq;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.InputModels.Messages;
     using Microsoft.AspNetCore.Authorization;
+    using SellMe.Web.ViewModels.BindingModels.Messages;
 
     public class MessagesController : Controller
     {
@@ -51,6 +51,12 @@ namespace SellMe.Web.Controllers
 
             return this.View(sentBoxMessageViewModel);
         }
-        
+
+        public IActionResult Details(MessageDetailsBindingModel bindingModel)
+        {
+            var messageViewModels = this.messagesService.GetMessageDetailsViewModels(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);
+
+            return this.View(messageViewModels);
+        }
     }
 }

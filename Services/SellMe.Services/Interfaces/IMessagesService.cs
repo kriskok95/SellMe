@@ -1,7 +1,6 @@
 ﻿namespace SellMe.Services.Interfaces
 {
     using SellMe.Web.ViewModels.ViewModels.Messages;
-    using SellMe.Web.ViewModels.BindingModels;
     using SellMe.Web.ViewModels.InputModels.Messages;
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.BindingModels.Messages;
@@ -17,5 +16,7 @@
         ICollection<InboxMessageViewModel> GetInboxViewModelsByCurrentUser();
 
         ICollection<SentBoxMessageViewModel> GetSentBoxViewModelByCurrentUser();
+
+        ICollection<MessageDetailsViewModel> GetMessageDetailsViewModels(int adId, string senderId, string recipientId);
     }
 }

@@ -84,6 +84,26 @@
             return sentBoxMessageViewModels;
         }
 
+        public ICollection<MessageDetailsViewModel> GetMessageDetailsViewModels(int adId, string senderId, string recipientId)
+        {
+            var messagesFromFb = this.GetMessagesDetailsByAd(adId, senderId, recipientId);
+
+            var messageDetailsViewModels = messagesFromFb
+                .To<MessageDetailsViewModel>()
+                .ToList();
+
+            return messageDetailsViewModels;
+        }
+
+        private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string recipientId)
+        {
+            var messagesFromDb = this.context.Messages
+                .Where(x => x.AdId == adId && x.RecipientId == x.SenderId && x.RecipientId == recipientId)
+                .OrderByDescending(date => date.CreatedOn);
+
+            return messagesFromDb;
+        }
+
         private IQueryable<Message> GetSentBoxMessagesByUserId(string currentUserId)
         {
             var sentBoxMessages = this.context
