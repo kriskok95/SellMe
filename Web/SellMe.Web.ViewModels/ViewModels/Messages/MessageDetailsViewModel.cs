@@ -8,6 +8,8 @@
 
     public class MessageDetailsViewModel : IMapFrom<Message>, IHaveCustomMappings
     {
+        public string AdTitle { get; set; }
+
         public string Content { get; set; }
 
         public DateTime SentOn { get; set; }

@@ -97,9 +97,10 @@
 
         private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string recipientId)
         {
+            //TODO: maybe that can cause some bugs
             var messagesFromDb = this.context.Messages
-                .Where(x => x.AdId == adId && x.RecipientId == x.SenderId && x.RecipientId == recipientId)
-                .OrderByDescending(date => date.CreatedOn);
+                .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == recipientId) && x.RecipientId == recipientId)
+                .OrderBy(date => date.CreatedOn);
 
             return messagesFromDb;
         }
@@ -120,7 +121,7 @@
             var inboxMessages = this.context
                 .Ads
                 .Where(x => x.Messages.Any(y => y.RecipientId == currentUserId))
-                .Select(x => x.Messages.OrderByDescending(y => y.CreatedOn).FirstOrDefault());
+                .Select(x => x.Messages.OrderBy(y => y.CreatedOn).FirstOrDefault());
 ;
             return inboxMessages;
         }

@@ -10,8 +10,8 @@
         public string SenderId { get; set; }
 
         public string Sender { get; set; }
-
-        public string RecipientId { get; set; }
+        
+        public string SellerId { get; set; }
 
         public int AdId { get; set; }
 
@@ -22,7 +22,8 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Message, InboxMessageViewModel>()
-                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn));
+                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn))
+                .ForMember(x => x.SellerId, cfg => cfg.MapFrom(x => x.Ad.SellerId));
         }
     }
 }

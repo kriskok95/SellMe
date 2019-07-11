@@ -54,7 +54,7 @@
 
         public IActionResult Details(MessageDetailsBindingModel bindingModel)
         {
-            var messageViewModels = this.messagesService.GetMessageDetailsViewModels(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);
+            var messageViewModels = this.messagesService.GetMessageDetailsViewModels(bindingModel.AdId, bindingModel.SenderId, bindingModel.SellerId).ToList();
 
             return this.View(messageViewModels);
         }
