@@ -17,6 +17,6 @@
 
         ICollection<SentBoxMessageViewModel> GetSentBoxViewModelByCurrentUser();
 
-        ICollection<MessageDetailsViewModel> GetMessageDetailsViewModels(int adId, string senderId, string recipientId);
+        ICollection<MessageDetailsViewModel> GetMessageDetailsViewModels(int adId, string senderId, string sellerId);
     }
 }

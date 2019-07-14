@@ -1,10 +1,15 @@
-﻿@model List<MessageDetailsViewModel>
+﻿@model MessageDetailsBindingModel
+@inject IUsersService UsersService
+
+@{
+    var currentUserId = this.UsersService.GetCurrentUserId();
+}
 
 <div class="container-fluid">
     <div class="row">
         <div class="offset-2 col-8">
-            <h3 class="text-center mb-5">@Model[0].AdTitle</h3>
-            @foreach (var message in Model)
+            <h3 class="text-center mb-5"><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model.AdId">@Model.AdTitle</a></h3>
+            @foreach (var message in Model.ViewModels)
             {
 
                 <div class="row">
@@ -34,6 +39,10 @@
                     }
                 </p>
             }
+            <form asp-controller="Messages" asp-action="Send" method="post">
+                <vc:send-message user-id="@Model.SenderId" seller-id="@Model.SellerId" ad-id="@Model.AdId">
+                </vc:send-message>
+            </form>
         </div>
     </div>
 </div>

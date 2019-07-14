@@ -10,10 +10,12 @@
     public class MessagesController : Controller
     {
         private readonly IMessagesService messagesService;
+        private readonly IAdsService adsService;
 
-        public MessagesController(IMessagesService messagesService)
+        public MessagesController(IMessagesService messagesService, IAdsService adsService)
         {
             this.messagesService = messagesService;
+            this.adsService = adsService;
         }
 
         [Authorize]
@@ -31,7 +33,7 @@
         {
             this.messagesService.CreateMessage(inputModel);
 
-            return this.Redirect("/");
+            return this.RedirectToAction("Inbox");
         }
 
         public IActionResult Inbox()
@@ -54,9 +56,16 @@
 
         public IActionResult Details(MessageDetailsBindingModel bindingModel)
         {
-            var messageViewModels = this.messagesService.GetMessageDetailsViewModels(bindingModel.AdId, bindingModel.SenderId, bindingModel.SellerId).ToList();
+            bindingModel.ViewModels = this.messagesService.GetMessageDetailsViewModels(bindingModel.AdId, bindingModel.SenderId, bindingModel.SellerId).ToList();
+            bindingModel.AdTitle = this.adsService.GetAdTitleById(bindingModel.AdId);
 
-            return this.View(messageViewModels);
+            return this.View(bindingModel);
+        }
+
+        [HttpPost]
+        public IActionResult Details(MessageDetailsInputModel inputModel)
+        {
+            return this.View();
         }
     }
 }

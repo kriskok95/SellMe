@@ -1,0 +1,11 @@
+﻿@model SellMe.Web.ViewModels.InputModels.Messages.SendMessageInputModel
+
+    <div class="form-group">
+        <label asp-for="@Model.Content">Content:</label>
+        <textarea asp-for="@Model.Content" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="@Model.Content" class="text-danger"></span>
+        <input asp-for="@Model.AdId" type="hidden" value="@Model.AdId" />
+        <input asp-for="@Model.SenderId" type="hidden" value="@Model.SenderId" />
+        <input asp-for="@Model.RecipientId" type="hidden" value="@Model.RecipientId" />
+        <button type="submit" class="btn btn-secondary btn-block btn-lg">Send</button>
+    </div>

@@ -200,6 +200,13 @@
             return favoriteAdsViewModels;
         }
 
+        public string GetAdTitleById(int adId)
+        {
+            var adTitle = this.context.Ads.FirstOrDefault(x => x.Id == adId)? .Title;
+
+            return adTitle;
+        }
+
         private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel, EditAdAddressViewModel editAdAddressViewModel)
         {
             var editAdViewModel = new EditAdViewModel

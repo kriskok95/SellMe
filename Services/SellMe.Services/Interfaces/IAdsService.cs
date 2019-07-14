@@ -31,5 +31,7 @@ namespace SellMe.Services.Interfaces
         EditAdBindingModel GetEditAdBindingModelById(int adId);
 
         Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId);
+
+        string GetAdTitleById(int adId);
     }
 }

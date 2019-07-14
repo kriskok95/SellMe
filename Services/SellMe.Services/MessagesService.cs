@@ -95,11 +95,11 @@
             return messageDetailsViewModels;
         }
 
-        private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string recipientId)
+        private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string sellerId)
         {
             //TODO: maybe that can cause some bugs
             var messagesFromDb = this.context.Messages
-                .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == recipientId) && x.RecipientId == recipientId)
+                .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == sellerId) && x.RecipientId == sellerId || x.RecipientId == senderId)
                 .OrderBy(date => date.CreatedOn);
 
             return messagesFromDb;
