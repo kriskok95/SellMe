@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace SellMe.Web.Controllers
 {
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
@@ -33,7 +35,7 @@
         {
             this.messagesService.CreateMessage(inputModel);
 
-            return this.RedirectToAction("Inbox");
+            return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, sellerId = inputModel.RecipientId});
         }
 
         public IActionResult Inbox()

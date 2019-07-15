@@ -99,7 +99,7 @@
         {
             //TODO: maybe that can cause some bugs
             var messagesFromDb = this.context.Messages
-                .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == sellerId) && x.RecipientId == sellerId || x.RecipientId == senderId)
+                .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == sellerId) && (x.RecipientId == sellerId || x.RecipientId == senderId))
                 .OrderBy(date => date.CreatedOn);
 
             return messagesFromDb;
