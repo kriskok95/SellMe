@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
@@ -62,12 +60,6 @@ namespace SellMe.Web.Controllers
             bindingModel.AdTitle = this.adsService.GetAdTitleById(bindingModel.AdId);
 
             return this.View(bindingModel);
-        }
-
-        [HttpPost]
-        public IActionResult Details(MessageDetailsInputModel inputModel)
-        {
-            return this.View();
         }
     }
 }
