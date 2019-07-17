@@ -62,7 +62,7 @@
 
         public IActionResult Details(AdDetailsInputModel inputModel)
         {
-            AdDetailsViewModel adDetailsViewModel = this.adService.GetAdDetailsViewModel(inputModel.Id);
+            AdDetailsViewModel adDetailsViewModel = this.adService.GetAdDetailsViewModel(inputModel.Id).GetAwaiter().GetResult();
 
             return this.View(adDetailsViewModel);
         }

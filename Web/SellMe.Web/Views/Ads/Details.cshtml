@@ -70,12 +70,24 @@
             <p>@Html.Raw(HttpUtility.HtmlEncode(@Model.Description)?.Replace("\n", "<br/>"))</p>
         </div>
     </div>
-    @foreach (var imageUrl in @Model.Images.Skip(1))
-    {
-        <div class="row">
-            <div class="offset-3 col-6 mt-1">
-                <img class="img-fluid rounded img-thumbnail" src="@imageUrl" alt="@Model.Title" />
+    <div>
+        @foreach (var imageUrl in @Model.Images.Skip(1))
+        {
+            <div class="row">
+                <div class="offset-3 col-6 mt-1">
+                    <img class="img-fluid rounded img-thumbnail" src="@imageUrl" alt="@Model.Title" />
+                </div>
             </div>
+        }
+    </div>
+    <div class="row">
+        <div class="offset-3 col-6">
+            <hr class="hr-sell-me" />
         </div>
-    }
+    </div>
+    <div class="row">
+        <div class="offset-3 col-2">
+            <h5 class="text-muted">Views: @Model.Views</h5>
+        </div>
+    </div>
 </div>

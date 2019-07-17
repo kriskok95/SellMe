@@ -16,7 +16,7 @@ namespace SellMe.Services.Interfaces
 
         AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId);
 
-        AdDetailsViewModel GetAdDetailsViewModel(int adId);
+        Task<AdDetailsViewModel> GetAdDetailsViewModel(int adId);
 
         Ad GetAdById(int adId);
 

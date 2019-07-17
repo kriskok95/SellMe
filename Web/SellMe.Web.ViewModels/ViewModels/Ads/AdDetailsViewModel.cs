@@ -16,8 +16,6 @@
 
         public string Phone { get; set; }
 
-        public int AvailabilityCount { get; set; }
-
         public string CategoryName { get; set; }
 
         public string SubcategoryName { get; set; }
@@ -26,6 +24,8 @@
         public string ConditionName { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public int Views { get; set; }
 
         public AddressViewModel AddressViewModel { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿namespace SellMe.Services
 {
-    using System.Security.Claims;
     using AutoMapper;
     using System.Collections.Generic;
     using System.Linq;
@@ -81,9 +80,10 @@
             return categoryName;
         }
 
-        public AdDetailsViewModel GetAdDetailsViewModel(int adId)
+        public async Task<AdDetailsViewModel> GetAdDetailsViewModel(int adId)
         {
             var adFromDb = this.GetAdById(adId);
+            await CreateViewForAdAsync(adFromDb);
             var addressForGivenAd = this.addressService.GetAddressByAdId(adFromDb.AddressId);
 
             //TODO: Map with auto mapper nested objects
@@ -93,6 +93,16 @@
             adDetailsViewModel.AddressViewModel = addressViewModel;
 
             return adDetailsViewModel;
+        }
+
+        private async Task CreateViewForAdAsync(Ad ad)
+        {
+            var adView = new AdView()
+            {
+                AdId = ad.Id
+            };
+            await this.context.AdViews.AddAsync(adView);
+            await this.context.SaveChangesAsync();
         }
 
         private Ad GetAdById(int adId)
