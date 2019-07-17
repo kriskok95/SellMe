@@ -27,6 +27,8 @@
 
         public int Views { get; set; }
 
+        public int Observed { get; set; }
+
         public AddressViewModel AddressViewModel { get; set; }
 
         public ICollection<string> Images { get; set; }

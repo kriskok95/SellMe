@@ -44,6 +44,14 @@
         <div class="col-3 mt-2">
             <h5 class="text-muted"><i class="fas fa-folder"></i> @Model.CategoryName, @Model.SubcategoryName</h5>
         </div>
+    </div>
+    <div class="row">
+        <div class="offset-3 col-3 mt-2">
+            <h5 class="text-muted"><i class="fas fa-search-plus"></i> Views: @Model.Views</h5>
+        </div>
+        <div class="col-3 mt-2">
+            <h5 class="text-muted"><i class="fas fa-eye"></i> Observed: @Model.Observed</h5>
+        </div>
         <div class="offset-3 col-6">
             <hr class="hr-sell-me" />
         </div>
@@ -79,15 +87,5 @@
                 </div>
             </div>
         }
-    </div>
-    <div class="row">
-        <div class="offset-3 col-6">
-            <hr class="hr-sell-me" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="offset-3 col-2">
-            <h5 class="text-muted">Views: @Model.Views</h5>
-        </div>
     </div>
 </div>

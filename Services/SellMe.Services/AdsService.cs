@@ -89,10 +89,20 @@
             //TODO: Map with auto mapper nested objects
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
             var addressViewModel = mapper.Map<AddressViewModel>(addressForGivenAd);
+            adDetailsViewModel.Observed = this.GetObservedAdsByAdId(adId);
 
             adDetailsViewModel.AddressViewModel = addressViewModel;
 
             return adDetailsViewModel;
+        }
+
+        private int GetObservedAdsByAdId(int adId)
+        {
+            var observed = this.context
+                .SellMeUserFavoriteProducts
+                .Count(x => x.AdId == adId);
+
+            return observed;
         }
 
         private async Task CreateViewForAdAsync(Ad ad)

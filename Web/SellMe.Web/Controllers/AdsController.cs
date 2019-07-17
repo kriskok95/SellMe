@@ -113,6 +113,7 @@
             return Json(result);
         }
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var editAdBindingModel = this.adService.GetEditAdBindingModelById(id);
