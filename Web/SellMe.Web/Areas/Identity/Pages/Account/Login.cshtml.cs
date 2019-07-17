@@ -38,8 +38,8 @@ namespace SellMe.Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [StringLength(20, ErrorMessage = "{0} should be between {1} and {2} characters length.", MinimumLength = 3)]
+            public string Username { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -74,7 +74,7 @@ namespace SellMe.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
