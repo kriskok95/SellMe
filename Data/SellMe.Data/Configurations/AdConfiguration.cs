@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SellMe.Data.Models;
-
-namespace SellMe.Data.Configurations
+﻿namespace SellMe.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using SellMe.Data.Models;
+
     public class AdConfiguration : IEntityTypeConfiguration<Ad>
     {
         public void Configure(EntityTypeBuilder<Ad> builder)
@@ -27,6 +27,10 @@ namespace SellMe.Data.Configurations
                 .HasForeignKey(x => x.AdId);
 
             builder.HasMany(x => x.Orders)
+                .WithOne(x => x.Ad)
+                .HasForeignKey(x => x.AdId);
+
+            builder.HasMany(x => x.AdViews)
                 .WithOne(x => x.Ad)
                 .HasForeignKey(x => x.AdId);
 

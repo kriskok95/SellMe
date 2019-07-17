@@ -21,6 +21,8 @@
 
         public DbSet<Ad> Ads { get; set; }
 
+        public DbSet<AdView> AdViews { get; set; }
+
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
