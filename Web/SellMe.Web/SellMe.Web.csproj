@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Data\SellMe.Data.Models\SellMe.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\SellMe.Data\SellMe.Data.csproj" />
     <ProjectReference Include="..\..\Services\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\SellMe.Services.Messaging\SellMe.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\SellMe.Services\SellMe.Services.csproj" />
     <ProjectReference Include="..\SellMe.Web.ViewModels\SellMe.Web.ViewModels.csproj" />
   </ItemGroup>

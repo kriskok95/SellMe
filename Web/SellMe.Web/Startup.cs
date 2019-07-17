@@ -1,4 +1,7 @@
-﻿namespace SellMe.Web
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using SellMe.Services.Messaging;
+
+namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -42,7 +45,11 @@
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<SellMeUser>()
+            services.AddDefaultIdentity<SellMeUser>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = true;
+
+                })
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<SellMeDbContext>();
@@ -56,6 +63,9 @@
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
             });
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Web.ViewModels", "We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services.Mapping", "Services\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj", "{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SellMe.Services.Messaging", "Services\SellMe.Services.Messaging\SellMe.Services.Messaging.csproj", "{AFDAD265-433E-4759-A35F-9B0DCEA4E301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFDAD265-433E-4759-A35F-9B0DCEA4E301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFDAD265-433E-4759-A35F-9B0DCEA4E301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFDAD265-433E-4759-A35F-9B0DCEA4E301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFDAD265-433E-4759-A35F-9B0DCEA4E301}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{D326BCEF-C71B-49A8-9186-528DB9500DD4} = {5E9635B7-6F71-477E-8CE1-4C007A52CB4B}
 		{7636BDD7-1A82-4E77-9EE9-29FA39DDC563} = {FA7B7C0C-F878-41F8-B323-2F5691E67865}
 		{F491AC23-94F7-44E8-A91E-D5010CDBAAEC} = {5E9635B7-6F71-477E-8CE1-4C007A52CB4B}
+		{AFDAD265-433E-4759-A35F-9B0DCEA4E301} = {5E9635B7-6F71-477E-8CE1-4C007A52CB4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58DA3742-A0B4-453E-A412-5522B1088016}
