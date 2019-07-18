@@ -14,7 +14,7 @@
             this.categoriesService = categoriesService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke()
         {
             var categories = this.categoriesService
                 .GetAllCategoryViewModelAsync()

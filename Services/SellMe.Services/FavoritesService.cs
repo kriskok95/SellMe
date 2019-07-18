@@ -4,6 +4,7 @@
     using System.Linq;
     using SellMe.Data;
     using SellMe.Data.Models;
+    using System.Threading.Tasks;
 
 
     public class FavoritesService : IFavoritesService
@@ -17,7 +18,7 @@
             this.usersService = usersService;
         }
 
-        public bool AddToFavorites(int adId)
+        public async Task<bool> AddToFavoritesAsync(int adId)
         {
             var currentUser = this.usersService.GetCurrentUser();
 
@@ -34,11 +35,11 @@
                 return false;
             }
 
-            this.CreateSellMeUserFavoriteProductAsync(adId, currentUser.Id);
+            await this.CreateSellMeUserFavoriteProductAsync(adId, currentUser.Id);
             return true;
         }
 
-        public bool RemoveFromFavorites(int adId)
+        public async Task<bool> RemoveFromFavoritesAsync(int adId)
         {
             var currentUser = this.usersService.GetCurrentUser();
 
@@ -55,19 +56,19 @@
                 return false;
             }
 
-            this.RemoveSellMeUserFavoriteProduct(adId, currentUser.Id);
+            await this.RemoveSellMeUserFavoriteProductAsync(adId, currentUser.Id);
             return true;
         }
 
-        private void RemoveSellMeUserFavoriteProduct(int adId, string currentUserId)
+        private async Task RemoveSellMeUserFavoriteProductAsync(int adId, string currentUserId)
         {
             var sellMeUserFavoriteProduct = this.context.SellMeUserFavoriteProducts.First(x => x.AdId == adId && x.SellMeUserId == currentUserId);
 
             this.context.Remove(sellMeUserFavoriteProduct);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
         }
 
-        private void CreateSellMeUserFavoriteProductAsync(int adId, string currentUserId)
+        private async Task CreateSellMeUserFavoriteProductAsync(int adId, string currentUserId)
         {
             var sellMeUserFavoriteProduct = new SellMeUserFavoriteProduct()
             {
@@ -75,8 +76,8 @@
                 SellMeUserId = currentUserId
             };
 
-           this.context.SellMeUserFavoriteProducts.Add(sellMeUserFavoriteProduct);
-           this.context.SaveChanges();
+           await this.context.SellMeUserFavoriteProducts.AddAsync(sellMeUserFavoriteProduct);
+           await this.context.SaveChangesAsync();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using System.Threading.Tasks;
+
+namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
@@ -34,16 +36,16 @@
             return this.View(favoriteAdViewModels);
         }
 
-        public IActionResult Add(int adId)
+        public async Task<IActionResult> Add(int adId)
         {
-            bool isAdded = this.favoritesService.AddToFavorites(adId);
+            bool isAdded = await this.favoritesService.AddToFavoritesAsync(adId);
 
             return Json(isAdded);
         }
 
-        public IActionResult Remove(int adId)
+        public async Task<IActionResult> Remove(int adId)
         {
-            bool isRemoved = this.favoritesService.RemoveFromFavorites(adId);
+            bool isRemoved = await this.favoritesService.RemoveFromFavoritesAsync(adId);
 
             return Json(isRemoved);
         }

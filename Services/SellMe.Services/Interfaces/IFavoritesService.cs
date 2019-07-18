@@ -1,9 +1,11 @@
 ﻿namespace SellMe.Services.Interfaces
 {
+    using System.Threading.Tasks;
+
     public interface IFavoritesService
     {
-        bool AddToFavorites(int adId);
+        Task<bool> AddToFavoritesAsync(int adId);
 
-        bool RemoveFromFavorites(int adId);
+        Task<bool> RemoveFromFavoritesAsync(int adId);
     }
 }

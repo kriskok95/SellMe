@@ -69,7 +69,7 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> ActiveAds()
+        public IActionResult ActiveAds()
         {
             var myAdsViewModels = this.adService
                 .GetMyAdsViewModelsAsync()
@@ -95,7 +95,7 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> ArchivedAds()
+        public IActionResult ArchivedAds()
         {
             var myArchivedAds = this.adService
                 .GetMyArchivedAdsViewModelsAsync()
