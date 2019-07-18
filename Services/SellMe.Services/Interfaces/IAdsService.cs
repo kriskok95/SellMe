@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-
-namespace SellMe.Services.Interfaces
+﻿namespace SellMe.Services.Interfaces
 {
+    using System.Threading.Tasks;
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
@@ -10,23 +9,23 @@ namespace SellMe.Services.Interfaces
 
     public interface IAdsService
     {
-        void CreateAd(CreateAdInputModel inputModel);
+        Task CreateAdAsync(CreateAdInputModel inputModel);
 
-        AdsAllViewModel GetAllAdViewModels();
+        Task<AdsAllViewModel> GetAllAdViewModelsAsync();
 
-        AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId);
+        Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId);
 
-        Task<AdDetailsViewModel> GetAdDetailsViewModel(int adId);
+        Task<AdDetailsViewModel> GetAdDetailsViewModelAsync(int adId);
 
         Ad GetAdById(int adId);
 
-        ICollection<MyActiveAdsViewModel> GetMyAdsViewModels();
+        Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync();
 
-        bool ArchiveAdById(int adId);
+        Task<bool> ArchiveAdByIdAsync(int adId);
 
-        ICollection<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels();
+        Task<bool> ActivateAdById(int adId);
 
-        bool ActivateAdById(int adId);
+        Task<ICollection<MyArchivedAdsViewModel>> GetMyArchivedAdsViewModelsAsync();
 
         EditAdBindingModel GetEditAdBindingModelById(int adId);
 

@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using System.Threading.Tasks;
 
     public interface ISubCategoriesService
     {
-        ICollection<CreateAdSubcategoryViewModel> GetSubcategoriesByCategoryId(int categoryId);
+        Task<ICollection<CreateAdSubcategoryViewModel>> GetSubcategoriesByCategoryIdAsync(int categoryId);
     }
 }

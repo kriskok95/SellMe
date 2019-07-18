@@ -1,9 +1,9 @@
-﻿using System.Linq;
-
-namespace SellMe.Web.ViewComponents
+﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CategoriesSideBarViewComponent : ViewComponent
     {
@@ -14,10 +14,12 @@ namespace SellMe.Web.ViewComponents
             this.categoriesService = categoriesService;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var categories = this.categoriesService
-                .GetAllCategoryViewModel()
+                .GetAllCategoryViewModelAsync()
+                .GetAwaiter()
+                .GetResult()
                 .ToList();
 
             return this.View(categories);

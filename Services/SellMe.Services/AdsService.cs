@@ -3,19 +3,20 @@
     using AutoMapper;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using SellMe.Data;
     using SellMe.Services.Interfaces;
     using SellMe.Data.Models;
     using SellMe.Services.Utilities;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
     using SellMe.Services.Mapping;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Categories;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.BindingModels.Ads;
-    using Microsoft.AspNetCore.Identity;
 
     public class AdsService : IAdsService
     {
@@ -36,7 +37,7 @@
             this.userManager = userManager;
         }
 
-        public void CreateAd(CreateAdInputModel inputModel)
+        public async Task CreateAdAsync(CreateAdInputModel inputModel)
         {
 
             //TODO: Export this into separate method
@@ -49,58 +50,51 @@
                 .ToList();
             ad.SellerId = this.usersService.GetCurrentUserId();
 
-            this.context.Ads.Add(ad);
-            this.context.SaveChanges();
+            await this.context.Ads.AddAsync(ad);
+            await this.context.SaveChangesAsync();
         }
 
-        public AdsAllViewModel GetAllAdViewModels()
+        public async Task<AdsAllViewModel> GetAllAdViewModelsAsync()
         {
-            var adsViewModel = this.GetAllAdsViewModel();
-            var allCategoriesViewModel = this.categoriesService.GetAllCategoryViewModel();
+            var adsViewModel = await this.GetAllAdsViewModelAsync();
+            var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
 
             var adsAllViewModel = this.CreateAdsAllViewModel(adsViewModel, allCategoriesViewModel);
 
             return adsAllViewModel;
         }
 
-        public AdsByCategoryViewModel GetAdsByCategoryViewModel(int categoryId)
+        public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId)
         {
-            var adsViewModel = this.GetAllAdsByCategory(categoryId);
-            var allCategoriesViewModel = this.categoriesService.GetAllCategoryViewModel();
-            string categoryName = this.GetCategoryNameById(categoryId);
+            var adsViewModel = await this.GetAllAdsByCategoryAsync(categoryId);
+            var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
+            string categoryName = this.categoriesService.GetCategoryNameById(categoryId);
 
             var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel, categoryName);
 
             return adsByCategoryViewModel;
         }
 
-        private string GetCategoryNameById(int categoryId)
+        public async Task<AdDetailsViewModel> GetAdDetailsViewModelAsync(int adId)
         {
-            var categoryName = this.context.Categories.FirstOrDefault(x => x.Id == categoryId)?.Name;
-            return categoryName;
-        }
-
-        public async Task<AdDetailsViewModel> GetAdDetailsViewModel(int adId)
-        {
-            var adFromDb = this.GetAdById(adId);
+            var adFromDb = await this.GetAdByIdAsync(adId);
             await CreateViewForAdAsync(adFromDb);
-            var addressForGivenAd = this.addressService.GetAddressByAdId(adFromDb.AddressId);
+            var addressForGivenAd = await this.addressService.GetAddressByAdIdAsync(adFromDb.AddressId);
 
-            //TODO: Map with auto mapper nested objects
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
             var addressViewModel = mapper.Map<AddressViewModel>(addressForGivenAd);
-            adDetailsViewModel.Observed = this.GetObservedAdsByAdId(adId);
+            adDetailsViewModel.Observed = await this.GetObservedAdsByAdIdAsync(adId);
 
             adDetailsViewModel.AddressViewModel = addressViewModel;
 
             return adDetailsViewModel;
         }
 
-        private int GetObservedAdsByAdId(int adId)
+        private Task<int> GetObservedAdsByAdIdAsync(int adId)
         {
             var observed = this.context
                 .SellMeUserFavoriteProducts
-                .Count(x => x.AdId == adId);
+                .CountAsync(x => x.AdId == adId);
 
             return observed;
         }
@@ -115,32 +109,30 @@
             await this.context.SaveChangesAsync();
         }
 
-        private Ad GetAdById(int adId)
+        private async Task<Ad> GetAdByIdAsync(int adId)
         {
-            //TODO: Validate for null
-
-            var ad = this.context.Ads
-                .FirstOrDefault(x => x.Id == adId);
+            var ad = await this.context.Ads
+                .FirstOrDefaultAsync(x => x.Id == adId);
 
             return ad;
         }
 
-        public ICollection<MyActiveAdsViewModel> GetMyAdsViewModels()
+        public async Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
             var adsForCurrentUser = this.GetActiveAdsByUserId(currentUserId);
 
-            var adsForCurrentUserViewModels = adsForCurrentUser
+            var adsForCurrentUserViewModels = await adsForCurrentUser
                 .To<MyActiveAdsViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return adsForCurrentUserViewModels;
         }
 
-        public bool ArchiveAdById(int adId)
+        public async Task<bool> ArchiveAdByIdAsync(int adId)
         {
-            var ad = this.GetAdById(adId);
+            var ad = await this.GetAdByIdAsync(adId);
 
             if (ad.IsDeleted == true)
             {
@@ -149,27 +141,27 @@
             ad.IsDeleted = true;
 
             this.context.Update(ad);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
 
             return true;
         }
 
-        public ICollection<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels()
+        public async Task<ICollection<MyArchivedAdsViewModel>> GetMyArchivedAdsViewModelsAsync()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
             var archivedAds = this.GetArchivedAdsByUserId(currentUserId);
 
-            var archivedAdsForCurrentUserViewModels = archivedAds
+            var archivedAdsForCurrentUserViewModels = await archivedAds
                 .To<MyArchivedAdsViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return archivedAdsForCurrentUserViewModels;
         }
 
-        public bool ActivateAdById(int adId)
+        public async Task<bool> ActivateAdById(int adId)
         {
-            var ad = this.GetAdById(adId);
+            var ad = await this.GetAdByIdAsync(adId);
 
             if (!ad.IsDeleted)
             {
@@ -178,14 +170,14 @@
             ad.IsDeleted = false;
 
             this.context.Update(ad);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
 
             return true;
         }
 
         private EditAdDetailsViewModel GetEditAdViewModelById(int adId)
         {
-            var adFromDb = this.GetAdById(adId);
+            var adFromDb = this.GetAdByIdAsync(adId);
 
             var editAdDetailsViewModel = this.mapper.Map<EditAdDetailsViewModel>(adFromDb);
 
@@ -240,7 +232,7 @@
 
         private EditAdAddressViewModel GetEditAdAddressViewModelById(int adId)
         {
-            var addressFromDb = this.addressService.GetAddressByAdId(adId);
+            var addressFromDb = this.addressService.GetAddressByAdIdAsync(adId);
 
             var editAdAddressViewModel = this.mapper.Map<EditAdAddressViewModel>(addressFromDb);
 
@@ -276,13 +268,13 @@
             return adsByCategoryViewModel;
         }
 
-        private ICollection<AdViewModel> GetAllAdsByCategory(int categoryId)
+        private async Task<ICollection<AdViewModel>> GetAllAdsByCategoryAsync(int categoryId)
         {
-            var adsViewModel = this.context
+            var adsViewModel = await this.context
                 .Ads
                 .Where(x => x.CategoryId == categoryId)
                 .To<AdViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return adsViewModel;
         }
@@ -297,12 +289,12 @@
             return adsAllViewModel;
         }
 
-        private ICollection<AdViewModel> GetAllAdsViewModel()
+        private async  Task<ICollection<AdViewModel>> GetAllAdsViewModelAsync()
         {
-            var adsViewModel = this.context
+            var adsViewModel = await this.context
                 .Ads
                 .To<AdViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return adsViewModel;
 

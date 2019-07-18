@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services.Interfaces
 {
+    using System.Threading.Tasks;
     using SellMe.Data.Models;
     using System.Collections.Generic;
 
@@ -7,6 +8,6 @@
     {
         ICollection<string> GetAllCountries();
 
-        Address GetAddressByAdId(int addressId);
+        Task<Address> GetAddressByAdIdAsync(int addressId);
     }
 }

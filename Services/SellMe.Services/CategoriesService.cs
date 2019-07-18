@@ -1,11 +1,13 @@
 ﻿namespace SellMe.Services
 {
+    using System.Threading.Tasks;
     using SellMe.Data;
     using SellMe.Services.Interfaces;
     using System.Linq;
     using SellMe.Data.Models;
     using System.Collections.Generic;
     using SellMe.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
     using SellMe.Web.ViewModels.ViewModels.Categories;
 
     public class CategoriesService : ICategoriesService
@@ -27,23 +29,29 @@
             return categoryViewModels;
         }
 
-        public  Category GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
-            Category category = this.context
+            Category category = await this.context
                 .Categories
-                .FirstOrDefault(x => x.Id == categoryId);
+                .FirstOrDefaultAsync(x => x.Id == categoryId);
 
             return category;
         }
 
-        public ICollection<CategoryViewModel> GetAllCategoryViewModel()
+        public async Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelAsync()
         {
-            var allCategories = this.context
+            var allCategories = await this.context
                 .Categories
                 .To<CategoryViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return allCategories;
+        }
+
+        public string GetCategoryNameById(int categoryId)
+        {
+            var categoryName = this.context.Categories.FirstOrDefault(x => x.Id == categoryId)?.Name;
+            return categoryName;
         }
     }
 }

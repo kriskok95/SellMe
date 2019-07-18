@@ -6,6 +6,7 @@
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using Microsoft.AspNetCore.Authorization;
+    using System.Threading.Tasks;
 
     public class AdsController : Controller
     {
@@ -26,61 +27,64 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateAdInputModel inputModel)
+        public async Task<IActionResult> Create(CreateAdInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {
                 return this.View(inputModel);
             }
 
-            this.adService.CreateAd(inputModel);
+            await this.adService.CreateAdAsync(inputModel);
 
             return this.Redirect("/");
         }
 
-        public IActionResult GetSubcategories(int categoryId)
+        public async Task<IActionResult> GetSubcategoriesAsync(int categoryId)
         {
-            var subcategories = this.subCategoriesService
-                .GetSubcategoriesByCategoryId(categoryId);
+            var subcategories = await this.subCategoriesService
+                .GetSubcategoriesByCategoryIdAsync(categoryId);
 
             return Json(subcategories);
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var adsAllViewModels = this.adService.GetAllAdViewModels();
+            var adsAllViewModels = await this.adService.GetAllAdViewModelsAsync();
 
             return this.View(adsAllViewModels);
         }
 
-        public IActionResult AdsByCategory(AdsByCategoryInputModel inputModel)
+        public async Task<IActionResult> AdsByCategory(AdsByCategoryInputModel inputModel)
         {
-            var adsByCategoryViewModel = this.adService.GetAdsByCategoryViewModel(inputModel.Id);
+            var adsByCategoryViewModel = await this.adService.GetAdsByCategoryViewModelAsync(inputModel.Id);
 
              return this.View(adsByCategoryViewModel);
         }
 
-        public IActionResult Details(AdDetailsInputModel inputModel)
+        public async Task<IActionResult> Details(AdDetailsInputModel inputModel)
         {
-            AdDetailsViewModel adDetailsViewModel = this.adService.GetAdDetailsViewModel(inputModel.Id).GetAwaiter().GetResult();
+            AdDetailsViewModel adDetailsViewModel = await this.adService.GetAdDetailsViewModelAsync(inputModel.Id);
 
             return this.View(adDetailsViewModel);
         }
 
         [Authorize]
-        public IActionResult ActiveAds()
+        public async Task<IActionResult> ActiveAds()
         {
             var myAdsViewModels = this.adService
-                .GetMyAdsViewModels()
+                .GetMyAdsViewModelsAsync()
+                .GetAwaiter()
+                .GetResult()
                 .ToList();
 
             return this.View(myAdsViewModels);
         }
 
         [Authorize]
-        public IActionResult ArchiveAd(int adId)
+        public async Task<IActionResult> ArchiveAd(int adId)
         {
-            bool isArchived = this.adService.ArchiveAdById(adId);
+            //TODO: Change the name to ArchiveAdAsync
+            bool isArchived = await this.adService.ArchiveAdByIdAsync(adId);
 
             var result = new
             {
@@ -91,19 +95,22 @@
         }
 
         [Authorize]
-        public IActionResult ArchivedAds()
+        public async Task<IActionResult> ArchivedAds()
         {
             var myArchivedAds = this.adService
-                .GetMyArchivedAdsViewModels()
+                .GetMyArchivedAdsViewModelsAsync()
+                .GetAwaiter()
+                .GetResult()
                 .ToList();
 
             return this.View(myArchivedAds);
         }
 
         [Authorize]
-        public IActionResult ActivateAd(int adId)
+        public async Task<IActionResult> ActivateAd(int adId)
         {
-            bool isActivated = this.adService.ActivateAdById(adId);
+            //TODO: Change the name to activateAdAsync
+            bool isActivated = await this.adService.ActivateAdById(adId);
 
             var result = new
             {

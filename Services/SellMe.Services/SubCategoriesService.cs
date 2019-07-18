@@ -6,6 +6,8 @@
     using SellMe.Services.Interfaces;
     using System.Collections.Generic;
     using SellMe.Services.Mapping;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
 
     public class SubCategoriesService : ISubCategoriesService
@@ -19,9 +21,9 @@
             this.categoryService = categoryService;
         }
 
-        public ICollection<CreateAdSubcategoryViewModel> GetSubcategoriesByCategoryId(int categoryId)
+        public async Task<ICollection<CreateAdSubcategoryViewModel>> GetSubcategoriesByCategoryIdAsync(int categoryId)
         {
-            Category category = this.categoryService.GetCategoryById(categoryId);
+            Category category = await this.categoryService.GetCategoryByIdAsync(categoryId);
 
             var subcategoryViewModels = category
                 .SubCategories

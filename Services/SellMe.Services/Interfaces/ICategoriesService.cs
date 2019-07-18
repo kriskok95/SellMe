@@ -2,14 +2,17 @@
 {
     using System.Collections.Generic;
     using SellMe.Data.Models;
+    using System.Threading.Tasks;
     using SellMe.Web.ViewModels.ViewModels.Categories;
 
     public interface ICategoriesService
     {
         ICollection<CreateAdCategoryViewModel> GetCategoryViewModels();
 
-        Category GetCategoryById(int categoryId);
+        Task<Category> GetCategoryByIdAsync(int categoryId);
 
-        ICollection<CategoryViewModel> GetAllCategoryViewModel();
+        Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelAsync();
+
+        string GetCategoryNameById(int categoryId);
     }
 }

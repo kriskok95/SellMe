@@ -1,4 +1,7 @@
-﻿namespace SellMe.Services
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
+namespace SellMe.Services
 {
     using System.Linq;
     using System.Collections.Generic;
@@ -43,11 +46,11 @@
             return CultureList;
         }
 
-        public Address GetAddressByAdId(int addressId)
+        public async Task<Address> GetAddressByAdIdAsync(int addressId)
         {
-            var address = this.context
+            var address = await this.context
                 .Addresses
-                .FirstOrDefault(x => x.Id == addressId);
+                .FirstOrDefaultAsync(x => x.Id == addressId);
 
             return address;
         }
