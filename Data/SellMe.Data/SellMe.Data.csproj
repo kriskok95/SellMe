@@ -17,6 +17,8 @@
     <Compile Remove="Migrations\20190628154216_AddedPhoneNumberAndEmailAddressToAddres.Designer.cs" />
     <Compile Remove="Migrations\20190701074847_newMigration.cs" />
     <Compile Remove="Migrations\20190701074847_newMigration.Designer.cs" />
+    <Compile Remove="Migrations\20190719164703_addedPropertyActiveToAtAd.cs" />
+    <Compile Remove="Migrations\20190719164703_addedPropertyActiveToAtAd.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
