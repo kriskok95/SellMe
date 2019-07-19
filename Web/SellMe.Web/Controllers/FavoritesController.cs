@@ -1,12 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
     using SellMe.Data.Models;
     using SellMe.Services.Interfaces;
     using System;
+    using System.Threading.Tasks;
     using System.Linq;
 
 
@@ -24,16 +23,14 @@ namespace SellMe.Web.Controllers
             this.favoritesService = favoritesService;
         }
 
-        public IActionResult MyFavorites()
+        public async Task<IActionResult> MyFavorites()
         {
             var loggedInUserId = this.userManager.GetUserId(this.User);
 
-            var favoriteAdViewModels = this.adsService.GetFavoriteAdsByUserIdAsync(loggedInUserId)
-                .GetAwaiter()
-                .GetResult()
-                .ToList();
+            var favoriteAdViewModels = await this.adsService.GetFavoriteAdsByUserIdAsync(loggedInUserId);
 
-            return this.View(favoriteAdViewModels);
+
+            return this.View(favoriteAdViewModels.ToList());
         }
 
         public async Task<IActionResult> Add(int adId)

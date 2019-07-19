@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services.Interfaces
 {
+    using System.Threading.Tasks;
     using SellMe.Web.ViewModels.ViewModels.Messages;
     using SellMe.Web.ViewModels.InputModels.Messages;
     using System.Collections.Generic;
@@ -7,16 +8,16 @@
 
     public interface IMessagesService
     {
-        SendMessageViewModel GetMessageViewModelByAdId(int adId);
+        Task<SendMessageViewModel> GetMessageViewModelByAdIdAsync(int adId);
 
-        SendMessageBindingModel GetMessageBindingModelByAdId(int adId);
+        Task<SendMessageBindingModel> GetMessageBindingModelByAdIdAsync(int adId);
 
-        void CreateMessage(SendMessageInputModel inputModel);
+        Task CreateMessageAsync(SendMessageInputModel inputModel);
 
-        ICollection<InboxMessageViewModel> GetInboxViewModelsByCurrentUser();
+        Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync();
 
-        ICollection<SentBoxMessageViewModel> GetSentBoxViewModelByCurrentUser();
+        Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync();
 
-        ICollection<MessageDetailsViewModel> GetMessageDetailsViewModels(int adId, string senderId, string sellerId);
+        Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string sellerId);
     }
 }

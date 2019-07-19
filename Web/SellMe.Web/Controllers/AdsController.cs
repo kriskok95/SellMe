@@ -69,15 +69,13 @@
         }
 
         [Authorize]
-        public IActionResult ActiveAds()
+        public async Task<IActionResult> ActiveAds()
         {
-            var myAdsViewModels = this.adService
-                .GetMyAdsViewModelsAsync()
-                .GetAwaiter()
-                .GetResult()
-                .ToList();
+            var myAdsViewModels = await this.adService
+                .GetMyAdsViewModelsAsync();
 
-            return this.View(myAdsViewModels);
+
+            return this.View(myAdsViewModels.ToList());
         }
 
         [Authorize]
@@ -95,15 +93,13 @@
         }
 
         [Authorize]
-        public IActionResult ArchivedAds()
+        public async Task<IActionResult> ArchivedAds()
         {
-            var myArchivedAds = this.adService
-                .GetMyArchivedAdsViewModelsAsync()
-                .GetAwaiter()
-                .GetResult()
-                .ToList();
+            var myArchivedAds = await this.adService
+                .GetMyArchivedAdsViewModelsAsync();
 
-            return this.View(myArchivedAds);
+
+            return this.View(myArchivedAds.ToList());
         }
 
         [Authorize]

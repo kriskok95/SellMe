@@ -17,7 +17,7 @@
 
         Task<AdDetailsViewModel> GetAdDetailsViewModelAsync(int adId);
 
-        Ad GetAdById(int adId);
+        Task<Ad> GetAdByIdAsync(int adId);
 
         Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync();
 

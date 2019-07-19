@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using System.Threading.Tasks;
+
+namespace SellMe.Web.Controllers
 {
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
@@ -19,9 +21,9 @@
         }
 
         [Authorize]
-        public IActionResult Send(int id)
+        public async Task<IActionResult> Send(int id)
         {
-            var sendMessageBindingModel = this.messagesService.GetMessageBindingModelByAdId(id);
+            var sendMessageBindingModel = await this.messagesService.GetMessageBindingModelByAdIdAsync(id);
 
             return this.View(sendMessageBindingModel);
         }
@@ -29,34 +31,32 @@
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult Send(SendMessageInputModel inputModel)
+        public async Task<IActionResult> Send(SendMessageInputModel inputModel)
         {
-            this.messagesService.CreateMessage(inputModel);
+            await this.messagesService.CreateMessageAsync(inputModel);
 
             return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, sellerId = inputModel.RecipientId});
         }
 
-        public IActionResult Inbox()
+        public async Task<IActionResult> Inbox()
         {
-            var inboxMessageViewModels = this.messagesService
-                .GetInboxViewModelsByCurrentUser()
-                .ToList();
+            var inboxMessageViewModels = await this.messagesService
+                .GetInboxViewModelsByCurrentUserAsync();
 
-            return this.View(inboxMessageViewModels);
+            return this.View(inboxMessageViewModels.ToList());
         }
 
-        public IActionResult SentBox()
+        public async Task<IActionResult> SentBox()
         {
-            var sentBoxMessageViewModel = this.messagesService
-                .GetSentBoxViewModelByCurrentUser()
-                .ToList();
+            var sentBoxMessageViewModel = await this.messagesService
+                .GetSentBoxViewModelByCurrentUserAsync();
 
-            return this.View(sentBoxMessageViewModel);
+            return this.View(sentBoxMessageViewModel.ToList());
         }
 
-        public IActionResult Details(MessageDetailsBindingModel bindingModel)
+        public async Task<IActionResult> Details(MessageDetailsBindingModel bindingModel)
         {
-            bindingModel.ViewModels = this.messagesService.GetMessageDetailsViewModels(bindingModel.AdId, bindingModel.SenderId, bindingModel.SellerId).ToList();
+            bindingModel.ViewModels = await this.messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.SellerId);
             bindingModel.AdTitle = this.adsService.GetAdTitleById(bindingModel.AdId);
 
             return this.View(bindingModel);

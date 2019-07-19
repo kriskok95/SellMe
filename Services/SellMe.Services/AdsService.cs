@@ -109,7 +109,7 @@
             await this.context.SaveChangesAsync();
         }
 
-        private async Task<Ad> GetAdByIdAsync(int adId)
+        public async Task<Ad> GetAdByIdAsync(int adId)
         {
             var ad = await this.context.Ads
                 .FirstOrDefaultAsync(x => x.Id == adId);
@@ -307,15 +307,6 @@
             var url = await CloudinaryHelper.UploadImage(cloudinary, inputModelImage, title);
 
             return url;
-        }
-
-        Ad IAdsService.GetAdById(int adId)
-        {
-            var ad = this.context
-                .Ads
-                .FirstOrDefault(x => x.Id == adId);
-
-            return ad;
         }
     }
 }

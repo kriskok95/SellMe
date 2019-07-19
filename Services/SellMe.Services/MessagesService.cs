@@ -1,6 +1,9 @@
-﻿namespace SellMe.Services
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace SellMe.Services
 {
     using AutoMapper;
+    using System.Threading.Tasks;
     using SellMe.Data;
     using SellMe.Data.Models;
     using SellMe.Services.Interfaces;
@@ -26,9 +29,9 @@
             this.context = context;
         }
 
-        public SendMessageViewModel GetMessageViewModelByAdId(int adId)
+        public async Task<SendMessageViewModel> GetMessageViewModelByAdIdAsync(int adId)
         {
-            var ad = this.adsService.GetAdById(adId);
+            var ad = await this.adsService.GetAdByIdAsync(adId);
 
             if (ad == null)
             {
@@ -41,9 +44,9 @@
             return sendMessageViewModel;
         }
 
-        public SendMessageBindingModel GetMessageBindingModelByAdId(int adId)
+        public async Task<SendMessageBindingModel> GetMessageBindingModelByAdIdAsync(int adId)
         {
-            var sendMessageViewModel = this.GetMessageViewModelByAdId(adId);
+            var sendMessageViewModel = await this.GetMessageViewModelByAdIdAsync(adId);
             var sendMessageBindingModel = new SendMessageBindingModel
             {
                 ViewModel = sendMessageViewModel
@@ -52,45 +55,45 @@
             return sendMessageBindingModel;
         }
 
-        public void CreateMessage(SendMessageInputModel inputModel)
+        public async Task CreateMessageAsync(SendMessageInputModel inputModel)
         {
             var message = this.mapper.Map<Message>(inputModel);
 
-            this.context.Messages.Add(message);
-            this.context.SaveChanges();
+            await this.context.Messages.AddAsync(message);
+            await this.context.SaveChangesAsync();
         }
 
-        public ICollection<InboxMessageViewModel> GetInboxViewModelsByCurrentUser()
+        public async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
             var inboxMessagesFromDb = this.GetInboxMessagesByUserId(currentUserId);
-            var inboxMessageViewModels = inboxMessagesFromDb
+            var inboxMessageViewModels = await inboxMessagesFromDb
                 .To<InboxMessageViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return inboxMessageViewModels;
         }
 
-        public ICollection<SentBoxMessageViewModel> GetSentBoxViewModelByCurrentUser()
+        public async Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync()
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
             var sentBoxMessagesFromDb = this.GetSentBoxMessagesByUserId(currentUserId);
-            var sentBoxMessageViewModels = sentBoxMessagesFromDb
+            var sentBoxMessageViewModels = await sentBoxMessagesFromDb
                 .To<SentBoxMessageViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return sentBoxMessageViewModels;
         }
 
-        public ICollection<MessageDetailsViewModel> GetMessageDetailsViewModels(int adId, string senderId, string recipientId)
+        public async Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string recipientId)
         {
             var messagesFromFb = this.GetMessagesDetailsByAd(adId, senderId, recipientId);
 
-            var messageDetailsViewModels = messagesFromFb
+            var messageDetailsViewModels = await messagesFromFb
                 .To<MessageDetailsViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return messageDetailsViewModels;
         }
@@ -110,7 +113,8 @@
             var sentBoxMessages = this.context
                 .Ads
                 .Where(x => x.Messages.Any(y => y.SenderId == currentUserId))
-                .Select(x => x.Messages.OrderByDescending(y => y.CreatedOn).FirstOrDefault());
+                .Select(x => x.Messages.OrderByDescending(y => y.CreatedOn)
+                    .FirstOrDefault());
 
             return sentBoxMessages;
         }
@@ -121,7 +125,8 @@
             var inboxMessages = this.context
                 .Ads
                 .Where(x => x.Messages.Any(y => y.RecipientId == currentUserId))
-                .Select(x => x.Messages.OrderBy(y => y.CreatedOn).FirstOrDefault());
+                .Select(x => x.Messages.OrderBy(y => y.CreatedOn)
+                    .FirstOrDefault());
 ;
             return inboxMessages;
         }
