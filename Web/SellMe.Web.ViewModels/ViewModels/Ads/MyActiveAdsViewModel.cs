@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
+﻿using System;
+
+namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
@@ -9,6 +11,10 @@
     public class MyActiveAdsViewModel : IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime ActiveTo { get; set; }
 
         public string Title { get; set; }
 

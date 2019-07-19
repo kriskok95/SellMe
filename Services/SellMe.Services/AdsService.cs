@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using System;
+
+namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
@@ -46,6 +48,7 @@
                 .ToList();
 
             var ad = this.mapper.Map<Ad>(inputModel);
+            ad.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
             ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
                 .ToList();
             ad.SellerId = this.usersService.GetCurrentUserId();
@@ -125,6 +128,7 @@
 
             var adsForCurrentUserViewModels = await adsForCurrentUser
                 .To<MyActiveAdsViewModel>()
+                .OrderBy(x => x.ActiveTo)
                 .ToListAsync();
 
             return adsForCurrentUserViewModels;

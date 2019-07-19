@@ -13,6 +13,7 @@
     {
         public SellMeProfile()
         {
+            //Create Ad
             CreateMap<CreateAdInputModel, Ad>()
                 .ForMember(x => x.CategoryId, cfg => cfg.MapFrom(x => x.CreateAdDetailInputModel.CategoryId))
                 .ForMember(x => x.SubCategoryId, cfg => cfg.MapFrom(x => x.CreateAdDetailInputModel.SubCategoryId))
@@ -24,7 +25,6 @@
                 .ForMember(x => x.Address, cfg => cfg.MapFrom(x => x.CreateAdAddressInputModel));
 
             CreateMap<CreateAdAddressInputModel, Address>();
-
 
             CreateMap<Ad, AdDetailsViewModel>()
                 .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)))

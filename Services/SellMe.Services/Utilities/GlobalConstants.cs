@@ -1,6 +1,7 @@
 ﻿namespace SellMe.Services.Utilities
 {
-    public class GlobalConstants
+    public static class GlobalConstants
     {
+        public const int AdDuration = 30;
     }
 }

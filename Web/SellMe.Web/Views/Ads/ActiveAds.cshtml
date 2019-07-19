@@ -18,29 +18,42 @@
                     <div class="card-body">
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Picture</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Show</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Archive</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Picture</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Show</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Archive</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @for (int i = 0; i < @Model.Count; i++)
-                            {
-                                <tr class="trElm">
-                                    <th scope="row">@i</th>
-                                    <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl"/></td>
-                                    <td>@Model[i].Title</td>
-                                    <td>@Model[i].Price$</td>
-                                    <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Show</a></td>
-                                    <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning">Edit</a></td>
-                                    <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
-                                </tr>
-                            }
+                                @for (int i = 0; i < @Model.Count; i++)
+                                {
+                                    <tr class="trElm">
+                                        <th scope="row">@(i + 1)</th>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col text-left">
+                                                    From: @Model[i].CreatedOn.ToString("dd/MM")
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col text-left">
+                                                    To: @Model[i].ActiveTo.ToString("dd/MM")
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
+                                        <vc:title-length ad-title="@Model[i].Title"></vc:title-length>
+                                        <td>@Model[i].Price$</td>
+                                        <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info btn-sm">Show</a></td>
+                                        <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning btn-sm">Edit</a></td>
+                                        <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive btn-sm">Archive</button></td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
