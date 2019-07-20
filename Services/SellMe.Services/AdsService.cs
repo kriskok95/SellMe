@@ -172,6 +172,8 @@ namespace SellMe.Services
                 return false;
             }
             ad.IsDeleted = false;
+            ad.CreatedOn = DateTime.UtcNow;
+            ad.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
 
             this.context.Update(ad);
             await this.context.SaveChangesAsync();
@@ -221,6 +223,16 @@ namespace SellMe.Services
             var adTitle = this.context.Ads.FirstOrDefault(x => x.Id == adId)? .Title;
 
             return adTitle;
+        }
+
+        public  async Task UpdateAdByIdAsync(int adId)
+        {
+            var adFromDb = await this.GetAdByIdAsync(adId);
+
+            adFromDb.CreatedOn = DateTime.UtcNow;
+            adFromDb.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
+            this.context.Update(adFromDb);
+            await this.context.SaveChangesAsync();
         }
 
         private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel, EditAdAddressViewModel editAdAddressViewModel)

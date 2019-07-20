@@ -32,5 +32,7 @@
         Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId);
 
         string GetAdTitleById(int adId);
+
+        Task UpdateAdByIdAsync(int adId);
     }
 }

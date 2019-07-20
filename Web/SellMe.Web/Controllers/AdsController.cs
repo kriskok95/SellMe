@@ -105,7 +105,6 @@
         [Authorize]
         public async Task<IActionResult> ActivateAd(int adId)
         {
-            //TODO: Change the name to activateAdAsync
             bool isActivated = await this.adService.ActivateAdById(adId);
 
             var result = new
@@ -122,6 +121,13 @@
             var editAdBindingModel = this.adService.GetEditAdBindingModelById(id);
 
             return this.View(editAdBindingModel);
+        }
+
+        public async Task<IActionResult> Update(UpdateAdInputModel inputModel)
+        {
+            await this.adService.UpdateAdByIdAsync(inputModel.AdId);
+
+            return this.RedirectToAction("ActiveAds");
         }
 
     }
