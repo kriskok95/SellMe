@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Web.ViewModels", "We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services.Mapping", "Services\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj", "{F491AC23-94F7-44E8-A91E-D5010CDBAAEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SellMe.Services.Messaging", "Services\SellMe.Services.Messaging\SellMe.Services.Messaging.csproj", "{AFDAD265-433E-4759-A35F-9B0DCEA4E301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services.Messaging", "Services\SellMe.Services.Messaging\SellMe.Services.Messaging.csproj", "{AFDAD265-433E-4759-A35F-9B0DCEA4E301}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

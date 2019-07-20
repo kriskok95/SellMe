@@ -41,6 +41,9 @@
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
 
+        public int? PromotionId { get; set; }
+        public virtual Promotion Promotion { get; set; }
+
         public virtual ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }

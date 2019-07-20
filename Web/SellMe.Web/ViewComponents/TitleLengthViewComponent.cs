@@ -5,7 +5,7 @@
     public class TitleLengthViewComponent : ViewComponent
     {
         private const int StartIndex = 0;
-        private const int StringLength = 20;
+        private const int StringLength = 15;
 
         public IViewComponentResult Invoke(string adTitle)
         {

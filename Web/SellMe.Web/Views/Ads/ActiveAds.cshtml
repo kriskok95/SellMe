@@ -49,7 +49,7 @@
                                     <vc:title-length ad-title="@Model[i].Title"></vc:title-length>
                                     <td>@Model[i].Price$</td>
                                     <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info btn-sm">Details</a></td>
-                                    <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@Model[i].Id" class="btn btn-info btn-sm">Update</a></td>
+                                    <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@Model[i].Id" class="btn btn-success btn-sm">Update</a></td>
                                     <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning btn-sm">Edit</a></td>
                                     <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive btn-sm">Archive</button></td>
                                 </tr>
