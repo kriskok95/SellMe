@@ -34,6 +34,10 @@
                 .WithOne(x => x.Ad)
                 .HasForeignKey(x => x.AdId);
 
+            builder.HasMany(x => x.Promotions)
+                .WithOne(x => x.Ad)
+                .HasForeignKey(x => x.AdId);
+
             builder.Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
         }

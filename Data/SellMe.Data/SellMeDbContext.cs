@@ -37,6 +37,8 @@
 
         public DbSet<SellMeUserAddress> SellMeUserAddresses { get; set; }
 
+        public DbSet<Promotion> Promotions{ get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();

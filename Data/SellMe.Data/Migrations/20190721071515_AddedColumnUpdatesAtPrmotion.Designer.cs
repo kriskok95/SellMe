@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellMe.Data;
 
 namespace SellMe.Data.Migrations
 {
     [DbContext(typeof(SellMeDbContext))]
-    partial class SellMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190721071515_AddedColumnUpdatesAtPrmotion")]
+    partial class AddedColumnUpdatesAtPrmotion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -158,6 +160,8 @@ namespace SellMe.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("PromotionId");
+
                     b.Property<string>("SellerId");
 
                     b.Property<int>("SubCategoryId");
@@ -171,6 +175,8 @@ namespace SellMe.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ConditionId");
+
+                    b.HasIndex("PromotionId");
 
                     b.HasIndex("SellerId");
 
@@ -373,8 +379,6 @@ namespace SellMe.Data.Migrations
 
                     b.Property<DateTime>("ActiveTo");
 
-                    b.Property<int>("AdId");
-
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("ModifiedOn");
@@ -384,8 +388,6 @@ namespace SellMe.Data.Migrations
                     b.Property<int>("Updates");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdId");
 
                     b.ToTable("Promotion");
                 });
@@ -599,6 +601,10 @@ namespace SellMe.Data.Migrations
                         .HasForeignKey("ConditionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("SellMe.Data.Models.Promotion", "Promotion")
+                        .WithMany("Ads")
+                        .HasForeignKey("PromotionId");
+
                     b.HasOne("SellMe.Data.Models.SellMeUser", "Seller")
                         .WithMany("Ads")
                         .HasForeignKey("SellerId");
@@ -651,14 +657,6 @@ namespace SellMe.Data.Migrations
                     b.HasOne("SellMe.Data.Models.SellMeUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("SellMe.Data.Models.Promotion", b =>
-                {
-                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
-                        .WithMany("Promotions")
-                        .HasForeignKey("AdId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SellMe.Data.Models.Review", b =>
