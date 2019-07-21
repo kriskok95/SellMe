@@ -1,7 +1,12 @@
 ﻿namespace SellMe.Services.Interfaces
 {
+    using System.Threading.Tasks;
+    using SellMe.Web.ViewModels.BindingModels.Promotions;
+
     public interface IPromotionsService
     {
+        Task<PromotionBindingModel> GetPromotionBindingModelByAdIdAsync(int adId);
 
+        void CreatePromotionForAdAsync(int adId, string promotionType);
     }
 }

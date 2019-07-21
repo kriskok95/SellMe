@@ -1,7 +1,54 @@
-﻿<div class="container-fluid">
+﻿@model PromotionBindingModel
+
+<div class="container-fluid">
     <div class="row">
         <div class="offset-2 col-8">
-
+            <h3 class="text-center">@Model.PromotionViewModel.AdTitle</h3>
+            <hr class="hr-sell-me" />
+            <div class="d-flex justify-content-around">
+                <div>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            <h4 class="text-center">Silver</h4>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-handshake"></i> 10 Days TOP ad</h5></li>
+                            <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-sync-alt"></i> 5 Updates</h5></li>
+                            <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-dollar-sign"></i>  8.99$</h5></li>
+                        </ul>
+                        <div class="row">
+                            <div class="offset-3 col-6">
+                                <form asp-controller="Promotions" asp-action="Buy" method="post">
+                                    <input type="hidden" asp-for="@Model.PromotionInputModel.AdId" value="@Model.PromotionViewModel.AdId" />
+                                    <input type="hidden" asp-for="@Model.PromotionInputModel.PromotionType" value="silver" />
+                                    <button type="submit" asp-controller="Promotions" asp-action="Buy" class="btn btn-primary btn-block mt-2 mb-2">Buy</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            <h4 class="text-center">Silver</h4>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-handshake"></i> 30 Days TOP ad</h5></li>
+                            <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-sync-alt"></i> 12 Updates</h5></li>
+                            <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-dollar-sign"></i>  14.99$</h5></li>
+                        </ul>
+                        <div class="row">
+                            <div class="offset-3 col-6">
+                                <form asp-controller="Promotions" asp-action="Buy" method="post">
+                                    <input type="hidden" asp-for="@Model.PromotionInputModel.AdId" value="@Model.PromotionViewModel.AdId" />
+                                    <input type="hidden" asp-for="@Model.PromotionInputModel.PromotionType" value="gold"/>
+                                    <button type="submit" asp-controller="Promotions" asp-action="Buy" class="btn btn-primary btn-block mt-2 mb-2">Buy</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>    
+    </div>
 </div>

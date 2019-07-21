@@ -3,6 +3,7 @@
     using SellMe.Web.ViewModels.ViewModels.Messages;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
+    using SellMe.Web.ViewModels.ViewModels.Promotions;
     using SellMe.Web.ViewModels.InputModels.Messages;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using AutoMapper;
@@ -48,6 +49,11 @@
                 .ForMember(x => x.Availability, cfg => cfg.MapFrom(x => x.AvailabilityCount));
 
             CreateMap<Address, EditAdAddressViewModel>();
+
+            //Map Ad to PromotionViewModel
+            CreateMap<Ad, PromotionViewModel>()
+                .ForMember(x => x.AdId, cfg => cfg.MapFrom(x => x.Id))
+                .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Title));
         }
     }
 }

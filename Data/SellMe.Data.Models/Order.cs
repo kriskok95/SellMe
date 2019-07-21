@@ -1,7 +1,7 @@
-﻿using SellMe.Data.Common;
-
-namespace SellMe.Data.Models
+﻿namespace SellMe.Data.Models
 {
+    using SellMe.Data.Common;
+
     public class Order : BaseDeletableModel<int>
     {
         public int AdId { get; set; }
