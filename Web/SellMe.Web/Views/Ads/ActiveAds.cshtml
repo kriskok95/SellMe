@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="offset-2 col-8">
+        <div class="offset-1 col-10">
             <h3 class="text-center">My Active Ads:</h3>
             <hr class="hr-sell-me" />
             <div class="card text-center">
@@ -33,28 +33,39 @@
                             <tbody>
                                 @for (int i = 0; i < @Model.Count; i++)
                                 {
-                                <tr class="trElm">
-                                    <td>
-                                        <div class="row">
-                                            <div class="col text-left">
-                                                From: @Model[i].CreatedOn.ToString("dd/MM")
+                                    <tr class="trElm">
+                                        <td>
+                                            <div class="row">
+                                                <div class="col text-left">
+                                                    From: @Model[i].CreatedOn.ToString("dd/MM")
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col text-left">
-                                                To: @Model[i].ActiveTo.ToString("dd/MM")
+                                            <div class="row">
+                                                <div class="col text-left">
+                                                    To: @Model[i].ActiveTo.ToString("dd/MM")
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
-                                    <vc:title-length ad-title="@Model[i].Title"></vc:title-length>
-                                    <td>@Model[i].Price$</td>
-                                    <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info btn-sm">Details</a></td>
-                                    <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@Model[i].Id" class="btn btn-success btn-sm">Update</a></td>
-                                    <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning btn-sm">Edit</a></td>
-                                    <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@Model[i].Id" class="btn btn-primary btn-sm">Promote</a></td>
-                                    <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive btn-sm">Archive</button></td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" />
+                                            </div>
+                                            @if (@Model[i].IsPromoted)
+                                            {
+                                                <div class="mt-2">
+                                                    <span class="label warning">Promo</span>
+                                                </div>
+                                            }
+                                        </td>
+
+                                        <vc:title-length ad-title="@Model[i].Title"></vc:title-length>
+                                        <td>@Model[i].Price$</td>
+                                        <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Details</a></td>
+                                        <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@Model[i].Id" class="btn btn-success">Update</a></td>
+                                        <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning">Edit</a></td>
+                                        <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@Model[i].Id" class="btn btn-primary">Promote</a></td>
+                                        <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>

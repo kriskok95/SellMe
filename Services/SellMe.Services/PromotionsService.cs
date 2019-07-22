@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using SellMe.Data;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using SellMe.Services.Interfaces;
     using System.Threading.Tasks;
@@ -11,6 +7,9 @@ namespace SellMe.Services
     using SellMe.Web.ViewModels.ViewModels.Promotions;
     using System;
     using SellMe.Data.Models;
+    using System.Linq;
+    using Microsoft.EntityFrameworkCore;
+    using SellMe.Data;
 
     public class PromotionsService : IPromotionsService
     {
@@ -57,7 +56,7 @@ namespace SellMe.Services
                 activeFrom = (this.context.Promotions
                     .Where(x => x.IsActive && x.AdId == adId)
                     .OrderByDescending(x => x.ActiveTo)
-                    .FirstOrDefault().ActiveTo);
+                    .FirstOrDefault()?.ActiveTo ?? DateTime.UtcNow);
             }
 
             if (promotionType == "silver")
