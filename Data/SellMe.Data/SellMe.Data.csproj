@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SellMe.Common\SellMe.Common.csproj" />
     <ProjectReference Include="..\SellMe.Data.Models\SellMe.Data.Models.csproj" />
   </ItemGroup>
 

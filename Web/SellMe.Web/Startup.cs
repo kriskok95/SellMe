@@ -21,6 +21,7 @@
     using AutoMapper;
     using SellMe.Services.Utilities;
     using SellMe.Web.Middlewares;
+    using SellMe.Data.Seeding;
 
 
     public class Startup
@@ -89,6 +90,18 @@
         {
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
             AutoMapperConfig.RegisterMappings(typeof(Ad).GetTypeInfo().Assembly);
+
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<SellMeDbContext>();
+
+                if (env.IsDevelopment())
+                {
+                    dbContext.Database.Migrate();
+                }
+
+                new SellMeDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+            }
 
             if (env.IsDevelopment())
             {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
@@ -19,6 +17,8 @@ namespace SellMe.Services
     using SellMe.Web.ViewModels.ViewModels.Categories;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.BindingModels.Ads;
+    using System;
+    using SellMe.Common;
 
     public class AdsService : IAdsService
     {
