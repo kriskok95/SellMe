@@ -1,4 +1,6 @@
-﻿using SellMe.Data;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using SellMe.Data;
 
 namespace SellMe.Services
 {
@@ -42,20 +44,33 @@ namespace SellMe.Services
             return promotionBindingModel;
         }
 
-        public void CreatePromotionForAdAsync(int adId, string promotionType)
+        public async Task CreatePromotionForAdAsync(int adId, string promotionType)
         {
-            //TODO: Refactor this method.
-            if (promotionType == "silver")
+            bool isThereAnyActivePromotion = await this.context
+                .Promotions
+                .AnyAsync(x => x.AdId == adId && x.IsActive);
+
+            DateTime activeFrom = DateTime.UtcNow;
+
+            if (isThereAnyActivePromotion)
             {
+                activeFrom = (this.context.Promotions
+                    .Where(x => x.IsActive && x.AdId == adId)
+                    .OrderByDescending(x => x.ActiveTo)
+                    .FirstOrDefault().ActiveTo);
+            }
+
+            if (promotionType == "silver")
+            { 
                 var promotion = new Promotion
                 {
                     AdId = adId,
                     Updates = SilverAdUpdates,
-                    ActiveTo = DateTime.UtcNow.AddDays(SilverAdActiveDays),
+                    ActiveTo = activeFrom.AddDays(SilverAdActiveDays),
                     Type = "Silver",
                 };
-                this.context.Promotions.Add(promotion);
-                this.context.SaveChanges();
+                await this.context.Promotions.AddAsync(promotion);
+                await this.context.SaveChangesAsync();
             }
             else if (promotionType == "gold")
             {
@@ -63,11 +78,11 @@ namespace SellMe.Services
                 {
                     AdId = adId,
                     Updates = GoldAdUpdates,
-                    ActiveTo = DateTime.UtcNow.AddDays(GoldAdActiveDays),
+                    ActiveTo = activeFrom.AddDays(GoldAdActiveDays),
                     Type = "Gold",
                 };
-                this.context.Promotions.Add(promotion);
-                this.context.SaveChanges();
+                await this.context.Promotions.AddAsync(promotion);
+                await this.context.SaveChangesAsync();
             }
             
         }

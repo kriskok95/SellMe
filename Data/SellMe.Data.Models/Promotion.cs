@@ -9,7 +9,7 @@
 
         public int Updates { get; set; }
 
-        public bool IsActive => ActiveTo < DateTime.UtcNow;
+        public bool IsActive => ActiveTo > DateTime.UtcNow;
 
         public DateTime ActiveTo { get; set; }
 

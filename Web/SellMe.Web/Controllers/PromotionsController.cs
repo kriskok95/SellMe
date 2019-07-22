@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.BindingModels.Promotions;
+    using Microsoft.AspNetCore.Authorization;
 
     public class PromotionsController : Controller
     {
@@ -20,11 +21,13 @@
 
             return this.View(viewModel);
         }
-
+        
         [HttpPost]
-        public IActionResult Buy(PromotionBindingModel bindingModel)
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Buy(PromotionBindingModel bindingModel)
         {
-            this.promotionsService.CreatePromotionForAdAsync(bindingModel.PromotionInputModel.AdId,
+            await this.promotionsService.CreatePromotionForAdAsync(bindingModel.PromotionInputModel.AdId,
                 bindingModel.PromotionInputModel.PromotionType);
 
             return this.RedirectToAction("ActiveAds", "Ads");
