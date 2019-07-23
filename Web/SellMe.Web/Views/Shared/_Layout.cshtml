@@ -20,89 +20,95 @@
     <link href="~/css/all.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SellMe</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <div class="row">
+        <div class="offset-1 col-10">
+            <header>
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SellMe</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a asp-controller="Home" asp-action="Index" class="nav-link"><i class="fas fa-home"></i> Home<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Ads" asp-action="Create" class="nav-link"><i class="fas fa-plus"></i> Create Аd</a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Ads" asp-action="All" class="nav-link"><i class="fas fa-border-all"></i> All Аds</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item active">
+                                    <a asp-controller="Home" asp-action="Index" class="nav-link"><i class="fas fa-home"></i> Home<span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Ads" asp-action="Create" class="nav-link"><i class="fas fa-plus"></i> Create Аd</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Ads" asp-action="All" class="nav-link"><i class="fas fa-border-all"></i> All Аds</a>
+                                </li>
+                            </ul>
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </nav>
                 </div>
-            </nav>
-        </div>
-    </header>
-    <div class="container-fluid mt-3">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <div class="footer-dark">
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6 col-md-3 item">
-                        <h3>Services</h3>
-                        <ul>
-                            <li><a href="#">Web design</a></li>
-                            <li><a href="#">Development</a></li>
-                            <li><a href="#">Hosting</a></li>
-                        </ul>
+            </header>
+            <div class="container-fluid mt-3">
+                <partial name="_CookieConsentPartial" />
+                <main role="main" class="pb-3">
+                    <div class="container-fluid">
+                    @RenderBody()
                     </div>
-                    <div class="col-sm-6 col-md-3 item">
-                        <h3>About</h3>
-                        <ul>
-                            <li><a href="#">Company</a></li>
-                            <li><a href="#">Team</a></li>
-                            <li><a href="#">Careers</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6 item text">
-                        <h3>Company Name</h3>
-                        <p>Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.</p>
-                    </div>
-                    <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
-                </div>
-                <p class="copyright">Company Name © 2019</p>
+                </main>
             </div>
-        </footer>
-    </div>
+            <div class="footer-dark">
+                <footer>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 item">
+                                <h3>Services</h3>
+                                <ul>
+                                    <li><a href="#">Web design</a></li>
+                                    <li><a href="#">Development</a></li>
+                                    <li><a href="#">Hosting</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6 col-md-3 item">
+                                <h3>About</h3>
+                                <ul>
+                                    <li><a href="#">Company</a></li>
+                                    <li><a href="#">Team</a></li>
+                                    <li><a href="#">Careers</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 item text">
+                                <h3>Company Name</h3>
+                                <p>Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.</p>
+                            </div>
+                            <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
+                        </div>
+                        <p class="copyright">Company Name © 2019</p>
+                    </div>
+                </footer>
+            </div>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
-        </script>
-    </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/all.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+            <environment include="Development">
+                <script src="~/lib/jquery/dist/jquery.js"></script>
+                <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+            </environment>
+            <environment exclude="Development">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                        asp-fallback-test="window.jQuery"
+                        crossorigin="anonymous"
+                        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+                </script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                        asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                        asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                        crossorigin="anonymous"
+                        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+                </script>
+            </environment>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script src="~/js/all.js" asp-append-version="true"></script>
+            @RenderSection("Scripts", required: false)
+        </div>
+    </div>
 </body>
 </html>
 
