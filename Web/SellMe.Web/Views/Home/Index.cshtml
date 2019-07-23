@@ -35,28 +35,12 @@
             <h3>Promoted Ads:</h3>
             @for (int i = 0; i < @Model.PromotedAdViewModels.Count; i += 4)
             {
-                <div class="row justify-content-between my-3">
+                <div class="row justify-content-start my-3">
                     @for (int j = i; j < i + 4; j++)
                     {
                         if (j < @Model.PromotedAdViewModels.Count)
                         {
-                            <div class="col-3 sell-me-container">
-                                <div class="row">
-                                    <div class="col">
-                                        <a asp-controller="Ads" asp-action="Details" asp-route-id="@Model.PromotedAdViewModels[j].Id"><img class="promo-img" src="@Model.PromotedAdViewModels[j].MainPictureUrl" alt="@Model.PromotedAdViewModels[j].Title" /></a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <strong><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model.PromotedAdViewModels[j].Id">@Model.PromotedAdViewModels[j].Title</a></strong>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        @Model.PromotedAdViewModels[j].Price $
-                                    </div>
-                                </div>
-                            </div>
+                            <vc:promoted-ad-index-page view-model="@Model.PromotedAdViewModels[j]"></vc:promoted-ad-index-page>
                         }
                     }
                 </div>
