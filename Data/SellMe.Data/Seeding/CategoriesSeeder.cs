@@ -16,7 +16,8 @@
                 return;
             }
 
-            await dbContext.Categories.AddAsync(new Category {Name = "Vehicles", FontAwesomeIcon = "fas fa-car-alt", CreatedOn =  DateTime.UtcNow});
+            //TODO: Export into constants
+            await dbContext.Categories.AddAsync(new Category {Name = "Auto", FontAwesomeIcon = "fas fa-car-alt", CreatedOn =  DateTime.UtcNow});
             await dbContext.Categories.AddAsync(new Category { Name = "Sport/Books/Hoby", FontAwesomeIcon = "fas fa-running", CreatedOn = DateTime.UtcNow });
             await dbContext.Categories.AddAsync(new Category { Name = "Animals", FontAwesomeIcon = "fas fa-paw", CreatedOn = DateTime.UtcNow });
             await dbContext.Categories.AddAsync(new Category { Name = "Electronics", FontAwesomeIcon = "fas fa-desktop", CreatedOn = DateTime.UtcNow });

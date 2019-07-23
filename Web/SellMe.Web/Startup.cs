@@ -120,7 +120,7 @@
 
             app.UseAuthentication();
 
-            app.UseSeedDataMiddleware();
+            //app.UseSeedDataMiddleware();
 
             app.UseMvc(routes =>
             {
