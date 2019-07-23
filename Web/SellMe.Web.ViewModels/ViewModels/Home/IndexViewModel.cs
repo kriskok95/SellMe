@@ -9,5 +9,7 @@
         public List<CategoryViewModel> CategoryViewModels { get; set; }
 
         public List<PromotedAdViewModel> PromotedAdViewModels { get; set; }
+
+        public List<LatestAddedAdViewModel> LatestAddedAdViewModels { get; set; }
     }
 }

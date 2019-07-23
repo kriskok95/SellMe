@@ -262,6 +262,18 @@
             return promotedAdViewModels;
         }
 
+        public async Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels()
+        {
+            var latestAddedAdViewModels = await this.context
+                .Ads
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(GlobalConstants.LatestAddedAdsCountAtIndexPage)
+                .To<LatestAddedAdViewModel>()
+                .ToListAsync();
+
+            return latestAddedAdViewModels;
+        }
+
         private List<int> GetDistinctRandomNumbersInRange(int fromNumber, int toNumber, int numbersCount)
         {
             var random = new Random();

@@ -3,9 +3,9 @@
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Web.ViewModels.ViewModels.Ads;
 
-    public class PromotedAdIndexPageViewComponent : ViewComponent
+    public class LatestAddedAdIndexPageViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(PromotedAdViewModel viewModel)
+        public IViewComponentResult Invoke(LatestAddedAdViewModel viewModel)
         {
             var result = viewModel.Title.Length > 28 ? viewModel.Title.Substring(0, 25) + "..." : viewModel.Title;
             viewModel.Title = result;

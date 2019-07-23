@@ -7,6 +7,7 @@
         public const string ConditionUsedName = "Used";
 
         public const int PromotedAdsCountAtIndexPage = 16;
+        public const int LatestAddedAdsCountAtIndexPage = 16;
 
         public const int AdDuration = 30;
     }

@@ -21,11 +21,13 @@ namespace SellMe.Services
         {
             var categoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
             var promotedAdViewModel = await this.adsService.GetPromotedAdViewModels();
+            var latestAddedAdsViewModel = await this.adsService.GetLatestAddedAdViewModels();
 
             var indexViewModel = new IndexViewModel()
             {
                 CategoryViewModels = categoriesViewModel.ToList(),
                 PromotedAdViewModels = promotedAdViewModel.ToList(),
+                LatestAddedAdViewModels = latestAddedAdsViewModel.ToList(),
             };
 
             return indexViewModel;
