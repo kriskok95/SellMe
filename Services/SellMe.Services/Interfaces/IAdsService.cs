@@ -34,5 +34,7 @@
         string GetAdTitleById(int adId);
 
         Task UpdateAdByIdAsync(int adId);
+
+        Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels();
     }
 }

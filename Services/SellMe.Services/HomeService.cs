@@ -9,19 +9,23 @@ namespace SellMe.Services
     public class HomeService : IHomeService
     {
         private readonly ICategoriesService categoriesService;
+        private readonly IAdsService adsService;
 
-        public HomeService(ICategoriesService categoriesService)
+        public HomeService(ICategoriesService categoriesService, IAdsService adsService)
         {
             this.categoriesService = categoriesService;
+            this.adsService = adsService;
         }
 
         public async Task<IndexViewModel> GetIndexViewModel()
         {
             var categoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
+            var promotedAdViewModel = await this.adsService.GetPromotedAdViewModels();
 
             var indexViewModel = new IndexViewModel()
             {
-                CategoryViewModels = categoriesViewModel.ToList()
+                CategoryViewModels = categoriesViewModel.ToList(),
+                PromotedAdViewModels = promotedAdViewModel.ToList(),
             };
 
             return indexViewModel;

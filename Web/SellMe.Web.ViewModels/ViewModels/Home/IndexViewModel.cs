@@ -2,11 +2,12 @@
 {
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.ViewModels.Categories;
+    using SellMe.Web.ViewModels.ViewModels.Ads;
 
     public class IndexViewModel
     {
         public List<CategoryViewModel> CategoryViewModels { get; set; }
 
-
+        public List<PromotedAdViewModel> PromotedAdViewModels { get; set; }
     }
 }

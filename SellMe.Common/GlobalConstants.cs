@@ -6,6 +6,8 @@
         public const string ConditionBrandNewName = "Brand New";
         public const string ConditionUsedName = "Used";
 
+        public const int PromotedAdsCountAtIndexPage = 16;
+
         public const int AdDuration = 30;
     }
 }
