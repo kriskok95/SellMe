@@ -20,7 +20,6 @@
     using SellMe.Web.ViewModels;
     using AutoMapper;
     using SellMe.Services.Utilities;
-    using SellMe.Web.Middlewares;
     using SellMe.Data.Seeding;
 
 
@@ -119,8 +118,6 @@
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
-            //app.UseSeedDataMiddleware();
 
             app.UseMvc(routes =>
             {
