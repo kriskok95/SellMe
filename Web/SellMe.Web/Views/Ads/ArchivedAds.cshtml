@@ -1,54 +1,48 @@
 ﻿@model List<MyArchivedAdsViewModel>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="offset-1 col-10">
-            <h3 class="text-center">My Archived Ads:</h3>
-            <hr class="hr-sell-me" />
-            <div class="card text-center">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Ads" asp-action="ActiveAds">Active</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Archived</a>
-                        </li>
-                    </ul>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Picture</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Edit</th>
-                                    <th scope="col">Activate</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < @Model.Count; i++)
-                                {
-                                    <tr class="removeElement">
-                                        <th scope="row">@(i + 1)</th>
-                                        <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
-                                        <td>@Model[i].Title</td>
-                                        <td>@Model[i].Price$</td>
-                                        <td><button type="button" class="btn btn-warning">Edit</button></td>
-                                        <td><button type="button" value="@Model[i].Id" class="btn btn-success activate">Activate</button></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+<h3 class="text-center">My Archived Ads:</h3>
+<hr class="hr-sell-me" />
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Ads" asp-action="ActiveAds">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Archived</a>
+            </li>
+        </ul>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Picture</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Activate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < @Model.Count; i++)
+                    {
+                        <tr class="removeElement">
+                            <th scope="row">@(i + 1)</th>
+                            <td><img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" /></td>
+                            <td>@Model[i].Title</td>
+                            <td>@Model[i].Price$</td>
+                            <td><button type="button" class="btn btn-warning">Edit</button></td>
+                            <td><button type="button" value="@Model[i].Id" class="btn btn-success activate">Activate</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
 }
 
