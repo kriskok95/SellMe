@@ -284,13 +284,15 @@
             var adsBySubcategory = this.GetAdsBySubcategory(subcategoryId);
 
             var adsBySubcategoryViewModels = await adsBySubcategory
-                .To<AdDetailsViewModel>()
+                .To<AdViewModel>()
                 .ToListAsync();
 
             var adsBySubcategoryViewModel = new AdsBySubcategoryViewModel
             {
                 AdsByCategorySubcategoryViewModels = subcategories.ToList(),
-                AdsBySubcategoryViewModels = adsBySubcategoryViewModels
+                AdsBySubcategoryViewModels = adsBySubcategoryViewModels,
+                CategoryId = categoryId,
+                SubcategoryId = subcategoryId,
             };
 
             return adsBySubcategoryViewModel;

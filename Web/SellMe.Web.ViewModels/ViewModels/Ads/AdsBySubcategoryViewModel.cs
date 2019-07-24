@@ -5,7 +5,11 @@
 
     public class AdsBySubcategoryViewModel
     {
-        public List<AdDetailsViewModel> AdsBySubcategoryViewModels { get; set; }
+        public int CategoryId { get; set; }
+
+        public int SubcategoryId { get; set; }
+
+        public List<AdViewModel> AdsBySubcategoryViewModels { get; set; }
 
         public List<AdsByCategorySubcategoryViewModel> AdsByCategorySubcategoryViewModels { get; set; }
     }
