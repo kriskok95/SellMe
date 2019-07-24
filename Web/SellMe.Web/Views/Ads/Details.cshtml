@@ -12,51 +12,51 @@
     </ol>
 </nav>
     <div class="row">
-        <div class="offset-3 col-6 mt-3">
+        <div class="offset-2 col-8 mt-3">
             <h3 class="">@Model.Title</h3>
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-6">
+        <div class="offset-2 col-8">
             <hr class="hr-sell-me" />
             <img class="img-fluid rounded img-thumbnail" src="@Model.Images.FirstOrDefault()" alt="@Model.Title" />
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-6 mt-2">
+        <div class="offset-2 col-8 mt-2">
             <h3>Price: @Model.Price@("$")</h3>
             <hr class="hr-sell-me" />
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-3 mt-1">
+        <div class="offset-2 col-4 mt-1">
             <h5 class="text-muted"><i class="far fa-clock"></i> @Model.CreatedOn.ToString("D")</h5>
         </div>
-        <div class="col-3 mt-1">
+        <div class="col-4 mt-1">
             <h5 class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.AddressViewModel.City, @Model.AddressViewModel.Country</h5>
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-3 mt-2">
+        <div class="offset-2 col-4 mt-2">
             <h5 class="text-muted"><i class="fas fa-battery-full"></i> @Model.ConditionName</h5>
         </div>
-        <div class="col-3 mt-2">
+        <div class="col-4 mt-2">
             <h5 class="text-muted"><i class="fas fa-folder"></i> @Model.CategoryName, @Model.SubcategoryName</h5>
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-3 mt-2">
+        <div class="offset-2 col-4 mt-2">
             <h5 class="text-muted"><i class="fas fa-search-plus"></i> Views: @Model.Views</h5>
         </div>
-        <div class="col-3 mt-2">
+        <div class="col-4 mt-2">
             <h5 class="text-muted"><i class="fas fa-eye"></i> Observed: @Model.Observed</h5>
         </div>
-        <div class="offset-3 col-6">
+        <div class="offset-2 col-8">
             <hr class="hr-sell-me" />
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-6">
+        <div class="offset-2 col-8">
             <div class="row">
                 <div class="col-6">
                     <a class="btn btn-info btn-block btn-lg mt-2" asp-controller="Messages" asp-action="Send" asp-route-id="@Model.Id" role="button"><i class="fas fa-envelope"></i> Contact Seller</a>
@@ -73,7 +73,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="offset-3 col-6">
+        <div class="offset-2 col-8">
             <p>@Html.Raw(HttpUtility.HtmlEncode(@Model.Description)?.Replace("\n", "<br/>"))</p>
         </div>
     </div>
@@ -81,7 +81,7 @@
         @foreach (var imageUrl in @Model.Images.Skip(1))
         {
             <div class="row">
-                <div class="offset-3 col-6 mt-1">
+                <div class="offset-2 col-8 mt-1">
                     <img class="img-fluid rounded img-thumbnail" src="@imageUrl" alt="@Model.Title" />
                 </div>
             </div>

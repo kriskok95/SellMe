@@ -1,0 +1,39 @@
+﻿@model AdViewModel
+
+<div class="row">
+    <div class="col">
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+                    <a asp-controller="Ads" asp-action="Details" asp-route-id="@Model.Id"><img src="@Model.ImageUrl" style="height: 200px;" class="card-img img-thumbnail" alt="..."></a>
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-10">
+                                <h5 class="card-title mb-1"><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a></h5>
+                            </div>
+                            <div class="col-2">
+                                <h5>@Model.Price.ToString("F2")$</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text pt-0">@Model.CategoryName/@Model.SubcategoryName</p>
+                                <p class="card-text">@Model.Description</p>
+                                <div class="row d-flex justify-content-between">
+                                    <div class="col-2">
+                                        <p class="card-text"><small class="text-muted"><i class="fas fa-clock"></i> @Model.CreatedOn.ToString("dd/MM/yyyy")</small></p>
+                                    </div>
+                                    <div class="col-2">
+                                        <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.Country/@Model.City</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

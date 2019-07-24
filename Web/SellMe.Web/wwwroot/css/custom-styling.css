@@ -152,8 +152,8 @@ img.promo-img {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 4px;
-    height: 180px;
-    width: 230px;
+    height: 200px;
+    width: 240px;
 }
 
 /*Image container*/
@@ -161,7 +161,7 @@ img.promo-img {
 .sell-me-container-image {
     border: 1px solid #ddd;
     border-radius: 6px;
-    padding-left: 19px;
+    padding-left: 15px;
     padding-top: 19px;
     padding-bottom: 12px;
 }
