@@ -33,5 +33,16 @@
 
             return subcategoryViewModels;
         }
+
+        public async Task<ICollection<AdsByCategorySubcategoryViewModel>> GetAdsByCategorySubcategoryViewModelsAsync(int categoryId)
+        {
+            var subcategoryViewModels = await this.context
+                .SubCategories
+                .Where(x => x.CategoryId == categoryId)
+                .To<AdsByCategorySubcategoryViewModel>()
+                .ToListAsync();
+
+            return subcategoryViewModels;
+        }
     }
 }

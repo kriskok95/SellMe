@@ -4,11 +4,33 @@
 }
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb breadcrumb-sell-me">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">@Model.CategoryName</li>
     </ol>
 </nav>
+<div class="row">
+    <div class="col">
+        <div class="jumbotron jumbotron-fluid jumbotron-sell-me">
+            @for (int i = 0; i < @Model.AdsByCategorySubcategoryViewModels.Count; i += 4)
+            {
+                <div class="row justify-content-start my-4">
+                    @for (int j = i; j < i + 4; j++)
+                    {
+                        if (j < @Model.AdsByCategorySubcategoryViewModels.Count)
+                        {
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                <a asp-controller="Ads" asp-action="AdsBySubcategory" asp-route-categoryId="@Model.CategoryId" asp-route-subcategoryId="@Model.AdsByCategorySubcategoryViewModels[j].Id">
+                                    <h5>-@Model.AdsByCategorySubcategoryViewModels[j].Name-</h5>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <div class="row">
     <vc:categories-side-bar>
     </vc:categories-side-bar>

@@ -130,5 +130,11 @@
             return this.RedirectToAction("ActiveAds");
         }
 
+        public async Task<IActionResult> AdsBySubcategory(int subcategoryId, int categoryId)
+        {
+            var adsBySubcategoryViewModel = await this.adService.GetAdsBySubcategoryViewModelAsync(subcategoryId, categoryId);
+
+            return this.View(adsBySubcategoryViewModel);
+        } 
     }
 }

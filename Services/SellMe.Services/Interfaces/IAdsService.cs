@@ -38,5 +38,7 @@
         Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels();
 
         Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels();
+
+        Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId);
     }
 }

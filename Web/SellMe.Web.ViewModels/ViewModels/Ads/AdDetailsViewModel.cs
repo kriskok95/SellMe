@@ -3,8 +3,12 @@
     using System;
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
+    using SellMe.Data.Models;
+    using SellMe.Services.Mapping;
+    using System.Linq;
+    using AutoMapper;
 
-    public class AdDetailsViewModel
+    public class AdDetailsViewModel : IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -32,5 +36,13 @@
         public AddressViewModel AddressViewModel { get; set; }
 
         public ICollection<string> Images { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Ad, AdDetailsViewModel>()
+                .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)))
+                .ForMember(x => x.Phone, cfg => cfg.MapFrom(x => x.Address.PhoneNumber))
+                .ForMember(x => x.Views, cfg => cfg.MapFrom(x => x.AdViews.Count));
+        }
     }
 }

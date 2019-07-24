@@ -7,5 +7,7 @@
     public interface ISubCategoriesService
     {
         Task<ICollection<CreateAdSubcategoryViewModel>> GetSubcategoriesByCategoryIdAsync(int categoryId);
+
+        Task<ICollection<AdsByCategorySubcategoryViewModel>> GetAdsByCategorySubcategoryViewModelsAsync(int categoryId);
     }
 }

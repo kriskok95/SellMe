@@ -17,6 +17,7 @@
     using SellMe.Web.ViewModels.ViewModels.Categories;
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.BindingModels.Ads;
+    using SellMe.Web.ViewModels.ViewModels.Subcategories;
     using System;
     using SellMe.Common;
 
@@ -28,8 +29,9 @@
         private readonly IUsersService usersService;
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<SellMeUser> userManager;
+        private readonly ISubCategoriesService subCategoriesService;
 
-        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor)
+        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor, ISubCategoriesService subCategoriesService)
         {
             this.context = context;
             this.addressService = addressService;
@@ -37,6 +39,7 @@
             this.usersService = usersService;
             this.categoriesService = categoriesService;
             this.userManager = userManager;
+            this.subCategoriesService = subCategoriesService;
         }
 
         public async Task CreateAdAsync(CreateAdInputModel inputModel)
@@ -71,9 +74,10 @@
         {
             var adsViewModel = await this.GetAllAdsByCategoryAsync(categoryId);
             var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
+            var subcategoryViewModels = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
             string categoryName = this.categoriesService.GetCategoryNameById(categoryId);
 
-            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel, categoryName);
+            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
 
             return adsByCategoryViewModel;
         }
@@ -274,6 +278,33 @@
             return latestAddedAdViewModels;
         }
 
+        public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId)
+        {
+            var subcategories = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
+            var adsBySubcategory = this.GetAdsBySubcategory(subcategoryId);
+
+            var adsBySubcategoryViewModels = await adsBySubcategory
+                .To<AdDetailsViewModel>()
+                .ToListAsync();
+
+            var adsBySubcategoryViewModel = new AdsBySubcategoryViewModel
+            {
+                AdsByCategorySubcategoryViewModels = subcategories.ToList(),
+                AdsBySubcategoryViewModels = adsBySubcategoryViewModels
+            };
+
+            return adsBySubcategoryViewModel;
+        }
+
+        private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)
+        {
+            var adsBySubcategory = this.context
+                .Ads
+                .Where(x => x.SubCategoryId == subcategoryId);
+
+            return adsBySubcategory;
+        }
+
         private List<int> GetDistinctRandomNumbersInRange(int fromNumber, int toNumber, int numbersCount)
         {
             var random = new Random();
@@ -330,12 +361,16 @@
             return adsByUser;
         }
 
-        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName)
+        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel,
+            ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName,
+            ICollection<AdsByCategorySubcategoryViewModel> subcategoryViewModels, int categoryId)
         {
             var adsByCategoryViewModel = new AdsByCategoryViewModel
             {
+                CategoryId = categoryId,
                 CategoryName = categoryName,
-                AdsViewModels = adsViewModel
+                AdsViewModels = adsViewModel,
+                AdsByCategorySubcategoryViewModels = subcategoryViewModels.ToList(),
             };
 
             return adsByCategoryViewModel;
