@@ -336,6 +336,22 @@
             return archivedAdsBindingModel;
         }
 
+        public async Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText)
+        {
+            var adViewModels = await this.context
+                .Ads
+                .Where(x => x.Title.Contains(searchText))
+                .To<AdViewModel>()
+                .ToListAsync();
+
+            var adsBySearchViewModel = new AdsBySearchViewModel
+            {
+                AdsBySearchViewModels = adViewModels
+            };
+
+            return adsBySearchViewModel;
+        }
+
         private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)
         {
             var adsBySubcategory = this.context

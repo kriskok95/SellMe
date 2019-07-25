@@ -2,6 +2,6 @@
 {
     public class AdsBySearchInputModel
     {
-        public string Input { get; set; }
+        public string Search { get; set; }
     }
 }

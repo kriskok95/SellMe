@@ -135,9 +135,11 @@
             return this.View(adsBySubcategoryViewModel);
         }
 
-        public IActionResult BySearch(AdsBySearchInputModel inputModel)
+        public async Task<IActionResult> BySearch(AdsBySearchInputModel inputModel)
         {
-            return this.View();
+            var adsBySearchBindingModel = await this.adService.GetAdsBySearchViewModelAsync(inputModel.Search);
+
+             return this.View(adsBySearchBindingModel);
         }
     }
 }

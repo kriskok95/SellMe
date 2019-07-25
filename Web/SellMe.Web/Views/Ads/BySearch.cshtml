@@ -1,1 +1,6 @@
-﻿
+﻿@model AdsBySearchViewModel
+
+@foreach (var ad in @Model.AdsBySearchViewModels)
+{
+    <vc:listed-ad view-model="@ad"></vc:listed-ad>
+}
