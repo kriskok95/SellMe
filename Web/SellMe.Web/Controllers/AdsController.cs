@@ -71,11 +71,9 @@
         [Authorize]
         public async Task<IActionResult> ActiveAds()
         {
-            var myAdsViewModels = await this.adService
-                .GetMyAdsViewModelsAsync();
+            var bindingModel = await this.adService.GetMyActiveAdsBindingModelAsync();
 
-
-            return this.View(myAdsViewModels.ToList());
+            return this.View(bindingModel);
         }
 
         [Authorize]
@@ -95,11 +93,11 @@
         [Authorize]
         public async Task<IActionResult> ArchivedAds()
         {
-            var myArchivedAds = await this.adService
-                .GetMyArchivedAdsViewModelsAsync();
+
+            var archivedAdsBindingModel = await this.adService.GetArchivedAdsBindingModelAsync();
 
 
-            return this.View(myArchivedAds.ToList());
+            return this.View(archivedAdsBindingModel);
         }
 
         [Authorize]
@@ -135,6 +133,11 @@
             var adsBySubcategoryViewModel = await this.adService.GetAdsBySubcategoryViewModelAsync(subcategoryId, categoryId);
 
             return this.View(adsBySubcategoryViewModel);
-        } 
+        }
+
+        public IActionResult BySearch(AdsBySearchInputModel inputModel)
+        {
+            return this.View();
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Promotions
 {
-    public class PromotionViewModel
+    public class PromotionViewModel : BaseViewModel
     {
         public int AdId { get; set; }
 

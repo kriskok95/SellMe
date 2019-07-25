@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
-    public class EditAdAddressViewModel
+    public class EditAdAddressViewModel : BaseViewModel
     {
         public string Country { get; set; }
 

@@ -3,7 +3,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class CreateAdConditionViewModel : IMapFrom<Condition>
+    public class CreateAdConditionViewModel : BaseViewModel, IMapFrom<Condition>
     {
         public int Id { get; set; }
 

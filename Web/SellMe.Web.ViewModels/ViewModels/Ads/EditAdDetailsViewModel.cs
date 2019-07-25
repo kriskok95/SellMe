@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class EditAdDetailsViewModel
+    public class EditAdDetailsViewModel : BaseViewModel
     {
         public int Id { get; set; }
 

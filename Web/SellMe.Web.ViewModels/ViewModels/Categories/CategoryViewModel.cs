@@ -3,7 +3,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class CategoryViewModel : IMapFrom<Category>
+    public class CategoryViewModel : BaseViewModel, IMapFrom<Category>
     {
         public int Id { get; set; }
 

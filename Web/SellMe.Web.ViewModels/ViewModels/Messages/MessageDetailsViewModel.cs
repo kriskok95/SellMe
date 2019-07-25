@@ -6,7 +6,7 @@
     using SellMe.Services.Mapping;
 
 
-    public class MessageDetailsViewModel : IMapFrom<Message>, IHaveCustomMappings
+    public class MessageDetailsViewModel : BaseViewModel, IMapFrom<Message>, IHaveCustomMappings
     {
         public string AdTitle { get; set; }
 

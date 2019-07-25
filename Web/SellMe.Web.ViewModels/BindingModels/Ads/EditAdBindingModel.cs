@@ -2,8 +2,9 @@
 {
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Web.ViewModels.InputModels.Ads;
+    using SellMe.Web.ViewModels.ViewModels;
 
-    public class EditAdBindingModel
+    public class EditAdBindingModel : BaseViewModel
     {
         public EditAdViewModel EditAdViewModel { get; set; }
 

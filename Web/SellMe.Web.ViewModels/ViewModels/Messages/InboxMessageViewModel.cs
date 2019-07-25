@@ -5,7 +5,7 @@
     using System;
     using AutoMapper;
 
-    public class InboxMessageViewModel : IMapFrom<Message>, IHaveCustomMappings
+    public class InboxMessageViewModel : BaseViewModel, IMapFrom<Message>, IHaveCustomMappings
     {
         public string SenderId { get; set; }
 

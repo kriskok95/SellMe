@@ -14,10 +14,10 @@
 
         Task CreateMessageAsync(SendMessageInputModel inputModel);
 
-        Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync();
-
-        Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync();
-
         Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string sellerId);
+
+        Task<InboxMessagesBindingModel> GetInboxMessagesBindingModelAsync();
+
+        Task<SentBoxMessagesBindingModel>GetSentBoxMessagesBindingModelAsync();
     }
 }

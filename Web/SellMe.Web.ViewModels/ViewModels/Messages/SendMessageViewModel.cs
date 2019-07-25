@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Messages
 {
-    public class SendMessageViewModel
+    public class SendMessageViewModel : BaseViewModel
     {
         public string RecipientId { get; set; }
 

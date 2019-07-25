@@ -3,7 +3,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class AddressViewModel
+    public class AddressViewModel : BaseViewModel
     {
         public string Country { get; set; }
 

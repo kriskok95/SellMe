@@ -4,7 +4,7 @@ namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     using System.Collections.Generic;
 
-    public class CreateAdViewModel
+    public class CreateAdViewModel : BaseViewModel
     {
         public CreateAdViewModel()
         {

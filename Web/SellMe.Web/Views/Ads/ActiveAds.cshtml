@@ -1,4 +1,4 @@
-﻿@model List<MyActiveAdsViewModel>
+﻿@model MyActiveAdsBindingModel
 
 <h3 class="text-center">My Active Ads:</h3>
 <hr class="hr-sell-me" />
@@ -28,26 +28,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < @Model.Count; i++)
+                    @foreach (var ad in @Model.Ads)
                     {
                         <tr class="trElm">
                             <td>
                                 <div class="row">
                                     <div class="col text-left">
-                                        From: @Model[i].CreatedOn.ToString("dd/MM")
+                                        From: @ad.CreatedOn.ToString("dd/MM")
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col text-left">
-                                        To: @Model[i].ActiveTo.ToString("dd/MM")
+                                        To: @ad.ActiveTo.ToString("dd/MM")
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    <img style="height: 40px; width: 60px" src="@Model[i].ImageUrl" />
+                                    <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
                                 </div>
-                                @if (@Model[i].IsPromoted)
+                                @if (@ad.IsPromoted)
                                 {
                                     <div class="mt-2">
                                         <span class="label warning">Promo</span>
@@ -55,13 +55,13 @@
                                 }
                             </td>
 
-                            <vc:title-length ad-title="@Model[i].Title"></vc:title-length>
-                            <td>@Model[i].Price$</td>
-                            <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-info">Details</a></td>
-                            <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@Model[i].Id" class="btn btn-success">Update</a></td>
-                            <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-warning">Edit</a></td>
-                            <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@Model[i].Id" class="btn btn-primary">Promote</a></td>
-                            <td><button type="button" value="@Model[i].Id" class="btn btn-danger archive">Archive</button></td>
+                            <vc:title-length ad-title="@ad.Title"></vc:title-length>
+                            <td>@ad.Price$</td>
+                            <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a></td>
+                            <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@ad.Id" class="btn btn-success">Update</a></td>
+                            <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a></td>
+                            <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
+                            <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>
                         </tr>
                     }
                 </tbody>

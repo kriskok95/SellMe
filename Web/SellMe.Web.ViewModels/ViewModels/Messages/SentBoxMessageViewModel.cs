@@ -5,7 +5,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class SentBoxMessageViewModel : IMapFrom<Message>, IHaveCustomMappings
+    public class SentBoxMessageViewModel : BaseViewModel, IMapFrom<Message>, IHaveCustomMappings
     {
         public string SenderId { get; set; }
 

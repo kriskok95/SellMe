@@ -1,14 +1,13 @@
-﻿using System;
-
-namespace SellMe.Web.ViewModels.ViewModels.Ads
+﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
     using System.Linq;
     using AutoMapper;
+    using System;
 
 
-    public class MyActiveAdsViewModel : IMapFrom<Ad>, IHaveCustomMappings
+    public class MyActiveAdsViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 

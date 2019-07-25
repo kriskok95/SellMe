@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
-    public class EditAdViewModel
+    public class EditAdViewModel : BaseViewModel
     {
         public EditAdDetailsViewModel EditAdDetailsViewModel { get; set; }
 

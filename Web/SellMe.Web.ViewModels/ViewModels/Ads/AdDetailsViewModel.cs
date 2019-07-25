@@ -8,7 +8,7 @@
     using System.Linq;
     using AutoMapper;
 
-    public class AdDetailsViewModel : IMapFrom<Ad>, IHaveCustomMappings
+    public class AdDetailsViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 

@@ -2,8 +2,9 @@
 {
     using SellMe.Web.ViewModels.InputModels.Messages;
     using SellMe.Web.ViewModels.ViewModels.Messages;
+    using SellMe.Web.ViewModels.ViewModels;
 
-    public class SendMessageBindingModel
+    public class SendMessageBindingModel : BaseViewModel
     {
         public SendMessageViewModel ViewModel { get; set; }
 

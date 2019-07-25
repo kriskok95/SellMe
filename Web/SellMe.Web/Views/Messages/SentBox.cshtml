@@ -1,4 +1,4 @@
-﻿@model List<SentBoxMessageViewModel>
+﻿@model SentBoxMessagesBindingModel
 
 @{
     ViewData["Title"] = "Sent Box";
@@ -20,27 +20,25 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Sender</th>
                         <th scope="col">Ad Title</th>
                         <th scope="col">Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < @Model.Count(); i++)
+                    @foreach (var message in @Model.Messages)
                     {
                         var messageParams = new Dictionary<string, string>
                                         {
-                                    { "senderId",  Model[i].SenderId},
-                                    { "sellerId", Model[i].SellerId },
-                                    {"adId", Model[i].AdId.ToString() }
+                                    { "senderId",  message.SenderId},
+                                    { "sellerId", message.SellerId },
+                                    {"adId", message.AdId.ToString() }
                                 };
 
                         <tr>
-                            <th scope="row">@i</th>
-                            <td>@Model[i].Sender</td>
-                            <td><a asp-controller="Messages" asp-action="Details" asp-all-route-data="messageParams">@Model[i].AdTitle</a></td>
-                            <td>@Model[i].SentOn.ToString("g")</td>
+                            <td>@message.Sender</td>
+                            <td><a asp-controller="Messages" asp-action="Details" asp-all-route-data="messageParams">@message.AdTitle</a></td>
+                            <td>@message.SentOn.ToString("g")</td>
                         </tr>
                     }
                 </tbody>

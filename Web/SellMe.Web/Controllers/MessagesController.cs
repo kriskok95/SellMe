@@ -40,18 +40,16 @@ namespace SellMe.Web.Controllers
 
         public async Task<IActionResult> Inbox()
         {
-            var inboxMessageViewModels = await this.messagesService
-                .GetInboxViewModelsByCurrentUserAsync();
+            var inboxMessagesBindingModel = await this.messagesService.GetInboxMessagesBindingModelAsync();
 
-            return this.View(inboxMessageViewModels.ToList());
+            return this.View(inboxMessagesBindingModel);
         }
 
         public async Task<IActionResult> SentBox()
         {
-            var sentBoxMessageViewModel = await this.messagesService
-                .GetSentBoxViewModelByCurrentUserAsync();
+            var sentBoxMessagesBindingModel = await this.messagesService.GetSentBoxMessagesBindingModelAsync();
 
-            return this.View(sentBoxMessageViewModel.ToList());
+            return this.View(sentBoxMessagesBindingModel);
         }
 
         public async Task<IActionResult> Details(MessageDetailsBindingModel bindingModel)

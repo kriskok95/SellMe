@@ -6,6 +6,7 @@
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Data.Models;
     using SellMe.Web.ViewModels.BindingModels.Ads;
+    using SellMe.Web.ViewModels.BindingModels.Favorites;
 
     public interface IAdsService
     {
@@ -19,17 +20,11 @@
 
         Task<Ad> GetAdByIdAsync(int adId);
 
-        Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync();
-
         Task<bool> ArchiveAdByIdAsync(int adId);
 
         Task<bool> ActivateAdById(int adId);
 
-        Task<ICollection<MyArchivedAdsViewModel>> GetMyArchivedAdsViewModelsAsync();
-
         EditAdBindingModel GetEditAdBindingModelById(int adId);
-
-        Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId);
 
         string GetAdTitleById(int adId);
 
@@ -40,5 +35,11 @@
         Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels();
 
         Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId);
+
+        Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync();
+
+        Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId);
+
+        Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync();
     }
 }

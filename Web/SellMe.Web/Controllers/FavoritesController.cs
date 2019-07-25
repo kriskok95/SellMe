@@ -27,10 +27,11 @@
         {
             var loggedInUserId = this.userManager.GetUserId(this.User);
 
-            var favoriteAdViewModels = await this.adsService.GetFavoriteAdsByUserIdAsync(loggedInUserId);
+            //var favoriteAdViewModels = await this.adsService.GetFavoriteAdsByUserIdAsync(loggedInUserId);
 
+            var favoriteAdsBindingModel = await this.adsService.GetFavoriteAdsBindingModelAsync(loggedInUserId);
 
-            return this.View(favoriteAdViewModels.ToList());
+            return this.View(favoriteAdsBindingModel);
         }
 
         public async Task<IActionResult> Add(int adId)

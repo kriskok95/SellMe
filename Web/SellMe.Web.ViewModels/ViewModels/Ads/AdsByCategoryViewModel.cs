@@ -3,7 +3,7 @@
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
     using System.Collections.Generic;
 
-    public class AdsByCategoryViewModel
+    public class AdsByCategoryViewModel : BaseViewModel
     {
         public int CategoryId { get; set; }
 

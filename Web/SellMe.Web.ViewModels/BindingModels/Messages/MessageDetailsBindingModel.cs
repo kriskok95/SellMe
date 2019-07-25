@@ -3,8 +3,9 @@
     using System.Collections.Generic;
     using SellMe.Web.ViewModels.InputModels.Messages;
     using SellMe.Web.ViewModels.ViewModels.Messages;
+    using SellMe.Web.ViewModels.ViewModels;
 
-    public class MessageDetailsBindingModel
+    public class MessageDetailsBindingModel : BaseViewModel
     {
         public string SenderId { get; set; }
 

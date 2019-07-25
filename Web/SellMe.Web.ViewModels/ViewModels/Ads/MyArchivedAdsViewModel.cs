@@ -6,7 +6,7 @@
     using SellMe.Services.Mapping;
 
 
-    public class MyArchivedAdsViewModel : IMapFrom<Ad>, IHaveCustomMappings
+    public class MyArchivedAdsViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 

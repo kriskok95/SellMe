@@ -5,7 +5,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class LatestAddedAdViewModel : IMapFrom<Ad>, IHaveCustomMappings
+    public class LatestAddedAdViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 

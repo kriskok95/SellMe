@@ -18,6 +18,7 @@
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.BindingModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using SellMe.Web.ViewModels.BindingModels.Favorites;
     using System;
     using SellMe.Common;
 
@@ -124,7 +125,7 @@
             return ad;
         }
 
-        public async Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync()
+        private async Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
@@ -154,7 +155,7 @@
             return true;
         }
 
-        public async Task<ICollection<MyArchivedAdsViewModel>> GetMyArchivedAdsViewModelsAsync()
+        private async Task<ICollection<MyArchivedAdsViewModel>> GetMyArchivedAdsViewModelsAsync()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
@@ -210,7 +211,7 @@
             return editAdBindingModel;
         }
 
-        public async Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId)
+        private async Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId)
         {
             var currentUser = await this.userManager.FindByIdAsync(loggedInUserId);
             var favoriteAdsViewModels = currentUser
@@ -296,6 +297,42 @@
             };
 
             return adsBySubcategoryViewModel;
+        }
+
+        public async Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync()
+        {
+            var myActiveAdsViewModel = await this.GetMyAdsViewModelsAsync();
+
+            var bindingModel = new MyActiveAdsBindingModel
+            {
+                Ads = myActiveAdsViewModel,
+            };
+
+            return bindingModel;
+        }
+
+        public async Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId)
+        {
+            var favoritesAds = await this.GetFavoriteAdsByUserIdAsync(userId);
+
+            var favoriteAdsBindingModel = new FavoriteAdsBindingModel
+            {
+                Favorites = favoritesAds
+            };
+
+            return favoriteAdsBindingModel;
+        }
+
+        public async Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync()
+        {
+            var archivedAdViewModels = await this.GetMyArchivedAdsViewModelsAsync();
+
+            var archivedAdsBindingModel = new ArchivedAdsBindingModel
+            {
+                Ads = archivedAdViewModels
+            };
+
+            return archivedAdsBindingModel;
         }
 
         private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)

@@ -4,7 +4,7 @@
     using SellMe.Web.ViewModels.ViewModels.Categories;
     using SellMe.Web.ViewModels.ViewModels.Ads;
 
-    public class IndexViewModel
+    public class IndexViewModel : BaseViewModel
     {
         public List<CategoryViewModel> CategoryViewModels { get; set; }
 

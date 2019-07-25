@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using AutoMapper;
     using System.Threading.Tasks;
     using SellMe.Data;
+    using Microsoft.EntityFrameworkCore;
     using SellMe.Data.Models;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.ViewModels.Messages;
@@ -63,7 +62,7 @@ namespace SellMe.Services
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()
+        private async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
@@ -75,7 +74,7 @@ namespace SellMe.Services
             return inboxMessageViewModels;
         }
 
-        public async Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync()
+        private async Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync()
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
@@ -96,6 +95,30 @@ namespace SellMe.Services
                 .ToListAsync();
 
             return messageDetailsViewModels;
+        }
+
+        public async Task<InboxMessagesBindingModel> GetInboxMessagesBindingModelAsync()
+        {
+            var inboxMessageViewModels = await this.GetInboxViewModelsByCurrentUserAsync();
+
+            var inboxMessagesBindingModel = new InboxMessagesBindingModel
+            {
+                Messages = inboxMessageViewModels
+            };
+
+            return inboxMessagesBindingModel;
+        }
+
+        public async Task<SentBoxMessagesBindingModel> GetSentBoxMessagesBindingModelAsync()
+        {
+            var sentBoxMessageViewModel = await this.GetSentBoxViewModelByCurrentUserAsync();
+
+            var sentBoxMessagesBindingModel = new SentBoxMessagesBindingModel
+            {
+                Messages = sentBoxMessageViewModel
+            };
+
+            return sentBoxMessagesBindingModel;
         }
 
         private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string sellerId)
