@@ -244,7 +244,7 @@
         {
             var promotedAds = await this.context
                 .Ads
-                .Where(x => x.Promotions.Any(y => y.IsActive))
+                .Where(x => x.Promotions.Any(y => y.IsActive) && !x.IsDeleted)
                 .ToListAsync();
 
             var numbersCount = promotedAds.Count < GlobalConstants.PromotedAdsCountAtIndexPage
