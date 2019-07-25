@@ -272,6 +272,7 @@
             var latestAddedAdViewModels = await this.context
                 .Ads
                 .OrderByDescending(x => x.CreatedOn)
+                .Where(x => !x.IsDeleted)
                 .Take(GlobalConstants.LatestAddedAdsCountAtIndexPage)
                 .To<LatestAddedAdViewModel>()
                 .ToListAsync();
