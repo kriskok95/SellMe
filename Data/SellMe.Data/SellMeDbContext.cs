@@ -39,6 +39,8 @@
 
         public DbSet<PromotionOrder> PromotionOrders { get; set; }
 
+        public DbSet<UpdateAd> UpdateAds { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();

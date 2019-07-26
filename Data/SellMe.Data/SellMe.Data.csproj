@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20190701074847_newMigration.Designer.cs" />
     <Compile Remove="Migrations\20190719164703_addedPropertyActiveToAtAd.cs" />
     <Compile Remove="Migrations\20190719164703_addedPropertyActiveToAtAd.Designer.cs" />
+    <Compile Remove="Migrations\20190726142724_AddedUPdateAdModel.cs" />
+    <Compile Remove="Migrations\20190726142724_AddedUPdateAdModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

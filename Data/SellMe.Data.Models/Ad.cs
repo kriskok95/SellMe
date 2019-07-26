@@ -55,5 +55,7 @@
         public virtual ICollection<Message> Messages { get; set; }
 
         public virtual ICollection<AdView> AdViews { get; set; }
+
+        public virtual ICollection<UpdateAd> UpdateAds { get; set; }
     }
 }
