@@ -83,6 +83,7 @@
             services.AddTransient<IFavoritesService, FavoritesService>();
             services.AddTransient<IPromotionsService, PromotionsService>();
             services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<IUpdatesService, UpdatesService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

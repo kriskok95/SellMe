@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using SellMe.Data.Common;
-    using System.Linq;
 
     public class Ad : BaseDeletableModel<int>
     {

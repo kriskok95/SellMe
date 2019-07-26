@@ -29,16 +29,18 @@
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
         private readonly ICategoriesService categoriesService;
+        private readonly IUpdatesService updatesService;
         private readonly UserManager<SellMeUser> userManager;
         private readonly ISubCategoriesService subCategoriesService;
 
-        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor, ISubCategoriesService subCategoriesService)
+        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, IUpdatesService updatesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor, ISubCategoriesService subCategoriesService)
         {
             this.context = context;
             this.addressService = addressService;
             this.mapper = mapper;
             this.usersService = usersService;
             this.categoriesService = categoriesService;
+            this.updatesService = updatesService;
             this.userManager = userManager;
             this.subCategoriesService = subCategoriesService;
         }
@@ -239,6 +241,9 @@
                 adFromDb.ActiveFrom = DateTime.UtcNow;
                 adFromDb.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
                 adFromDb.Updates--;
+
+                await this.updatesService.CreateUpdateAd(adId);
+
                 this.context.Update(adFromDb);
                 await this.context.SaveChangesAsync();
             }
