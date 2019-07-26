@@ -1,11 +1,9 @@
-﻿using System.Linq;
-
-namespace SellMe.Data.Models
+﻿namespace SellMe.Data.Models
 {
     using System;
     using System.Collections.Generic;
     using SellMe.Data.Common;
-
+    using System.Linq;
 
     public class Ad : BaseDeletableModel<int>
     {
@@ -28,8 +26,6 @@ namespace SellMe.Data.Models
         public int AvailabilityCount { get; set; }
 
         public int Updates { get; set; }
-
-        public bool IsPromoted => this.PromotionOrders.Any(x => x.IsActive);
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
