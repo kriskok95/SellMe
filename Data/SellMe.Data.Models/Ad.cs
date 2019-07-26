@@ -19,6 +19,8 @@
 
         public string Description { get; set; }
 
+        public DateTime ActiveFrom { get; set; }
+
         public DateTime ActiveTo { get; set; }
 
         public decimal Price { get; set; }

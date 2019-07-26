@@ -234,10 +234,14 @@
         {
             var adFromDb = await this.GetAdByIdAsync(adId);
 
-            adFromDb.CreatedOn = DateTime.UtcNow;
-            adFromDb.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
-            this.context.Update(adFromDb);
-            await this.context.SaveChangesAsync();
+            if (adFromDb.Updates > 0)
+            {
+                adFromDb.ActiveFrom = DateTime.UtcNow;
+                adFromDb.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
+                adFromDb.Updates--;
+                this.context.Update(adFromDb);
+                await this.context.SaveChangesAsync();
+            }
         }
 
         public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels()
