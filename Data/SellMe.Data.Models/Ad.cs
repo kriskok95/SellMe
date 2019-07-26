@@ -1,4 +1,6 @@
-﻿namespace SellMe.Data.Models
+﻿using System.Linq;
+
+namespace SellMe.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +28,8 @@
         public int AvailabilityCount { get; set; }
 
         public int Updates { get; set; }
+
+        public bool IsPromoted => this.PromotionOrders.Any(x => x.IsActive);
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
