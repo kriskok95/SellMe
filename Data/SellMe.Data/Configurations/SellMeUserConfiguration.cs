@@ -22,10 +22,6 @@
                 .WithOne(x => x.Recipient)
                 .HasForeignKey(x => x.RecipientId);
 
-            builder.HasMany(x => x.Orders)
-                .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId);
-
             builder.HasMany(x => x.Ads)
                 .WithOne(x => x.Seller)
                 .HasForeignKey(x => x.SellerId);

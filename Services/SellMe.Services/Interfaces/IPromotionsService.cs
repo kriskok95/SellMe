@@ -7,6 +7,6 @@
     {
         Task<PromotionBindingModel> GetPromotionBindingModelByAdIdAsync(int adId);
 
-        Task CreatePromotionForAdAsync(int adId, string promotionType);
+        Task CreatePromotionOrderAsync(int adId, int promotionId);
     }
 }

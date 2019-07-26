@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellMe.Data;
 
 namespace SellMe.Data.Migrations
 {
     [DbContext(typeof(SellMeDbContext))]
-    partial class SellMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190726065802_AddedPromotionOrderModel")]
+    partial class AddedPromotionOrderModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,8 +165,6 @@ namespace SellMe.Data.Migrations
                     b.Property<int>("SubCategoryId");
 
                     b.Property<string>("Title");
-
-                    b.Property<int>("Updates");
 
                     b.HasKey("Id");
 
@@ -341,8 +341,6 @@ namespace SellMe.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ActiveDays");
-
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("ModifiedOn");
@@ -379,6 +377,8 @@ namespace SellMe.Data.Migrations
                     b.Property<decimal>("Price");
 
                     b.Property<int>("PromotionId");
+
+                    b.Property<int>("Quantity");
 
                     b.HasKey("Id");
 

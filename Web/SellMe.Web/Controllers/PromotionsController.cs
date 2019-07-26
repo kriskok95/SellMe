@@ -17,18 +17,18 @@
 
         public async Task<IActionResult> Index(int adId)
         {
-            var viewModel = await this.promotionsService.GetPromotionBindingModelByAdIdAsync(adId);
+            var bindingModel = await this.promotionsService.GetPromotionBindingModelByAdIdAsync(adId);
 
-            return this.View(viewModel);
+            return this.View(bindingModel);
         }
-        
+
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Buy(PromotionBindingModel bindingModel)
         {
-            await this.promotionsService.CreatePromotionForAdAsync(bindingModel.PromotionInputModel.AdId,
-                bindingModel.PromotionInputModel.PromotionType);
+            await this.promotionsService.CreatePromotionOrderAsync(bindingModel.PromotionInputModel.AdId,
+                bindingModel.PromotionInputModel.PromotionId);
 
             return this.RedirectToAction("ActiveAds", "Ads");
         }

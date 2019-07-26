@@ -26,15 +26,7 @@
                 .WithOne(x => x.Ad)
                 .HasForeignKey(x => x.AdId);
 
-            builder.HasMany(x => x.Orders)
-                .WithOne(x => x.Ad)
-                .HasForeignKey(x => x.AdId);
-
             builder.HasMany(x => x.AdViews)
-                .WithOne(x => x.Ad)
-                .HasForeignKey(x => x.AdId);
-
-            builder.HasMany(x => x.Promotions)
                 .WithOne(x => x.Ad)
                 .HasForeignKey(x => x.AdId);
 

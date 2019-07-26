@@ -31,13 +31,13 @@
 
         public DbSet<Message> Messages { get; set; }
 
-        public DbSet<Order> Orders { get; set; }
-
         public DbSet<Condition> Conditions { get; set; }
 
         public DbSet<SellMeUserAddress> SellMeUserAddresses { get; set; }
 
         public DbSet<Promotion> Promotions{ get; set; }
+
+        public DbSet<PromotionOrder> PromotionOrders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

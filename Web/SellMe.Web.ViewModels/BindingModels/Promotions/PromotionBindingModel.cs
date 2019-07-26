@@ -3,10 +3,15 @@
     using SellMe.Web.ViewModels.ViewModels.Promotions;
     using SellMe.Web.ViewModels.InputModels.Promotions;
     using SellMe.Web.ViewModels.ViewModels;
+    using System.Collections.Generic;
 
     public class PromotionBindingModel : BaseViewModel
     {
-        public PromotionViewModel PromotionViewModel { get; set; }
+        public int AdId { get; set; }
+
+        public string AdTitle { get; set; }
+
+        public IEnumerable<PromotionViewModel> PromotionViewModels { get; set; }
 
         public PromotionInputModel PromotionInputModel { get; set; }
     }

@@ -7,8 +7,11 @@
     {
         public IViewComponentResult Invoke(PromotedAdViewModel viewModel)
         {
-            var result = viewModel.Title.Length > 28 ? viewModel.Title.Substring(0, 25) + "..." : viewModel.Title;
-            viewModel.Title = result;
+
+        
+                var result = viewModel.Title.Length > 28 ? viewModel.Title.Substring(0, 25) + "..." : viewModel.Title;
+                viewModel.Title = result;
+            
 
             return this.View(viewModel);
         }

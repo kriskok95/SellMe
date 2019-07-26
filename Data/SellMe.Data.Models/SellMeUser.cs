@@ -13,7 +13,6 @@
         {
             this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
             this.SentBox = new HashSet<Message>();
-            this.Orders = new HashSet<Order>();
             this.Ads = new HashSet<Ad>();
         }
 
@@ -30,7 +29,5 @@
         public virtual ICollection<Message> SentBox { get; set; }
 
         public virtual ICollection<Ad> Ads { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -30,7 +30,7 @@
 
         Task UpdateAdByIdAsync(int adId);
 
-        Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels();
+        //Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels();
 
         Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels();
 

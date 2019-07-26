@@ -1,9 +1,18 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Promotions
 {
-    public class PromotionViewModel : BaseViewModel
-    {
-        public int AdId { get; set; }
+    using SellMe.Data.Models;
+    using SellMe.Services.Mapping;
 
-        public string AdTitle { get; set; }
+    public class PromotionViewModel : BaseViewModel, IMapFrom<Promotion>
+    {
+        public int Id { get; set; }
+
+        public string Type { get; set; }
+
+        public int Updates { get; set; }
+
+        public int ActiveDays { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

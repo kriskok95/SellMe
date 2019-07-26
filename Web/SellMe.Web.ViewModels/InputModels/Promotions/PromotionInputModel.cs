@@ -2,8 +2,8 @@
 {
     public class PromotionInputModel
     {
-        public int AdId { get; set; }
+        public int PromotionId { get; set; }
 
-        public string PromotionType { get; set; }
+        public int AdId { get; set; }
     }
 }

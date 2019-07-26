@@ -50,10 +50,6 @@
 
             CreateMap<Address, EditAdAddressViewModel>();
 
-            //Map Ad to PromotionViewModel
-            CreateMap<Ad, PromotionViewModel>()
-                .ForMember(x => x.AdId, cfg => cfg.MapFrom(x => x.Id))
-                .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Title));
         }
     }
 }

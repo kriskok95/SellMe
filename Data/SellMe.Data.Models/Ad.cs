@@ -13,7 +13,6 @@
             this.Reviews = new HashSet<Review>();
             this.Images = new HashSet<Image>();
             this.Messages = new HashSet<Message>();
-            this.Orders = new HashSet<Order>();
         }
 
         public string Title { get; set; }
@@ -25,6 +24,8 @@
         public decimal Price { get; set; }
 
         public int AvailabilityCount { get; set; }
+
+        public int Updates { get; set; }
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
@@ -41,7 +42,7 @@
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
 
-        public virtual ICollection<Promotion> Promotions { get; set; }
+        public virtual ICollection<PromotionOrder> PromotionOrders { get; set; }
 
         public virtual ICollection<SellMeUserFavoriteProduct> SellMeUserFavoriteProducts { get; set; }
 
@@ -50,8 +51,6 @@
         public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<AdView> AdViews { get; set; }
     }
