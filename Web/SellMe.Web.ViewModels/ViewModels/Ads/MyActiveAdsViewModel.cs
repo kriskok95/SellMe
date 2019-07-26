@@ -21,6 +21,8 @@
 
         public bool IsPromoted { get; set; }
 
+        public int Updates { get; set; }
+
         public string ImageUrl { get; set; }
         public void CreateMappings(IProfileExpression configuration)
         {

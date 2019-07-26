@@ -58,7 +58,10 @@
                             <vc:title-length ad-title="@ad.Title"></vc:title-length>
                             <td>@ad.Price$</td>
                             <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a></td>
-                            <td><a asp-controller="Ads" asp-action="Update" asp-route-adId="@ad.Id" class="btn btn-success">Update</a></td>
+                            <td>
+                                <a asp-controller="Ads" asp-action="Update" asp-route-adId="@ad.Id" class="btn btn-success">Update</a>
+                                <div><small>Available: @ad.Updates</small></div>
+                            </td>
                             <td><a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a></td>
                             <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
                             <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>

@@ -240,32 +240,32 @@
             await this.context.SaveChangesAsync();
         }
 
-        //public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels()
-        //{
-        //    var promotedAds = await this.context
-        //        .Ads
-        //        .Where(x => x.Promotions.Any(y => y.IsActive) && !x.IsDeleted)
-        //        .ToListAsync();
+        public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels()
+        {
+            var promotedAds = await this.context
+                .Ads
+                .Where(x => x.PromotionOrders.Any(y => y.IsActive))
+                .ToListAsync();
 
-        //    var numbersCount = promotedAds.Count < GlobalConstants.PromotedAdsCountAtIndexPage
-        //        ? promotedAds.Count
-        //        : GlobalConstants.PromotedAdsCountAtIndexPage;
+            var numbersCount = promotedAds.Count < GlobalConstants.PromotedAdsCountAtIndexPage
+                ? promotedAds.Count
+                : GlobalConstants.PromotedAdsCountAtIndexPage;
 
-        //    List<int> distinctRandomNumbers = GetDistinctRandomNumbersInRange(0, promotedAds.Count, numbersCount);
+            List<int> distinctRandomNumbers = GetDistinctRandomNumbersInRange(0, promotedAds.Count, numbersCount);
 
-        //    var randomPromotedAds = new List<Ad>();
+            var randomPromotedAds = new List<Ad>();
 
-        //    foreach (var index in distinctRandomNumbers)
-        //    {
-        //        randomPromotedAds.Add(promotedAds[index]);
-        //    }
+            foreach (var index in distinctRandomNumbers)
+            {
+                randomPromotedAds.Add(promotedAds[index]);
+            }
 
-        //    var promotedAdViewModels = randomPromotedAds.AsQueryable()
-        //        .To<PromotedAdViewModel>()
-        //        .ToList();
+            var promotedAdViewModels = randomPromotedAds.AsQueryable()
+                .To<PromotedAdViewModel>()
+                .ToList();
 
-        //    return promotedAdViewModels;
-        //}
+            return promotedAdViewModels;
+        }
 
         public async Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels()
         {
