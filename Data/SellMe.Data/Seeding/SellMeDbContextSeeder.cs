@@ -28,6 +28,7 @@
                               new CategoriesSeeder(),
                               new SubcategoriesSeeder(),
                               new ConditionsSeeder(),
+                              new PromotionsSeeder(),
                           };
 
             foreach (var seeder in seeders)
