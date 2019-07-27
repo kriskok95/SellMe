@@ -8,40 +8,44 @@
 <h3 class="text-center mb-4"><a asp-controller="Ads" asp-action="Details" asp-route-id="@Model.AdId">@Model.AdTitle</a></h3>
 @foreach (var message in Model.ViewModels)
 {
-    <p>
-        @if (message.Sender == this.User.Identity.Name)
-        {
-            <div class="row">
-                <div class="offset-1 col-2">
-                    Me
-                </div>
-                <div class="offset-9 col-3">
-                    @message.SentOn
-                </div>
-            </div>
-            <div class="offset-1 card bg-warning">
-                <div class="card-body">
-                    @message.Content
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="row">
-                <div class="col-2">
-                    @message.Sender
-                </div>
-                <div class="offset-6 col-3">
-                    @message.SentOn
-                </div>
-            </div>
-            <div class="card bg-info col-11">
-                <div class="card-body text-white">
-                    @message.Content
-                </div>
-            </div>
-        }
-    </p>
+    <div class="row">
+        <div class="offset-1 col-10">
+            <p>
+                @if (message.Sender == this.User.Identity.Name)
+                {
+                    <div class="row">
+                        <div class="offset-1 col-2">
+                            Me
+                        </div>
+                        <div class="offset-9 col-3">
+                            @message.SentOn
+                        </div>
+                    </div>
+                    <div class="offset-1 card bg-warning">
+                        <div class="card-body">
+                            @message.Content
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-2">
+                            @message.Sender
+                        </div>
+                        <div class="offset-6 col-3">
+                            @message.SentOn
+                        </div>
+                    </div>
+                    <div class="card bg-info col-11">
+                        <div class="card-body text-white">
+                            @message.Content
+                        </div>
+                    </div>
+                }
+            </p>
+        </div>
+    </div>
 }
 <div class="row">
     <div class="offset-2 col-8">

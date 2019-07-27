@@ -1,4 +1,9 @@
 ﻿@model AdViewModel
+@inject IUsersService UsersService
+
+@{
+    var currentUser = this.UsersService.GetCurrentUser();
+}
 
 <div class="row">
     <div class="col">
@@ -22,11 +27,19 @@
                                 <p class="card-text pt-0">@Model.CategoryName/@Model.SubcategoryName</p>
                                 <p class="card-text">@Model.Description</p>
                                 <div class="row d-flex justify-content-between">
-                                    <div class="col-2">
-                                        <p class="card-text"><small class="text-muted"><i class="fas fa-clock"></i> @Model.CreatedOn.ToString("dd/MM/yyyy")</small></p>
+                                    <div class="col-3">
+                                        <div class="card-text"><small class="text-muted"><i class="fas fa-clock"></i> @Model.CreatedOn.ToString("dd/MM/yyyy")</small></div>
+                                        <div class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.Country/@Model.City</small></div>
                                     </div>
-                                    <div class="col-2">
-                                        <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.Country/@Model.City</small></p>
+                                    <div class="col-1 mt-3">
+                                        @if (currentUser == null || !currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == @Model.Id && x.SellMeUserId == currentUser.Id))
+                                        {
+                                            <button value="@Model.Id" id="@Model.Id" class="btn addToFavorites"><img src="~/img/not-favorite.png" alt="not-favorite"/></button>
+                                        }
+                                        else
+                                        {
+                                            <button value="@Model.Id" id="@Model.Id" class="btn removeFromFavorites"><img src="~/img/favorite.png" alt="favorite"/></button>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -37,3 +50,4 @@
         </div>
     </div>
 </div>
+
