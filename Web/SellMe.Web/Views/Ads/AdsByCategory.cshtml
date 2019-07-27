@@ -26,6 +26,26 @@
     </div>
 </div>
 
+<div id="add-favorites-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>You have successfully added this ad to favorites!</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="remove-favorites-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>You have successfully removed this ad from favorites!</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
 @foreach (var ad in @Model.AdsViewModels)
 {
     <vc:listed-ad view-model="@ad"></vc:listed-ad>
