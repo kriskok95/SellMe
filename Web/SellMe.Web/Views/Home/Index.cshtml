@@ -28,17 +28,17 @@
 <hr class="hr-sell-me" />
 <div>
     @for (int i = 0; i < @Model.PromotedAdViewModels.Count; i += 4)
-        {
-            <div class="row justify-content-start my-3 mx-0">
-                @for (int j = i; j < i + 4; j++)
+    {
+        <div class="row justify-content-start my-3 mx-0">
+            @for (int j = i; j < i + 4; j++)
+            {
+                if (j < @Model.PromotedAdViewModels.Count)
                 {
-                    if (j < @Model.PromotedAdViewModels.Count)
-                    {
-                        <vc:promoted-ad-index-page view-model="@Model.PromotedAdViewModels[j]"></vc:promoted-ad-index-page>
-                    }
+                    <vc:promoted-ad-index-page view-model="@Model.PromotedAdViewModels[j]"></vc:promoted-ad-index-page>
                 }
-            </div>
-        }
+            }
+        </div>
+    }
 </div>
 <h3 class="mt-5">Latest Added:</h3>
 <hr class="hr-sell-me" />
@@ -56,4 +56,11 @@
         </div>
     }
 </div>
+
+<partial name="_AddToFavoritesModalPartial" />
+<partial name="_RemoveFromFavoritesModalPartial" />
+
+@section Scripts{ 
+    <script src="~/js/add-to-favorites-index.js"></script>
+}
 

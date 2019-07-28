@@ -1,5 +1,9 @@
 ﻿@model LatestAddedAdViewModel
+@inject IUsersService UsersService
 
+@{
+    var currentUser = this.UsersService.GetCurrentUser();
+}
 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 sell-me-container-image">
     <div class="row">
         <div class="col">
@@ -12,8 +16,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             @Model.Price $
+        </div>
+        <div class="offset-3 col-3">
+            @if (currentUser == null || !currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == @Model.Id && x.SellMeUserId == currentUser.Id))
+            {
+                <button value="@Model.Id" id="@Model.Id" class="btn addToFavorites"><img src="~/img/not-favorite-index.png" alt="not-favorite"/></button>
+            }
+            else
+            {
+                <button value="@Model.Id" id="@Model.Id" class="btn removeFromFavorites"><img src="~/img/favorite-index.png" alt="favorite"/></button>
+            }
         </div>
     </div>
 </div>
