@@ -24,7 +24,7 @@
 
         Task<bool> ActivateAdById(int adId);
 
-        EditAdBindingModel GetEditAdBindingModelById(int adId);
+        Task<EditAdBindingModel> GetEditAdBindingModelById(int adId);
 
         string GetAdTitleById(int adId);
 

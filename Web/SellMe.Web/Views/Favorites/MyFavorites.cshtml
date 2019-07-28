@@ -1,37 +1,17 @@
 ﻿@model FavoriteAdsBindingModel
 
-<div class="container-fluid">
-    <div class="row">
-        <vc:categories-side-bar>
-        </vc:categories-side-bar>
-        <div class="offset-1 col-4 pl-0">
-            @foreach (var ad in @Model.Favorites)
-            {
-                <div class="mb-4">
-                    <div class="card border-dark" style="width: 30rem;">
-                        <img class="card-img-top" src="@ad.ImageUrl" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">@ad.Title</h5>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item row"><i class="fas fa-dollar-sign"></i> Price: @ad.Price</li>
-                                <li class="list-group-item row"><i class="fas fa-folder"></i> @ad.CategoryName/@ad.SubcategoryName</li>
-                                <li class="list-group-item row"><i class="far fa-calendar-alt"></i> @ad.CreatedOn.ToString("dd/MM/yyyy")</li>
-                            </ul>
-                            <div class="row">
-                                <div class="col-6">
-                                    <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-primary btn-block mt-4">Details</a>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" value="@ad.Id" class="btn btn-danger btn-block mt-4 removeFromFavorites" id="@ad.Id">Remove From Favorites</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+<div class="row">
+    <div class="col">
+        <h3 class="text-center mb-4">Favorites:</h3>
+        @foreach (var ad in @Model.Favorites)
+        {
+            <vc:favorite-ad view-model="@ad"></vc:favorite-ad>
+        }
     </div>
 </div>
+
+<partial name="_AddToFavoritesModalPartial" />
+<partial name="_RemoveFromFavoritesModalPartial" />
 
 @section Scripts{
     <script src="~/js/add-to-favorites.js"></script>
