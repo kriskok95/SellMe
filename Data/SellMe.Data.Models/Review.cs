@@ -8,7 +8,10 @@
 
         public string Comment { get; set; }
 
-        public int AdId { get; set; }
-        public virtual Ad Ad { get; set; }
+        public string OwnerId{ get; set; }
+        public virtual SellMeUser Owner{ get; set; }
+
+        public string CreatorId { get; set; }
+        public virtual SellMeUser Creator { get; set; }
     }
 }
