@@ -140,5 +140,12 @@
 
              return this.View(adsBySearchBindingModel);
         }
+
+        public async Task<IActionResult> AdsByUser(string userId)
+        {
+            var adsByUserBindingModel = await this.adService.GetAdsByUserBindingModel(userId);
+
+            return this.View(adsByUserBindingModel);
+        }
     }
 }
