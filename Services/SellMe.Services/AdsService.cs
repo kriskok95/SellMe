@@ -375,6 +375,7 @@ namespace SellMe.Services
 
             var adsByUserBindingModel = new AdsByUserBindingModel
             {
+                UserId = user.Id,
                 Username = user.UserName,
                 AdViewModels = adByUserViewModels
             };

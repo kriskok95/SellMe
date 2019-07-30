@@ -6,6 +6,8 @@
 
     public class AdsByUserBindingModel : BaseViewModel
     {
+        public string UserId { get; set; }
+
         public string Username { get; set; }
 
         public IEnumerable<AdViewModel> AdViewModels { get; set; }

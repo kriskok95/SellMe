@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SellMe.Data.Models;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using SellMe.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
     using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
+    using SellMe.Data.Models;
 
     public class UsersService : IUsersService
     {
@@ -35,6 +35,13 @@ namespace SellMe.Services
                 .GetResult();
 
             return currentUser;
+        }
+
+        public async Task<SellMeUser> GetUserById(string userId)
+        {
+            var user = await this.userManager.FindByIdAsync(userId);
+
+            return user;
         }
     }
 }
