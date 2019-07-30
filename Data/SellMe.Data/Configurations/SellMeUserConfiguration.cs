@@ -25,6 +25,14 @@
             builder.HasMany(x => x.Ads)
                 .WithOne(x => x.Seller)
                 .HasForeignKey(x => x.SellerId);
+
+            builder.HasMany(x => x.OwnedReviews)
+                .WithOne(x => x.Owner)
+                .HasForeignKey(x => x.OwnerId);
+
+            builder.HasMany(x => x.CreatedReviews)
+                .WithOne(x => x.Creator)
+                .HasForeignKey(x => x.CreatorId);
         }
     }
 }

@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <span class="badge badge-secondary badge-edit" >The category and subcategory fields can't be changed.</span>
+                        <span class="badge badge-secondary badge-edit">The category and subcategory fields can't be changed.</span>
                     </div>
                 </div>
                 <div class="form-row">
@@ -72,18 +72,27 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">Upload images:</label>
+
+                    <div class="row">
+                        @foreach (var image in @Model.EditAdViewModel.EditAdDetailsViewModel.Images)
+                        {
+                            <div class="col-6 mb-2">
+                                <img src="@image" style="height: 180px; width: 220px;" class="card-img img-thumbnail" alt="..." />
+                            </div>
+                        }
+                    </div>
                     @for (int i = 0; i < 3; i++)
                     {
                         <div class="row">
                             <div class="col-6">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">
+                                    <input type="file" class="custom-file-input upload-file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">
                                     <label class="custom-file-label" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">Choose file</label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">
+                                    <input type="file" class="custom-file-input upload-file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images"/>
                                     <label class="custom-file-label" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">Choose file</label>
                                 </div>
                             </div>
@@ -157,7 +166,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.EmailAddress">Email Address</label>
-                            <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.EmailAddress", value="@Model.EditAdViewModel.EditAdAddressViewModel.EmailAddress" class="form-control">
+                            <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.EmailAddress" , value="@Model.EditAdViewModel.EditAdAddressViewModel.EmailAddress" class="form-control">
                             <span asp-validation-for="@Model.EditAdInputModel.EditAdAddressInputModel.EmailAddress" class="text-danger"></span>
                         </div>
                     </div>
@@ -171,5 +180,15 @@
     </form>
 </div>
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
+    <script>
+        $(document).ready(function () {
+            $('.upload-file').on('change', function() {
+                let file = $(this).files;
+                var formData = new FormData();
+                formData.append('file', file[0]);
+                console.log(formData);
+            });
+        });
+    </script>
 }

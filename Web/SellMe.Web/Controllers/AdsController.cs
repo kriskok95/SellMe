@@ -79,7 +79,6 @@
         [Authorize]
         public async Task<IActionResult> ArchiveAd(int adId)
         {
-            //TODO: Change the name to ArchiveAdAsync
             bool isArchived = await this.adService.ArchiveAdByIdAsync(adId);
 
             var result = new
@@ -140,6 +139,13 @@
             var adsBySearchBindingModel = await this.adService.GetAdsBySearchViewModelAsync(inputModel.Search);
 
              return this.View(adsBySearchBindingModel);
+        }
+
+        public async Task<IActionResult> AdsByUser(string userId)
+        {
+            var adsByUserBindingModel = await this.adService.GetAdsByUserBindingModel(userId);
+
+            return this.View(adsByUserBindingModel);
         }
     }
 }

@@ -29,5 +29,9 @@
         public virtual ICollection<Message> SentBox { get; set; }
 
         public virtual ICollection<Ad> Ads { get; set; }
+
+        public virtual ICollection<Review> OwnedReviews { get; set; }
+
+        public virtual ICollection<Review> CreatedReviews { get; set; }
     }
 }

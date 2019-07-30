@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
@@ -359,6 +361,25 @@
             };
 
             return adsBySearchViewModel;
+        }
+
+        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModel(string userId)
+        {
+            var user = await this.userManager.FindByIdAsync(userId);
+
+            var adByUserViewModels = await this.context
+                .Ads
+                .Where(x => x.SellerId == userId && !x.IsDeleted && x.ActiveTo >= DateTime.UtcNow)
+                .To<AdViewModel>()
+                .ToListAsync();
+
+            var adsByUserBindingModel = new AdsByUserBindingModel
+            {
+                Username = user.UserName,
+                AdViewModels = adByUserViewModels
+            };
+
+            return adsByUserBindingModel;
         }
 
         private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)
