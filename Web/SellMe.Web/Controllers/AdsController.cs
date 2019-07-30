@@ -114,9 +114,9 @@
         }
 
         [Authorize]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var editAdBindingModel = this.adService.GetEditAdBindingModelById(id);
+            var editAdBindingModel = await this.adService.GetEditAdBindingModelById(id);
 
             return this.View(editAdBindingModel);
         }

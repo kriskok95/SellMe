@@ -188,20 +188,20 @@
             return true;
         }
 
-        private EditAdDetailsViewModel GetEditAdViewModelById(int adId)
+        private async Task<EditAdDetailsViewModel> GetEditAdViewModelByIdAsync(int adId)
         {
-            var adFromDb = this.GetAdByIdAsync(adId);
+            var adFromDb = await this.GetAdByIdAsync(adId);
 
             var editAdDetailsViewModel = this.mapper.Map<EditAdDetailsViewModel>(adFromDb);
 
             return editAdDetailsViewModel;
         }
 
-        public EditAdBindingModel GetEditAdBindingModelById(int adId)
+        public async Task<EditAdBindingModel> GetEditAdBindingModelById(int adId)
         {
-            var editAdDetailsViewModel = this.GetEditAdViewModelById(adId);
+            var editAdDetailsViewModel = await this.GetEditAdViewModelByIdAsync(adId);
 
-            var editAdAddressViewModel = this.GetEditAdAddressViewModelById(adId);
+            var editAdAddressViewModel = await this.GetEditAdAddressViewModelByIdAsync(adId);
 
             var editAdViewModel = this.GetEditAdViewModel(editAdDetailsViewModel, editAdAddressViewModel);
 
@@ -399,9 +399,9 @@
             return editAdViewModel;
         }
 
-        private EditAdAddressViewModel GetEditAdAddressViewModelById(int adId)
+        private async Task<EditAdAddressViewModel> GetEditAdAddressViewModelByIdAsync(int adId)
         {
-            var addressFromDb = this.addressService.GetAddressByAdIdAsync(adId);
+            var addressFromDb = await this.addressService.GetAddressByAdIdAsync(adId);
 
             var editAdAddressViewModel = this.mapper.Map<EditAdAddressViewModel>(addressFromDb);
 
