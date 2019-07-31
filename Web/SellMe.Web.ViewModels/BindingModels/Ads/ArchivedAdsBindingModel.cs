@@ -1,10 +1,10 @@
 ﻿namespace SellMe.Web.ViewModels.BindingModels.Ads
 {
-    using System.Collections.Generic;
     using SellMe.Web.ViewModels.ViewModels;
     using SellMe.Web.ViewModels.ViewModels.Ads;
+    using SellMe.Services.Paging;
     public class ArchivedAdsBindingModel : BaseViewModel
     {
-        public IEnumerable<MyArchivedAdsViewModel> Ads { get; set; }
+        public PaginatedList<MyArchivedAdsViewModel> Ads { get; set; }
     }
 }

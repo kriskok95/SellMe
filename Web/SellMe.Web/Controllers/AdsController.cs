@@ -92,10 +92,10 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> ArchivedAds()
+        public async Task<IActionResult> ArchivedAds(int? pageNumber)
         {
 
-            var archivedAdsBindingModel = await this.adService.GetArchivedAdsBindingModelAsync();
+            var archivedAdsBindingModel = await this.adService.GetArchivedAdsBindingModelAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
 
             return this.View(archivedAdsBindingModel);

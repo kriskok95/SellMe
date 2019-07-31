@@ -39,7 +39,54 @@
         </div>
     </div>
 </div>
-
+@{
+    var prevDisabled = !Model.Ads.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Ads.HasNextPage ? "disabled" : "";
+}
+<div class="row mt-3">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="ArchivedAds"
+                   asp-route-pageNumber="@(Model.Ads.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.Ads.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.Ads.TotalPages; i++)
+                {
+                    if (Model.Ads.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="ArchivedAds"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="ArchivedAds"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="ArchivedAds"
+                   asp-route-pageNumber="@(Model.Ads.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

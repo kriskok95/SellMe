@@ -163,15 +163,14 @@
             return true;
         }
 
-        private async Task<ICollection<MyArchivedAdsViewModel>> GetMyArchivedAdsViewModelsAsync()
+        private IQueryable<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
             var archivedAds = this.GetArchivedAdsByUserId(currentUserId);
 
-            var archivedAdsForCurrentUserViewModels = await archivedAds
-                .To<MyArchivedAdsViewModel>()
-                .ToListAsync();
+            var archivedAdsForCurrentUserViewModels = archivedAds
+                .To<MyArchivedAdsViewModel>();
 
             return archivedAdsForCurrentUserViewModels;
         }
@@ -347,13 +346,16 @@
             return favoriteAdsBindingModel;
         }
 
-        public async Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync()
+        public async Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync(int pageNumber, int pageSize)
         {
-            var archivedAdViewModels = await this.GetMyArchivedAdsViewModelsAsync();
+            var archivedAdViewModels = this.GetMyArchivedAdsViewModels();
+
+            var paginatedArchivedAdViewModels =
+                await PaginatedList<MyArchivedAdsViewModel>.CreateAsync(archivedAdViewModels, pageNumber, pageSize);
 
             var archivedAdsBindingModel = new ArchivedAdsBindingModel
             {
-                Ads = archivedAdViewModels
+                Ads = paginatedArchivedAdViewModels
             };
 
             return archivedAdsBindingModel;
