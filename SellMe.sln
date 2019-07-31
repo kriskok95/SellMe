@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services.Mapping", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Services.Messaging", "Services\SellMe.Services.Messaging\SellMe.Services.Messaging.csproj", "{AFDAD265-433E-4759-A35F-9B0DCEA4E301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SellMe.Common", "SellMe.Common\SellMe.Common.csproj", "{60DC68CF-BC02-40AC-8635-26D7D85609E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellMe.Common", "SellMe.Common\SellMe.Common.csproj", "{60DC68CF-BC02-40AC-8635-26D7D85609E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SellMe.Services.Paging", "Services\SellMe.Services.Paging\SellMe.Services.Paging.csproj", "{DE74416D-6450-41CF-82F3-94DA9BC45239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{60DC68CF-BC02-40AC-8635-26D7D85609E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60DC68CF-BC02-40AC-8635-26D7D85609E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60DC68CF-BC02-40AC-8635-26D7D85609E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE74416D-6450-41CF-82F3-94DA9BC45239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE74416D-6450-41CF-82F3-94DA9BC45239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE74416D-6450-41CF-82F3-94DA9BC45239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE74416D-6450-41CF-82F3-94DA9BC45239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{7636BDD7-1A82-4E77-9EE9-29FA39DDC563} = {FA7B7C0C-F878-41F8-B323-2F5691E67865}
 		{F491AC23-94F7-44E8-A91E-D5010CDBAAEC} = {5E9635B7-6F71-477E-8CE1-4C007A52CB4B}
 		{AFDAD265-433E-4759-A35F-9B0DCEA4E301} = {5E9635B7-6F71-477E-8CE1-4C007A52CB4B}
+		{DE74416D-6450-41CF-82F3-94DA9BC45239} = {5E9635B7-6F71-477E-8CE1-4C007A52CB4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58DA3742-A0B4-453E-A412-5522B1088016}

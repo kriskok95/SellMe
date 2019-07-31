@@ -47,9 +47,11 @@
             return Json(subcategories);
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int? pageNumber)
         {
-            var adsAllViewModels = await this.adService.GetAllAdViewModelsAsync();
+            int pageSize = 10;
+
+            var adsAllViewModels = await this.adService.GetAllAdViewModelsAsync(pageNumber ?? 1, pageSize);
 
             return this.View(adsAllViewModels);
         }

@@ -12,7 +12,7 @@
     {
         Task CreateAdAsync(CreateAdInputModel inputModel);
 
-        Task<AdsAllViewModel> GetAllAdViewModelsAsync();
+        Task<AdsAllViewModel> GetAllAdViewModelsAsync(int pageNumber, int pageSize);
 
         Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId);
 

@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\Data\SellMe.Data\SellMe.Data.csproj" />
     <ProjectReference Include="..\..\Web\SellMe.Web.ViewModels\SellMe.Web.ViewModels.csproj" />
     <ProjectReference Include="..\SellMe.Services.Mapping\SellMe.Services.Mapping.csproj" />
+    <ProjectReference Include="..\SellMe.Services.Paging\SellMe.Services.Paging.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
@@ -13,6 +11,7 @@ namespace SellMe.Services
     using SellMe.Data.Models;
     using SellMe.Services.Utilities;
     using System.Threading.Tasks;
+    using SellMe.Services.Paging;
     using SellMe.Services.Mapping;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
@@ -65,12 +64,15 @@ namespace SellMe.Services
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<AdsAllViewModel> GetAllAdViewModelsAsync()
+        public async Task<AdsAllViewModel> GetAllAdViewModelsAsync(int pageNumber, int pageSize)
         {
-            var adsViewModel = await this.GetAllAdsViewModelAsync();
+            var adsViewModels = this.GetAllAdsViewModel();
             var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
 
-            var adsAllViewModel = this.CreateAdsAllViewModel(adsViewModel, allCategoriesViewModel);
+            var paginatedAds = await PaginatedList<AdViewModel>
+                .CreateAsync(adsViewModels, pageNumber, pageSize);
+
+            var adsAllViewModel = this.CreateAdsAllViewModel(paginatedAds, allCategoriesViewModel);
 
             return adsAllViewModel;
         }
@@ -474,7 +476,7 @@ namespace SellMe.Services
             return adsViewModel;
         }
 
-        private AdsAllViewModel CreateAdsAllViewModel(ICollection<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
+        private AdsAllViewModel CreateAdsAllViewModel(PaginatedList<AdViewModel> adsViewModel, ICollection<CategoryViewModel> allCategoriesViewModel)
         {
             var adsAllViewModel = new AdsAllViewModel()
             {
@@ -484,15 +486,13 @@ namespace SellMe.Services
             return adsAllViewModel;
         }
 
-        private async  Task<ICollection<AdViewModel>> GetAllAdsViewModelAsync()
+        private IQueryable<AdViewModel> GetAllAdsViewModel()
         {
-            var adsViewModel = await this.context
+            var adsViewModel = this.context
                 .Ads
-                .To<AdViewModel>()
-                .ToListAsync();
+                .To<AdViewModel>();
 
             return adsViewModel;
-
         }
 
         private async Task<string> UploadImages(IFormFile inputModelImage, string title)
