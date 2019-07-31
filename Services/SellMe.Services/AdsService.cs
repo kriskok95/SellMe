@@ -220,14 +220,12 @@
             return editAdBindingModel;
         }
 
-        private async Task<ICollection<FavoriteAdViewModel>> GetFavoriteAdsByUserIdAsync(string loggedInUserId)
+        private IQueryable<FavoriteAdViewModel> GetFavoriteAdsByUser(SellMeUser user)
         {
-            var currentUser = await this.userManager.FindByIdAsync(loggedInUserId);
-            var favoriteAdsViewModels = currentUser
-                .SellMeUserFavoriteProducts.Select(x => x.Ad)
-                .AsQueryable()
-                .To<FavoriteAdViewModel>()
-                .ToList();
+            var favoriteAdsViewModels = this.context
+                .SellMeUserFavoriteProducts
+                .Where(x => x.SellMeUserId == user.Id)
+                .To<FavoriteAdViewModel>();
 
             return favoriteAdsViewModels;
         }
@@ -330,13 +328,18 @@
             return bindingModel;
         }
 
-        public async Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId)
+        public async Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId, int pageNumber, int pageSize)
         {
-            var favoritesAds = await this.GetFavoriteAdsByUserIdAsync(userId);
+            var user = this.usersService.GetCurrentUser();
+
+            var favoriteAdViewModels = this.GetFavoriteAdsByUser(user);
+
+            var paginatedFavoriteAds =
+                await PaginatedList<FavoriteAdViewModel>.CreateAsync(favoriteAdViewModels, pageNumber, pageSize);
 
             var favoriteAdsBindingModel = new FavoriteAdsBindingModel
             {
-                Favorites = favoritesAds
+                Favorites = paginatedFavoriteAds
             };
 
             return favoriteAdsBindingModel;

@@ -11,6 +11,9 @@
 
     public class FavoritesController : Controller
     {
+        private const int DefaultPageSize = 10;
+        private const int DefaultPageNumber = 1;
+
         private readonly IAdsService adsService;
         private readonly UserManager<SellMeUser> userManager;
         private readonly IFavoritesService favoritesService;
@@ -23,13 +26,11 @@
             this.favoritesService = favoritesService;
         }
 
-        public async Task<IActionResult> MyFavorites()
+        public async Task<IActionResult> MyFavorites(int? pageNumber)
         {
             var loggedInUserId = this.userManager.GetUserId(this.User);
 
-            //var favoriteAdViewModels = await this.adsService.GetFavoriteAdsByUserIdAsync(loggedInUserId);
-
-            var favoriteAdsBindingModel = await this.adsService.GetFavoriteAdsBindingModelAsync(loggedInUserId);
+            var favoriteAdsBindingModel = await this.adsService.GetFavoriteAdsBindingModelAsync(loggedInUserId, pageNumber?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(favoriteAdsBindingModel);
         }

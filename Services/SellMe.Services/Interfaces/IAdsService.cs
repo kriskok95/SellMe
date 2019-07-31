@@ -38,7 +38,7 @@
 
         Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync();
 
-        Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId);
+        Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId, int pageNumber, int pageSize);
 
         Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync();
 

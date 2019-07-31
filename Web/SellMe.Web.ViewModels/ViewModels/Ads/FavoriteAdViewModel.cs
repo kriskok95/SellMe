@@ -6,7 +6,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class FavoriteAdViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
+    public class FavoriteAdViewModel : BaseViewModel, IMapFrom<SellMeUserFavoriteProduct>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -30,11 +30,17 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Ad, FavoriteAdViewModel>()
-                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl).FirstOrDefault()))
-                .ForMember(x => x.Country, cfg => cfg.MapFrom(x => x.Address.Country))
-                .ForMember(x => x.City, cfg => cfg.MapFrom(x => x.Address.City));
-
+            configuration.CreateMap<SellMeUserFavoriteProduct, FavoriteAdViewModel>()
+                .ForMember(x => x.ImageUrl,
+                    cfg => cfg.MapFrom(x => x.Ad.Images.Select(y => y.ImageUrl).FirstOrDefault()))
+                .ForMember(x => x.Country, cfg => cfg.MapFrom(x => x.Ad.Address.Country))
+                .ForMember(x => x.City, cfg => cfg.MapFrom(x => x.Ad.Address.City))
+                .ForMember(x => x.Id, cfg => cfg.MapFrom(x => x.Ad.Id))
+                .ForMember(x => x.Title, cfg => cfg.MapFrom(x => x.Ad.Title))
+                .ForMember(x => x.CategoryName, cfg => cfg.MapFrom(x => x.Ad.Category.Name))
+                .ForMember(x => x.SubcategoryName, cfg => cfg.MapFrom(x => x.Ad.SubCategory.Name))
+                .ForMember(x => x.CreatedOn, cfg => cfg.MapFrom(x => x.Ad.CreatedOn))
+                .ForMember(x => x.Description, cfg => cfg.MapFrom(x => x.Ad.Description));
         }
     }
 }
