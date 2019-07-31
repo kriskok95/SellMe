@@ -3,5 +3,7 @@
     public class AdsByCategoryInputModel
     {
         public int Id { get; set; }
+
+        public int? PageNumber { get; set; }
     }
 }

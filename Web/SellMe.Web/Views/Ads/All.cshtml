@@ -43,11 +43,11 @@
             </div>
         }
     </div>
-    @{
-        var prevDisabled = !Model.AdsViewModels.HasPreviousPage ? "disabled" : "";
-        var nextDisabled = !Model.AdsViewModels.HasNextPage ? "disabled" : "";
-    }
 </div>
+@{
+    var prevDisabled = !Model.AdsViewModels.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.AdsViewModels.HasNextPage ? "disabled" : "";
+}
 <div class="row">
     <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
         <ul class="pagination">

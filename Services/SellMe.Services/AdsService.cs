@@ -77,14 +77,17 @@
             return adsAllViewModel;
         }
 
-        public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId)
+        public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId, int pageNumber, int pageSize)
         {
-            var adsViewModel = await this.GetAllAdsByCategoryAsync(categoryId);
+            var adsViewModel = this.GetAllAdsByCategoryAsync(categoryId);
+            var paginatedAdsViewModel =
+                await PaginatedList<AdViewModel>.CreateAsync(adsViewModel, pageNumber, pageSize);
+
             var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
             var subcategoryViewModels = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
             string categoryName = this.categoriesService.GetCategoryNameById(categoryId);
 
-            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(adsViewModel, allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
+            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(paginatedAdsViewModel, allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
 
             return adsByCategoryViewModel;
         }
@@ -450,7 +453,7 @@
             return adsByUser;
         }
 
-        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(ICollection<AdViewModel> adsViewModel,
+        private AdsByCategoryViewModel CreateAdsByCategoryViewModel(PaginatedList<AdViewModel> paginatedAdViewModels,
             ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName,
             ICollection<AdsByCategorySubcategoryViewModel> subcategoryViewModels, int categoryId)
         {
@@ -458,20 +461,19 @@
             {
                 CategoryId = categoryId,
                 CategoryName = categoryName,
-                AdsViewModels = adsViewModel,
+                AdsViewModels = paginatedAdViewModels,
                 AdsByCategorySubcategoryViewModels = subcategoryViewModels.ToList(),
             };
 
             return adsByCategoryViewModel;
         }
 
-        private async Task<ICollection<AdViewModel>> GetAllAdsByCategoryAsync(int categoryId)
+        private IQueryable<AdViewModel> GetAllAdsByCategoryAsync(int categoryId)
         {
-            var adsViewModel = await this.context
+            var adsViewModel = this.context
                 .Ads
                 .Where(x => x.CategoryId == categoryId)
-                .To<AdViewModel>()
-                .ToListAsync();
+                .To<AdViewModel>();
 
             return adsViewModel;
         }

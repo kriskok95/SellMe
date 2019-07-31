@@ -30,9 +30,57 @@
 {
     <vc:listed-ad view-model="@ad"></vc:listed-ad>
 }
+@{
+    var prevDisabled = !Model.AdsViewModels.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.AdsViewModels.HasNextPage ? "disabled" : "";
+}
+<div class="row">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="AdsByCategory"
+                   asp-route-pageNumber="@(Model.AdsViewModels.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.AdsViewModels.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.AdsViewModels.TotalPages; i++)
+                {
+                    if (Model.AdsViewModels.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="AdsByCategory"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="AdsByCategory"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="AdsByCategory"
+                   asp-route-pageNumber="@(Model.AdsViewModels.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
-<partial name="_AddToFavoritesModalPartial"/>
-<partial name="_RemoveFromFavoritesModalPartial"/>
+<partial name="_AddToFavoritesModalPartial" />
+<partial name="_RemoveFromFavoritesModalPartial" />
 
 @section Scripts {
     <script src="~/js/add-to-favorites.js" asp-append-version="true"></script>

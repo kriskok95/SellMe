@@ -1,7 +1,6 @@
 ﻿namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
@@ -58,7 +57,9 @@
 
         public async Task<IActionResult> AdsByCategory(AdsByCategoryInputModel inputModel)
         {
-            var adsByCategoryViewModel = await this.adService.GetAdsByCategoryViewModelAsync(inputModel.Id);
+            int pageSize = 3;
+
+            var adsByCategoryViewModel = await this.adService.GetAdsByCategoryViewModelAsync(inputModel.Id, inputModel.PageNumber?? 1, pageSize);
 
              return this.View(adsByCategoryViewModel);
         }

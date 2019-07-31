@@ -1,6 +1,7 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using SellMe.Services.Paging;
     using System.Collections.Generic;
 
     public class AdsByCategoryViewModel : BaseViewModel
@@ -11,6 +12,6 @@
 
         public List<AdsByCategorySubcategoryViewModel> AdsByCategorySubcategoryViewModels { get; set; }
 
-        public ICollection<AdViewModel> AdsViewModels { get; set; }
+        public PaginatedList<AdViewModel> AdsViewModels { get; set; }
     }
 }
