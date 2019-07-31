@@ -14,6 +14,8 @@
 
         public string SellerId { get; set; }
 
+        public string Seller { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -44,7 +46,8 @@
             configuration.CreateMap<Ad, AdDetailsViewModel>()
                 .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)))
                 .ForMember(x => x.Phone, cfg => cfg.MapFrom(x => x.Address.PhoneNumber))
-                .ForMember(x => x.Views, cfg => cfg.MapFrom(x => x.AdViews.Count));
+                .ForMember(x => x.Views, cfg => cfg.MapFrom(x => x.AdViews.Count))
+                .ForMember(x => x.Seller, cfg => cfg.MapFrom(x => x.Seller.UserName));
         }
     }
 }

@@ -3,6 +3,18 @@
 <link href="~/css/star-rating.css" rel="stylesheet" asp-append-version="true" />
 
 <h3 class="text-center mb-3">@Model.OwnerUsername's shop</h3>
+<div class="card text-center mb-3">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Ads" asp-action="AdsByUser" asp-route-userId="@Model.OwnerId">Reviews</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="row">
     <div class="offset-2 col-8">
         @foreach (var review in @Model.ViewModels)
@@ -66,7 +78,6 @@
                         <label for="star2" title="2 star">2</label>
                         <input asp-for="@Model.InputModel.Rating" type="radio" id="star1" value="1" />
                         <label for="star1" title="1 star">1</label>
-
                     </div>
                 </div>
                 <div class="offset-4 col-2">

@@ -17,7 +17,7 @@
         [MinLength(ReviewMinimumLength, ErrorMessage = ReviewMinimumLengthErrorMessage)]
         public string Content { get; set; }
 
-        //TODO: Create custom validation attribute for rating field.
+        //TODO: Create custom validation attribute for the rating field.
         [Required]
         public int Rating { get; set; }
     }

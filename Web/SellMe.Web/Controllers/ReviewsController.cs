@@ -16,7 +16,7 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Index(string userId)
+        public async Task<IActionResult> ReviewsByShop(string userId)
         {
             var reviewBindingModel = await this.reviewsService.GetReviewsBindingModelByUserId(userId);
 
@@ -30,7 +30,7 @@
             await this.reviewsService.CreateReview(inputModel.OwnerId, inputModel.CreatorId, inputModel.Content,
                 inputModel.Rating);
 
-            return Redirect("/");
+            return RedirectToAction("ReviewsByShop", new{userId = inputModel.OwnerId});
         }
     }
 }
