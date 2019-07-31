@@ -134,16 +134,15 @@
             return ad;
         }
 
-        private async Task<ICollection<MyActiveAdsViewModel>> GetMyAdsViewModelsAsync()
+        private IQueryable<MyActiveAdsViewModel> GetMyAdsViewModels()
         {
             string currentUserId = this.usersService.GetCurrentUserId();
 
             var adsForCurrentUser = this.GetActiveAdsByUserId(currentUserId);
 
-            var adsForCurrentUserViewModels = await adsForCurrentUser
-                .To<MyActiveAdsViewModel>()
+            var adsForCurrentUserViewModels = adsForCurrentUser
                 .OrderBy(x => x.ActiveTo)
-                .ToListAsync();
+                .To<MyActiveAdsViewModel>();
 
             return adsForCurrentUserViewModels;
         }
@@ -316,13 +315,16 @@
             return adsBySubcategoryViewModel;
         }
 
-        public async Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync()
+        public async Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync(int pageNumber, int pageSize)
         {
-            var myActiveAdsViewModel = await this.GetMyAdsViewModelsAsync();
+            var myActiveAdViewModel = this.GetMyAdsViewModels();
+
+            var paginatedActiveAdViewModels =
+                await PaginatedList<MyActiveAdsViewModel>.CreateAsync(myActiveAdViewModel, pageNumber, pageSize);
 
             var bindingModel = new MyActiveAdsBindingModel
             {
-                Ads = myActiveAdsViewModel,
+                Ads = paginatedActiveAdViewModels,
             };
 
             return bindingModel;

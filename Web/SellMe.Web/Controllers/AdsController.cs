@@ -71,9 +71,9 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> ActiveAds()
+        public async Task<IActionResult> ActiveAds(int? pageNumber)
         {
-            var bindingModel = await this.adService.GetMyActiveAdsBindingModelAsync();
+            var bindingModel = await this.adService.GetMyActiveAdsBindingModelAsync(pageNumber?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(bindingModel);
         }

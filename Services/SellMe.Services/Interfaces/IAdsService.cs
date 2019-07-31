@@ -36,7 +36,7 @@
 
         Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize);
 
-        Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync();
+        Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync(int pageNumber, int pageSize);
 
         Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId, int pageNumber, int pageSize);
 
