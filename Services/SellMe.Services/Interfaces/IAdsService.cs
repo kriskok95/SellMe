@@ -34,7 +34,7 @@
 
         Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels();
 
-        Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId);
+        Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize);
 
         Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync();
 

@@ -296,19 +296,21 @@
             return latestAddedAdViewModels;
         }
 
-        public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId)
+        public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize)
         {
             var subcategories = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
             var adsBySubcategory = this.GetAdsBySubcategory(subcategoryId);
 
-            var adsBySubcategoryViewModels = await adsBySubcategory
-                .To<AdViewModel>()
-                .ToListAsync();
+            var adsBySubcategoryViewModels = adsBySubcategory
+                .To<AdViewModel>();
+
+            var pagedSubcategoryViewModels =
+                await PaginatedList<AdViewModel>.CreateAsync(adsBySubcategoryViewModels, pageNumber, pageSize);
 
             var adsBySubcategoryViewModel = new AdsBySubcategoryViewModel
             {
                 AdsByCategorySubcategoryViewModels = subcategories.ToList(),
-                AdsBySubcategoryViewModels = adsBySubcategoryViewModels,
+                AdsBySubcategoryViewModels = pagedSubcategoryViewModels,
                 CategoryId = categoryId,
                 SubcategoryId = subcategoryId,
             };

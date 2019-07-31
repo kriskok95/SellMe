@@ -9,6 +9,9 @@
 
     public class AdsController : Controller
     {
+        private const int DefaultPageSize = 10;
+        private const int DefaultPageNumber = 1;
+
         private readonly IAdsService adService;
         private readonly ISubCategoriesService subCategoriesService;
 
@@ -48,18 +51,14 @@
 
         public async Task<IActionResult> All(int? pageNumber)
         {
-            int pageSize = 10;
-
-            var adsAllViewModels = await this.adService.GetAllAdViewModelsAsync(pageNumber ?? 1, pageSize);
+            var adsAllViewModels = await this.adService.GetAllAdViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(adsAllViewModels);
         }
 
         public async Task<IActionResult> AdsByCategory(AdsByCategoryInputModel inputModel)
         {
-            int pageSize = 3;
-
-            var adsByCategoryViewModel = await this.adService.GetAdsByCategoryViewModelAsync(inputModel.Id, inputModel.PageNumber?? 1, pageSize);
+            var adsByCategoryViewModel = await this.adService.GetAdsByCategoryViewModelAsync(inputModel.Id, inputModel.PageNumber?? DefaultPageNumber, DefaultPageSize);
 
              return this.View(adsByCategoryViewModel);
         }
@@ -130,9 +129,10 @@
             return this.RedirectToAction("ActiveAds");
         }
 
-        public async Task<IActionResult> AdsBySubcategory(int subcategoryId, int categoryId)
+        public async Task<IActionResult> AdsBySubcategory(AdsBySubcategoryInputModel inputModel)
         {
-            var adsBySubcategoryViewModel = await this.adService.GetAdsBySubcategoryViewModelAsync(subcategoryId, categoryId);
+            //TODO: Create input model
+            var adsBySubcategoryViewModel = await this.adService.GetAdsBySubcategoryViewModelAsync(inputModel.SubcategoryId, inputModel.CategoryId, inputModel.PageNumber?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(adsBySubcategoryViewModel);
         }
