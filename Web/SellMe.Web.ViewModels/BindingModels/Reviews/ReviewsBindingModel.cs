@@ -2,7 +2,7 @@
 {
     using SellMe.Web.ViewModels.InputModels.Reviews;
     using SellMe.Web.ViewModels.ViewModels;
-    using System.Collections.Generic;
+    using SellMe.Services.Paging;
     using SellMe.Web.ViewModels.ViewModels.Reviews;
 
     public class ReviewsBindingModel : BaseViewModel
@@ -15,6 +15,6 @@
 
         public ReviewInputModel InputModel { get; set; }
 
-        public IEnumerable<ReviewViewModel> ViewModels { get; set; }
+        public PaginatedList<ReviewViewModel> ViewModels { get; set; }
     }
 }

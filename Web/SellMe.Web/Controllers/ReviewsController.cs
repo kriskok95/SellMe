@@ -8,6 +8,9 @@
 
     public class ReviewsController : Controller
     {
+        private const int DefaultPageSize = 10;
+        private const int DefaultPageNumber = 1;
+
         private readonly IReviewsService reviewsService;
 
         public ReviewsController(IReviewsService reviewsService)
@@ -16,9 +19,9 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> ReviewsByShop(string userId)
+        public async Task<IActionResult> ReviewsByShop(string userId, int? pageNumber)
         {
-            var reviewBindingModel = await this.reviewsService.GetReviewsBindingModelByUserId(userId);
+            var reviewBindingModel = await this.reviewsService.GetReviewsBindingModelByUserId(userId, pageNumber?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(reviewBindingModel);
         }

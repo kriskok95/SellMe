@@ -4,7 +4,7 @@
     using SellMe.Web.ViewModels.BindingModels.Reviews;
     public interface IReviewsService
     {
-        Task<ReviewsBindingModel> GetReviewsBindingModelByUserId(string userId);
+        Task<ReviewsBindingModel> GetReviewsBindingModelByUserId(string userId, int pageNumber, int pageSize);
 
         Task CreateReview(string ownerId, string creatorId, string content, int rating);
     }
