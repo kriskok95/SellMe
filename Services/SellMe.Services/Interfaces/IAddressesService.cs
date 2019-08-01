@@ -4,10 +4,10 @@
     using SellMe.Data.Models;
     using System.Collections.Generic;
 
-    public interface IAddressService
+    public interface IAddressesService
     {
         ICollection<string> GetAllCountries();
 
-        Task<Address> GetAddressByAdIdAsync(int addressId);
+        Task<Address> GetAddressByIdAsync(int addressId);
     }
 }

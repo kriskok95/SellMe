@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using System.Linq;
     using System.Collections.Generic;
     using SellMe.Services.Interfaces;
@@ -10,11 +9,11 @@ namespace SellMe.Services
     using SellMe.Data.Models;
     using SellMe.Data;
 
-    public class AddressService : IAddressService
+    public class AddressesService : IAddressesService
     {
         private readonly SellMeDbContext context;
 
-        public AddressService(SellMeDbContext context)
+        public AddressesService(SellMeDbContext context)
         {
             this.context = context;
         }
@@ -46,7 +45,7 @@ namespace SellMe.Services
             return CultureList;
         }
 
-        public async Task<Address> GetAddressByAdIdAsync(int addressId)
+        public async Task<Address> GetAddressByIdAsync(int addressId)
         {
             var address = await this.context
                 .Addresses

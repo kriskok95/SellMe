@@ -9,6 +9,6 @@
 
         SellMeUser GetCurrentUser();
 
-        Task<SellMeUser> GetUserById(string userId);
+        Task<SellMeUser> GetUserByIdAsync(string userId);
     }
 }

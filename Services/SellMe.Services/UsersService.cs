@@ -37,7 +37,7 @@
             return currentUser;
         }
 
-        public async Task<SellMeUser> GetUserById(string userId)
+        public async Task<SellMeUser> GetUserByIdAsync(string userId)
         {
             var user = await this.userManager.FindByIdAsync(userId);
 

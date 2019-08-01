@@ -5,16 +5,16 @@
 
     public class CountriesDropdownViewComponent : ViewComponent
     {
-        private readonly IAddressService addressService;
+        private readonly IAddressesService _addressesService;
 
-        public CountriesDropdownViewComponent(IAddressService addressService)
+        public CountriesDropdownViewComponent(IAddressesService addressesService)
         {
-            this.addressService = addressService;
+            this._addressesService = addressesService;
         }
 
         public IViewComponentResult Invoke()
         {
-            var countries = this.addressService.GetAllCountries();
+            var countries = this._addressesService.GetAllCountries();
             return this.View(countries);
         }
     }

@@ -26,7 +26,7 @@
     public class AdsService : IAdsService
     {
         private readonly SellMeDbContext context;
-        private readonly IAddressService addressService;
+        private readonly IAddressesService _addressesService;
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
         private readonly ICategoriesService categoriesService;
@@ -34,10 +34,10 @@
         private readonly UserManager<SellMeUser> userManager;
         private readonly ISubCategoriesService subCategoriesService;
 
-        public AdsService(SellMeDbContext context, IAddressService addressService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, IUpdatesService updatesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor, ISubCategoriesService subCategoriesService)
+        public AdsService(SellMeDbContext context, IAddressesService addressesService, IMapper mapper, IUsersService usersService, ICategoriesService categoriesService, IUpdatesService updatesService, UserManager<SellMeUser> userManager, IHttpContextAccessor contextAccessor, ISubCategoriesService subCategoriesService)
         {
             this.context = context;
-            this.addressService = addressService;
+            this._addressesService = addressesService;
             this.mapper = mapper;
             this.usersService = usersService;
             this.categoriesService = categoriesService;
@@ -96,7 +96,7 @@
         {
             var adFromDb = await this.GetAdByIdAsync(adId);
             await CreateViewForAdAsync(adFromDb);
-            var addressForGivenAd = await this.addressService.GetAddressByAdIdAsync(adFromDb.AddressId);
+            var addressForGivenAd = await this._addressesService.GetAddressByIdAsync(adFromDb.AddressId);
 
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
             var addressViewModel = mapper.Map<AddressViewModel>(addressForGivenAd);
@@ -437,7 +437,7 @@
 
         private async Task<EditAdAddressViewModel> GetEditAdAddressViewModelByIdAsync(int adId)
         {
-            var addressFromDb = await this.addressService.GetAddressByAdIdAsync(adId);
+            var addressFromDb = await this._addressesService.GetAddressByIdAsync(adId);
 
             var editAdAddressViewModel = this.mapper.Map<EditAdAddressViewModel>(addressFromDb);
 

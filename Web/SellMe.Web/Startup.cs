@@ -77,7 +77,7 @@
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IConditionsService, ConditionsService>();
             services.AddTransient<ISubCategoriesService, SubCategoriesService>();
-            services.AddTransient<IAddressService, AddressService>();
+            services.AddTransient<IAddressesService, AddressesService>();
             services.AddTransient<IMessagesService, MessagesService>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IFavoritesService, FavoritesService>();

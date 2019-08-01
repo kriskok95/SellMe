@@ -1,11 +1,11 @@
 ﻿@using SellMe.Services
 @model EditAdBindingModel
-@inject IAddressService AddressService
+@inject IAddressesService AddressesService
 @inject IConditionsService ConditionsService
 @{
     ViewData["Title"] = "Edit ad";
     var conditions = this.ConditionsService.GetConditionViewModels();
-    var countries = this.AddressService.GetAllCountries();
+    var countries = this.AddressesService.GetAllCountries();
 }
 
 <div class="container-fluid">

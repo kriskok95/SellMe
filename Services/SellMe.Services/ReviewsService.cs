@@ -27,7 +27,7 @@ namespace SellMe.Services
 
         public async Task<ReviewsBindingModel> GetReviewsBindingModelByUserId(string userId, int pageNumber, int pageSize)
         {
-            var owner = await this.usersService.GetUserById(userId);
+            var owner = await this.usersService.GetUserByIdAsync(userId);
 
             var reviewViewModel = this.GetReviewViewModelsByUserId(userId);
             var paginatedReviewViewModels =
