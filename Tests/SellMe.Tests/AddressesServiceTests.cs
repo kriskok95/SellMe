@@ -15,10 +15,10 @@ namespace SellMe.Tests
             //Arrange
             var factory = new ConnectionFactory();
             var context = factory.CreateContextForInMemory();
+            IAddressesService addressesService = new AddressesService(context);
 
             var addressId = 1;
 
-            IAddressesService addressesService = new AddressesService(context);
             var testAddress = new Address
             {
                 Id = 1,
@@ -40,6 +40,32 @@ namespace SellMe.Tests
 
             //Assert 
             Assert.Equal(result, testAddress);
+        }
+
+        [Fact]
+        public async Task GetAddressByIdAsync_WithInvalidId_ShouldThrowArgumentException()
+        {
+            //Arrange
+            var factory = new ConnectionFactory();
+            var context = factory.CreateContextForInMemory();
+            IAddressesService addressesService = new AddressesService(context);
+
+            var invalidAddressId = 1;
+            var expectErrorMessage = "Address with the given ID doesn't exist!";
+
+            //Act
+            try
+            {
+                var result = await addressesService.GetAddressByIdAsync(invalidAddressId);
+            }
+            catch (ArgumentException e)
+            {
+                Assert.Contains(e.Message, expectErrorMessage);
+                return;
+            }
+
+            Assert.True(false, "The method had to throw an argument exception");
+
         }
     }
 }

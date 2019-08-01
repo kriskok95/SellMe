@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using System;
+
+namespace SellMe.Services
 {
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@
 
     public class AddressesService : IAddressesService
     {
+        public const string InvalidAddressIdErrorMessage = "Address with the given ID doesn't exist!";
         private readonly SellMeDbContext context;
 
         public AddressesService(SellMeDbContext context)
@@ -47,6 +50,10 @@
 
         public async Task<Address> GetAddressByIdAsync(int addressId)
         {
+            if (!this.context.Addresses.Any(x => x.Id == addressId))
+            {
+                throw new ArgumentException(InvalidAddressIdErrorMessage);
+            }
             var address = await this.context
                 .Addresses
                 .FirstOrDefaultAsync(x => x.Id == addressId);
