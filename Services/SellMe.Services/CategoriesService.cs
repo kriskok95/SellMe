@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services
 {
+    using System;
     using System.Threading.Tasks;
     using SellMe.Data;
     using SellMe.Services.Interfaces;
@@ -12,6 +13,8 @@
 
     public class CategoriesService : ICategoriesService
     {
+        private const string GetCategoryNameByIdInvalidIdErrorMessage = "Category with the given id doesn't exist!";
+
         private readonly SellMeDbContext context;
 
         public CategoriesService(SellMeDbContext context)
@@ -48,9 +51,14 @@
             return allCategories;
         }
 
-        public string GetCategoryNameById(int categoryId)
+        public async Task<string> GetCategoryNameByIdAsync(int categoryId)
         {
-            var categoryName = this.context.Categories.FirstOrDefault(x => x.Id == categoryId)?.Name;
+            if (! await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            {
+                throw new ArgumentException(GetCategoryNameByIdInvalidIdErrorMessage);
+            }
+
+            var categoryName = this.context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId)?.Result.Name;
             return categoryName;
         }
     }

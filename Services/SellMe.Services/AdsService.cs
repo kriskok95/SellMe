@@ -85,7 +85,7 @@
 
             var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
             var subcategoryViewModels = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
-            string categoryName = this.categoriesService.GetCategoryNameById(categoryId);
+            string categoryName = await this.categoriesService.GetCategoryNameByIdAsync(categoryId);
 
             var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(paginatedAdsViewModel, allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
 

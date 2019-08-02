@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;

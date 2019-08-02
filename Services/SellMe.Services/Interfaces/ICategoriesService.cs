@@ -13,6 +13,6 @@
 
         Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelAsync();
 
-        string GetCategoryNameById(int categoryId);
+        Task<string> GetCategoryNameByIdAsync(int categoryId);
     }
 }
