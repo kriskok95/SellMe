@@ -1,5 +1,7 @@
 namespace SellMe.Tests
 {
+
+    using SellMe.Tests.Common;
     using System;
     using System.Threading.Tasks;
     using SellMe.Data.Models;
@@ -42,6 +44,7 @@ namespace SellMe.Tests
 
             //Assert 
             Assert.Equal(result, testAddress);
+            context.Dispose();
         }
 
         [Theory]
@@ -54,38 +57,31 @@ namespace SellMe.Tests
         {
             //Arrange
             var factory = new ConnectionFactory();
-            var context = factory.CreateContextForInMemory();
-            IAddressesService addressesService = new AddressesService(context);
-            var testAddress = new Address
+            using (var context = factory.CreateContextForInMemory())
             {
-                Id = 1,
-                City = "Sofia",
-                Country = "Bulgaria",
-                CreatedOn = DateTime.UtcNow,
-                EmailAddress = "kristian.slavchev91@gmail.com",
-                District = "Student City",
-                ZipCode = 1000,
-                PhoneNumber = "08552332",
-                Street = "Ivan Vazov",
-            };
+                IAddressesService addressesService = new AddressesService(context);
+                var testAddress = new Address
+                {
+                    Id = 1,
+                    City = "Sofia",
+                    Country = "Bulgaria",
+                    CreatedOn = DateTime.UtcNow,
+                    EmailAddress = "kristian.slavchev91@gmail.com",
+                    District = "Student City",
+                    ZipCode = 1000,
+                    PhoneNumber = "08552332",
+                    Street = "Ivan Vazov",
+                };
 
-            await context.Addresses.AddAsync(testAddress);
-            await context.SaveChangesAsync();
-            var expectErrorMessage = "Address with the given ID doesn't exist!";
+                await context.Addresses.AddAsync(testAddress);
+                await context.SaveChangesAsync();
+                var expectErrorMessage = "Address with the given ID doesn't exist!";
 
-            //Act
-            try
-            {
-                var result = await addressesService.GetAddressByIdAsync(addressId);
+                //Act
 
+                var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.addressesService.GetAddressByIdAsync(addressId));
+                Assert.Equal(expectErrorMessage, ex.Message);
             }
-            catch (ArgumentException e)
-            {
-                Assert.Contains(e.Message, expectErrorMessage);
-                return;
-            }
-
-            Assert.True(false, "The method had to throw an argument exception");
         }
 
        [Fact]
@@ -93,15 +89,17 @@ namespace SellMe.Tests
         {
             //Arrange
             var factory = new ConnectionFactory();
-            var context = factory.CreateContextForInMemory();
-            this.addressesService = new AddressesService(context);
-            var expectedCount = 142;
+            using (var context = factory.CreateContextForInMemory())
+            {
+                this.addressesService = new AddressesService(context);
+                var expectedCount = 142;
 
-            //Act
-            var countriesCount = this.addressesService.GetAllCountries().Count;
+                //Act
+                var countriesCount = this.addressesService.GetAllCountries().Count;
 
-            //Assert
-            Assert.Equal(expectedCount, countriesCount);
+                //Assert
+                Assert.Equal(expectedCount, countriesCount);
+            }
         }
     }
 }

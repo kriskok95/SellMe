@@ -14,6 +14,7 @@
     public class CategoriesService : ICategoriesService
     {
         private const string GetCategoryNameByIdInvalidIdErrorMessage = "Category with the given id doesn't exist!";
+        private const string GetCategoryByIdInvalidErrorMessage = "Category with the given Id doesn't exist!";
 
         private readonly SellMeDbContext context;
 
@@ -34,6 +35,11 @@
 
         public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
+            if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            {
+                throw new ArgumentException(GetCategoryByIdInvalidErrorMessage);
+            }
+
             Category category = await this.context
                 .Categories
                 .FirstOrDefaultAsync(x => x.Id == categoryId);
@@ -58,7 +64,9 @@
                 throw new ArgumentException(GetCategoryNameByIdInvalidIdErrorMessage);
             }
 
-            var categoryName = this.context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId)?.Result.Name;
+            var categoryName = this.context
+                .Categories
+                .FirstOrDefaultAsync(x => x.Id == categoryId)?.Result.Name;
             return categoryName;
         }
     }
