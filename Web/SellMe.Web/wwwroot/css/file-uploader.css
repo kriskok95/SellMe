@@ -1,0 +1,28 @@
+.image {
+    width: 150px;
+    height: 150px;
+    z-index: 100;
+    border-radius: 8px;
+    background-image: url("/img/upload-button.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+}
+
+.image-preset {
+    width: 150px;
+    height: 150px;
+    z-index: 100;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+}
+
+
+.image-upload {
+    z-index: 99;
+    opacity: 0;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+}

@@ -8,6 +8,8 @@
     var conditions = this.ConditionsService.GetConditionViewModels();
 }
 
+<link rel="stylesheet" href="~/css/file-uploader.css" type="text/css" />
+
 <div class="container-fluid">
     <form asp-controller="Ads" asp-action="Create" enctype="multipart/form-data" method="post">
         <div class="row">
@@ -65,24 +67,14 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="CreateAdDetailInputModel.Images">Upload images:</label>
-                    @for (int i = 0; i < 3; i++)
-                    {
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" asp-for="CreateAdDetailInputModel.Images">
-                                    <label class="custom-file-label" asp-for="CreateAdDetailInputModel.Images">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" asp-for="CreateAdDetailInputModel.Images">
-                                    <label class="custom-file-label" asp-for="CreateAdDetailInputModel.Images">Choose file</label>
-                                </div>
+                    <div id="images">
+                        <div class="image-row d-flex justify-content-start mt-5">
+                            <div class="image rounded mt-1 ml-0">
+                                <input type="file" asp-for="@Model.CreateAdDetailInputModel.Images" class="image-upload" />
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                 </div>
             </div>
         </div>
         <div class="row">
@@ -156,6 +148,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/get-subcategories.js"></script>
+    <script src="~/js/file-uploader.js"></script>
 }
 
 
