@@ -18,33 +18,35 @@ namespace SellMe.Tests
         {
             //Arrange
             var factory = new ConnectionFactory();
-            var context = factory.CreateContextForInMemory();
-            this.addressesService = new AddressesService(context);
 
-            var addressId = 1;
-
-            var testAddress = new Address
+            using (var context = factory.CreateContextForInMemory())
             {
-                Id = 1,
-                City = "Sofia",
-                Country = "Bulgaria",
-                CreatedOn = DateTime.UtcNow,
-                EmailAddress = "kristian.slavchev91@gmail.com",
-                District = "Student City",
-                ZipCode = 1000,
-                PhoneNumber = "08552332",
-                Street = "Ivan Vazov",
-            };
-            
-            await context.Addresses.AddAsync(testAddress);
-            await context.SaveChangesAsync();
+                this.addressesService = new AddressesService(context);
 
-            //Act
-            var result = await addressesService.GetAddressByIdAsync(addressId);
+                var addressId = 1;
 
-            //Assert 
-            Assert.Equal(result, testAddress);
-            context.Dispose();
+                var testAddress = new Address
+                {
+                    Id = 1,
+                    City = "Sofia",
+                    Country = "Bulgaria",
+                    CreatedOn = DateTime.UtcNow,
+                    EmailAddress = "kristian.slavchev91@gmail.com",
+                    District = "Student City",
+                    ZipCode = 1000,
+                    PhoneNumber = "08552332",
+                    Street = "Ivan Vazov",
+                };
+
+                await context.Addresses.AddAsync(testAddress);
+                await context.SaveChangesAsync();
+
+                //Act
+                var result = await addressesService.GetAddressByIdAsync(addressId);
+
+                //Assert 
+                Assert.Equal(result, testAddress);
+            }
         }
 
         [Theory]

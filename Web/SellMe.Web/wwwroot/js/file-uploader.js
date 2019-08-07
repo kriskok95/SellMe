@@ -1,6 +1,7 @@
 // These are template HTMLs for new dynamically added input fields.
 let newElementHtml =
     '<div class="image">' +
+        '<div class="button-delete"><i class="fas fa-times-circle"></i></div>' +
     '     <input type="file" id="CreateAdDetailInputModel_Images" name="CreateAdDetailInputModel.Images" class="image-upload" />' +
     '</div>';
 

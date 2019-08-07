@@ -4,10 +4,8 @@
     using Microsoft.EntityFrameworkCore;
     using SellMe.Data;
 
-    public class ConnectionFactory : IDisposable
+    public class ConnectionFactory
     {
-        private bool disposedValue = false;
-
         public SellMeDbContext CreateContextForInMemory()
         {
             var option = new DbContextOptionsBuilder<SellMeDbContext>()
@@ -21,24 +19,6 @@
             }
 
             return context;
-        }
-
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
         }
     }
 }

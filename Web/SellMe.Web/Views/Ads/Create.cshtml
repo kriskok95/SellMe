@@ -70,11 +70,12 @@
                     <div id="images">
                         <div class="image-row d-flex justify-content-start mt-5">
                             <div class="image rounded mt-1 ml-0">
+                                <div class="button-delete"><i class="fas fa-times-circle"></i></div>
                                 <input type="file" asp-for="@Model.CreateAdDetailInputModel.Images" class="image-upload" />
                             </div>
                         </div>
                     </div>
-                 </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -148,7 +149,15 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/get-subcategories.js"></script>
-    <script src="~/js/file-uploader.js"></script>
+    <script src="~/js/file-uploader.js" asp-append-version="true"></script>
+    <script>
+
+        $(".container-fluid").on('click', '.button-delete', function() {
+                console.log(this);
+                $(this).closest(".image").remove();
+            });
+
+    </script>
 }
 
 
