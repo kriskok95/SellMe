@@ -8,11 +8,13 @@
     var countries = this.AddressesService.GetAllCountries();
 }
 
+<link rel="stylesheet" href="~/css/file-uploader.css" type="text/css" asp-append-version="true" />
+
 <div class="container-fluid">
     <form asp-controller="Ads" asp-action="Edit" enctype="multipart/form-data" method="post">
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
+            <div class="col-2"></div>
+            <div class="col-8">
                 <h2 class="text-center">Ad Details</h2>
                 <hr class="hr-sell-me" />
                 <div class="form-group">
@@ -72,38 +74,56 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">Upload images:</label>
-
-                    <div class="row">
-                        @foreach (var image in @Model.EditAdViewModel.EditAdDetailsViewModel.Images)
-                        {
-                            <div class="col-6 mb-2">
-                                <img src="@image" style="height: 180px; width: 220px;" class="card-img img-thumbnail" alt="..." />
-                            </div>
-                        }
-                    </div>
-                    @for (int i = 0; i < 3; i++)
+                    @if (Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count <= 4)
                     {
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input upload-file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">
-                                    <label class="custom-file-label" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">Choose file</label>
+                        <div class="row justify-content-between">
+                            @for (int i = 0; i < @Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count; i++)
+                            {
+                                <img src="@Model.EditAdViewModel.EditAdDetailsViewModel.Images[i]" class="image" />
+                            }
+                            @for (int i = Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count; i < 4; i++)
+                            {
+                                <div class="mb-3 image" id="@("preview-picture" + i)">
+                                    <input type="file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images" class="image-upload" />
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input upload-file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images"/>
-                                    <label class="custom-file-label" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images">Choose file</label>
+                            }
+                        </div>
+                        <div class="row justify-content-between">
+                            @for (int i = 4; i < 8; i++)
+                            {
+                                <div class="mb-3 image" id="@("preview-picture" + i)">
+                                    <input type="file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images" class="image-upload" />
                                 </div>
-                            </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row justify-content-between">
+                            @for (int i = 0; i < 4; i++)
+                            {
+                                <img src="@Model.EditAdViewModel.EditAdDetailsViewModel.Images[i]" class="image" />
+                            }
+                        </div>
+                        <div class="row justify-content-between">
+                            @for (int i = 4; i < Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count; i++)
+                            {
+                                <img src="@Model.EditAdViewModel.EditAdDetailsViewModel.Images[i]" class="image" />
+                            }
+                            @for (int i = Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count; i < 8; i++)
+                            {
+                                <div class="mb-3 image" id="@("preview-picture" + i)">
+                                    <input type="file" asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.Images" class="image-upload" />
+                                </div>
+                            }
                         </div>
                     }
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
+            <div class="col-2"></div>
+            <div class="col-8">
                 <h2 class="text-center">Contact Details</h2>
                 <hr class="hr-sell-me" />
                 <div class="form-group">
@@ -173,6 +193,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" asp-for="@Model.EditAdInputModel.AdId" value="@Model.EditAdViewModel.EditAdDetailsViewModel.Id" />
         <div class="row">
             <div class="col-5"></div>
             <button type="submit" class="btn btn-dark col-2">Submit</button>
@@ -180,15 +201,6 @@
     </form>
 </div>
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
-    <script>
-        $(document).ready(function () {
-            $('.upload-file').on('change', function() {
-                let file = $(this).files;
-                var formData = new FormData();
-                formData.append('file', file[0]);
-                console.log(formData);
-            });
-        });
-    </script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/upload-image.js" asp-append-version="true"></script>
 }

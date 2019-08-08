@@ -23,6 +23,7 @@
 
         public static async Task<string> UploadImage(Cloudinary cloudinary, IFormFile fileForm, string name)
         {
+
             if (fileForm == null)
             {
                 return null;
@@ -48,6 +49,11 @@
 
             stream.Dispose();
             return uploadResult.SecureUri.AbsoluteUri;
+        }
+
+        public static void DeleteImages(Cloudinary cloudinary, DelResParams delParams)
+        {
+            cloudinary.DeleteResources(delParams);
         }
     }
 }

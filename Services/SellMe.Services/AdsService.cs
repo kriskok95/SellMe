@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using CloudinaryDotNet.Actions;
+
+namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
@@ -25,6 +27,8 @@
 
     public class AdsService : IAdsService
     {
+        private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
+
         private readonly SellMeDbContext context;
         private readonly IAddressesService _addressesService;
         private readonly IMapper mapper;
@@ -48,8 +52,6 @@
 
         public async Task CreateAdAsync(CreateAdInputModel inputModel)
         {
-
-            //TODO: Export this into separate method
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(x => this.UploadImages(x, inputModel.CreateAdDetailInputModel.Title))
                 .ToList();
@@ -395,6 +397,61 @@
             };
 
             return adsByUserBindingModel;
+        }
+
+        public async Task EditAdById(EditAdInputModel inputModel)
+        {
+            var adFromDb = await this.context.Ads.FirstOrDefaultAsync(x => x.Id == inputModel.AdId);
+
+            if (adFromDb == null)
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
+            }
+
+            var imageUrls = inputModel.EditAdDetailsInputModel.Images
+                .Select(x => this.UploadImages(x, inputModel.EditAdDetailsInputModel.Title))
+                .ToList();
+
+            adFromDb.Title = inputModel.EditAdDetailsInputModel.Title;
+            adFromDb.Description = inputModel.EditAdDetailsInputModel.Description;
+            adFromDb.Price = inputModel.EditAdDetailsInputModel.Price;
+            adFromDb.AvailabilityCount = inputModel.EditAdDetailsInputModel.Availability;
+            adFromDb.ConditionId = inputModel.EditAdDetailsInputModel.ConditionId;
+            //adFromDb.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result})
+            //    .ToList();
+
+            foreach (var image in imageUrls)
+            {
+                adFromDb.Images.Add(new Image { ImageUrl = image.Result});
+            }
+
+            adFromDb.Address.Country = inputModel.EditAdAddressInputModel.Country;
+            adFromDb.Address.City = inputModel.EditAdAddressInputModel.City;
+            adFromDb.Address.Street = inputModel.EditAdAddressInputModel.Street;
+            adFromDb.Address.District = inputModel.EditAdAddressInputModel.District;
+            adFromDb.Address.ZipCode = inputModel.EditAdAddressInputModel.ZipCode;
+            adFromDb.Address.PhoneNumber = inputModel.EditAdAddressInputModel.PhoneNumber;
+            adFromDb.Address.EmailAddress = inputModel.EditAdAddressInputModel.EmailAddress;
+
+            
+
+            context.Ads.Update(adFromDb);
+            await context.SaveChangesAsync();
+        }
+
+        private void DeleteImages(ICollection<Image> images)
+        {
+            var cloudinary = CloudinaryHelper.SetCloudinary();
+
+            //var resultImages = images.Select(x => x.ImageUrl.Split('/', '.', x));
+
+            var delParams = new DelResParams
+            {
+                PublicIds = images.Select(x => x.ImageUrl).ToList()
+            };
+
+
+            CloudinaryHelper.DeleteImages(cloudinary, delParams);
         }
 
         private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)

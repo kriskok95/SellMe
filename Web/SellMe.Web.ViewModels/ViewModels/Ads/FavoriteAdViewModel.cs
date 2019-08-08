@@ -37,6 +37,7 @@
                 .ForMember(x => x.City, cfg => cfg.MapFrom(x => x.Ad.Address.City))
                 .ForMember(x => x.Id, cfg => cfg.MapFrom(x => x.Ad.Id))
                 .ForMember(x => x.Title, cfg => cfg.MapFrom(x => x.Ad.Title))
+                .ForMember(x => x.Price, cfg => cfg.MapFrom(x => x.Ad.Price))
                 .ForMember(x => x.CategoryName, cfg => cfg.MapFrom(x => x.Ad.Category.Name))
                 .ForMember(x => x.SubcategoryName, cfg => cfg.MapFrom(x => x.Ad.SubCategory.Name))
                 .ForMember(x => x.CreatedOn, cfg => cfg.MapFrom(x => x.Ad.CreatedOn))

@@ -45,5 +45,7 @@
         Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText);
 
         Task<AdsByUserBindingModel> GetAdsByUserBindingModel(string userId);
+
+        Task EditAdById(EditAdInputModel inputModel);
     }
 }

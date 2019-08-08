@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Web.Controllers
 {
+    using SellMe.Web.ViewModels.BindingModels.Ads;
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.InputModels.Ads;
@@ -120,6 +121,13 @@
             var editAdBindingModel = await this.adService.GetEditAdBindingModelById(id);
 
             return this.View(editAdBindingModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditAdBindingModel bindingModel)
+        {
+            await this.adService.EditAdById(bindingModel.EditAdInputModel);
+            return this.Redirect("/");
         }
 
         public async Task<IActionResult> Update(UpdateAdInputModel inputModel)
