@@ -6,6 +6,8 @@
     {
         public string Content { get; set; }
 
+        public bool IsRead { get; set; }
+
         public string SenderId { get; set; }
         public virtual SellMeUser Sender { get; set; }
 
