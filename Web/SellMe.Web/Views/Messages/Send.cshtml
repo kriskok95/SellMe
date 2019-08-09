@@ -17,7 +17,11 @@
                 <input asp-for="InputModel.SenderId" type="hidden" value="@Model.ViewModel.SenderId" />
                 <input asp-for="InputModel.AdId" type="hidden" value="@Model.ViewModel.AdId" />
             </div>
-            <button type="submit" class="btn btn-secondary btn-block btn-lg">Send</button>
+            <div class="row">
+                <div class="offset-5 col-2">
+                    <button type="submit" class="btn btn-success btn-lg">Send</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

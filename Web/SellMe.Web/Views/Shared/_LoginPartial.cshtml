@@ -6,6 +6,7 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+
         <li class="nav-item">
             <a class="nav-link active" asp-controller="Messages" asp-action="Inbox">
                 <i class="fas fa-envelope"></i> @await Component.InvokeAsync("UnreadMessages")
@@ -18,7 +19,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" asp-controller="Ads" asp-action="ActiveAds">My Ads</a>
                 <a class="dropdown-item" asp-controller="Favorites" asp-action="MyFavorites">Favorites</a>
-                <a class="dropdown-item" asp-controller="Messages" asp-action="Inbox">Messages</a>
+                <a class="dropdown-item" asp-controller="Messages" asp-action="Inbox">Messages @await Component.InvokeAsync("UnreadMessages")</a>
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Something else here</a>
