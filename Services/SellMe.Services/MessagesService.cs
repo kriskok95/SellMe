@@ -67,7 +67,11 @@
             var currentUserId = this.usersService.GetCurrentUserId();
 
             var inboxMessagesFromDb = this.GetInboxMessagesByUserId(currentUserId);
+
+            await this.context.SaveChangesAsync();
+
             var inboxMessageViewModels = await inboxMessagesFromDb
+                .OrderByDescending(x => x.CreatedOn)
                 .To<InboxMessageViewModel>()
                 .ToListAsync();
 
@@ -80,6 +84,7 @@
 
             var sentBoxMessagesFromDb = this.GetSentBoxMessagesByUserId(currentUserId);
             var sentBoxMessageViewModels = await sentBoxMessagesFromDb
+                .OrderByDescending(x => x.CreatedOn)
                 .To<SentBoxMessageViewModel>()
                 .ToListAsync();
 
@@ -89,6 +94,16 @@
         public async Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string recipientId)
         {
             var messagesFromFb = this.GetMessagesDetailsByAd(adId, senderId, recipientId);
+            var currentUserId = this.usersService.GetCurrentUserId();
+            if (currentUserId == recipientId)
+            {
+                foreach (var message in messagesFromFb)
+                {
+                    message.IsRead = true;
+                }
+            }
+
+            await this.context.SaveChangesAsync();
 
             var messageDetailsViewModels = await messagesFromFb
                 .To<MessageDetailsViewModel>()
@@ -123,7 +138,6 @@
 
         private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string sellerId)
         {
-            //TODO: maybe that can cause some bugs
             var messagesFromDb = this.context.Messages
                 .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == sellerId) && (x.RecipientId == sellerId || x.RecipientId == senderId))
                 .OrderBy(date => date.CreatedOn);
@@ -148,10 +162,19 @@
             var inboxMessages = this.context
                 .Ads
                 .Where(x => x.Messages.Any(y => y.RecipientId == currentUserId))
-                .Select(x => x.Messages.OrderBy(y => y.CreatedOn)
+                .Select(x => x.Messages.OrderByDescending(y => y.CreatedOn)
                     .FirstOrDefault());
-;
+
             return inboxMessages;
+        }
+
+        public async Task<int> GetUnreadMessagesCountAsync(string userId)
+        {
+            var unreadMessagesCount = await this.context
+                .Messages
+                .CountAsync(x => x.RecipientId == userId && !x.IsRead);
+
+            return unreadMessagesCount;
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.SignalR;
+    using SellMe.Web.Hubs;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
@@ -13,11 +14,13 @@ namespace SellMe.Web.Controllers
     {
         private readonly IMessagesService messagesService;
         private readonly IAdsService adsService;
+        private readonly IHubContext<MessageHub> hubContext;
 
-        public MessagesController(IMessagesService messagesService, IAdsService adsService)
+        public MessagesController(IMessagesService messagesService, IAdsService adsService, IHubContext<MessageHub> hubContext)
         {
             this.messagesService = messagesService;
             this.adsService = adsService;
+            this.hubContext = hubContext;
         }
 
         [Authorize]
@@ -34,6 +37,10 @@ namespace SellMe.Web.Controllers
         public async Task<IActionResult> Send(SendMessageInputModel inputModel)
         {
             await this.messagesService.CreateMessageAsync(inputModel);
+
+            var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
+
+            await this.hubContext.Clients.User(inputModel.RecipientId).SendAsync("MessageCount", unreadMessagesCount);
 
             return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, sellerId = inputModel.RecipientId});
         }

@@ -16,6 +16,8 @@
 
         Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string sellerId);
 
+        Task<int> GetUnreadMessagesCountAsync(string userId);
+
         Task<InboxMessagesBindingModel> GetInboxMessagesBindingModelAsync();
 
         Task<SentBoxMessagesBindingModel>GetSentBoxMessagesBindingModelAsync();

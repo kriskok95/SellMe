@@ -19,28 +19,37 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">Sender</th>
-                    <th scope="col">Ad Title</th>
-                    <th scope="col">Date</th>
-                </tr>
+                    <tr>
+                        <th scope="col">Sender</th>
+                        <th scope="col">Ad Title</th>
+                        <th scope="col">Date</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var message in Model.Messages)
-                {
-                    var messageParams = new Dictionary<string, string>
+                    @foreach (var message in Model.Messages)
                     {
+                        var messageParams = new Dictionary<string, string>
+                            {
                         {"senderId", message.SenderId},
                         {"sellerId", message.SellerId},
                         {"adId", message.AdId.ToString()}
                     };
 
                     <tr>
-                        <td>@message.Sender</td>
-                        <td><a asp-controller="Messages" asp-action="Details" asp-all-route-data="messageParams">@message.AdTitle</a></td>
-                        <td>@message.SentOn.ToString("g")</td>
+                        @if (message.IsRead)
+                        {
+                            <td>@message.Sender</td>
+                            <td><a asp-controller="Messages" asp-action="Details" asp-all-route-data="messageParams">@message.AdTitle</a></td>
+                            <td>@message.SentOn.ToString("g")</td>
+                        }
+                        else
+                        {
+                            <th>@message.Sender</th>
+                            <th><a asp-controller="Messages" asp-action="Details" asp-all-route-data="messageParams">@message.AdTitle</a></th>
+                            <th>@message.SentOn.ToString("g")</th>
+                        }
                     </tr>
-                }
+                    }
                 </tbody>
             </table>
         </div>

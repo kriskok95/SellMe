@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web
+﻿using SellMe.Web.Hubs;
+
+namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -65,7 +67,7 @@
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -120,6 +122,11 @@
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseSignalR(
+                routes =>
+                {
+                    routes.MapHub<MessageHub>("/message");
+                });
 
             app.UseMvc(routes =>
             {

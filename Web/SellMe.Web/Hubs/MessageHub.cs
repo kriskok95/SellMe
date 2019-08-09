@@ -1,0 +1,25 @@
+﻿namespace SellMe.Web.Hubs
+{
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.SignalR;
+    using SellMe.Services.Interfaces;
+    using System.Threading.Tasks;
+
+    [Authorize]
+    public class MessageHub : Hub
+    {
+        private readonly IMessagesService messagesService;
+
+        public MessageHub(IMessagesService messagesService)
+        {
+            this.messagesService = messagesService;
+        }
+
+        public async Task UserMessagesCount(string userId)
+        {
+            var messagesCount = await this.messagesService.GetUnreadMessagesCountAsync(userId);
+
+            await this.Clients.User(userId).SendAsync("MessageCount", messagesCount);
+        }
+    }
+}

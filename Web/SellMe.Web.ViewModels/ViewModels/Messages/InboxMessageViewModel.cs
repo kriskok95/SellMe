@@ -17,13 +17,16 @@
 
         public string AdTitle { get; set; }
 
+        public bool IsRead { get; set; }
+
         public DateTime SentOn { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Message, InboxMessageViewModel>()
                 .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn))
-                .ForMember(x => x.SellerId, cfg => cfg.MapFrom(x => x.Ad.SellerId));
+                .ForMember(x => x.SellerId, cfg => cfg.MapFrom(x => x.Ad.SellerId))
+                .ForMember(x => x.IsRead, cfg => cfg.MapFrom(x => x.IsRead));
         }
     }
 }
