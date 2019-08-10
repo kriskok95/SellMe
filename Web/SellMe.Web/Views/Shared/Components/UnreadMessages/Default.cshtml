@@ -1,9 +1,7 @@
 ﻿@model NotificationViewModel
 
-@if (Model.Count > 0)
-{
-    <span class="badge badge-danger ml-1" id="countMsg">@Model.Count</span>
-}
+
+<span class="badge badge-light ml-1" id="countMsg">@Model.Count</span>
 
 <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
 <script src="~/js/notifications.js" asp-append-version="true"></script>

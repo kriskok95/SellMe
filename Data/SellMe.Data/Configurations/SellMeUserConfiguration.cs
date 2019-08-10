@@ -33,6 +33,7 @@
             builder.HasMany(x => x.CreatedReviews)
                 .WithOne(x => x.Creator)
                 .HasForeignKey(x => x.CreatorId);
+            
         }
     }
 }

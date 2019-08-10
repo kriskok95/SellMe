@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services
 {
+    using System;
     using AutoMapper;
     using System.Threading.Tasks;
     using SellMe.Data;
@@ -15,6 +16,8 @@
 
     public class MessagesService : IMessagesService
     {
+        private const string InvalidMessageIdErrorMessage = "Message with given ID doesn't exist!";
+
         private readonly IAdsService adsService;
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
@@ -54,12 +57,24 @@
             return sendMessageBindingModel;
         }
 
-        public async Task CreateMessageAsync(SendMessageInputModel inputModel)
+        public async Task<MessageDetailsViewModel> CreateMessageAsync(SendMessageInputModel inputModel)
         {
             var message = this.mapper.Map<Message>(inputModel);
 
             await this.context.Messages.AddAsync(message);
             await this.context.SaveChangesAsync();
+
+            var messageFromDb = this.context.Messages.FirstOrDefault(x => x.Id == message.Id);
+
+            if (messageFromDb == null)
+            {
+                throw new ArgumentException(InvalidMessageIdErrorMessage);
+            }
+
+            var messageViewModel = mapper.Map<MessageDetailsViewModel>(messageFromDb);
+            messageViewModel.Sender = this.context.Users.FirstOrDefault(x => x.Id == inputModel.SenderId)?.UserName;
+
+            return messageViewModel;
         }
 
         private async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()

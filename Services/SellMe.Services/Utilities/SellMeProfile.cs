@@ -44,6 +44,10 @@
             //Map message
             CreateMap<SendMessageInputModel, Message>();
 
+            CreateMap<Message, MessageDetailsViewModel>()
+                .ForMember(x => x.Sender, cfg => cfg.MapFrom(x => x.Sender.UserName))
+                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")));
+
             CreateMap<Ad, EditAdDetailsViewModel>()
                 .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl)))
                 .ForMember(x => x.Availability, cfg => cfg.MapFrom(x => x.AvailabilityCount));

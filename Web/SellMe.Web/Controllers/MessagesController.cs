@@ -36,11 +36,15 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Send(SendMessageInputModel inputModel)
         {
-            await this.messagesService.CreateMessageAsync(inputModel);
+            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel);
 
             var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
 
+
             await this.hubContext.Clients.User(inputModel.RecipientId).SendAsync("MessageCount", unreadMessagesCount);
+
+            await this.hubContext.Clients.User(inputModel.RecipientId)
+                .SendAsync("SendMessage", messageViewModel);
 
             return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, sellerId = inputModel.RecipientId});
         }

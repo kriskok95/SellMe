@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Hubs
+﻿using SellMe.Web.ViewModels.InputModels.Messages;
+
+namespace SellMe.Web.Hubs
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.SignalR;
@@ -20,6 +22,14 @@
             var messagesCount = await this.messagesService.GetUnreadMessagesCountAsync(userId);
 
             await this.Clients.User(userId).SendAsync("MessageCount", messagesCount);
+        }
+
+        public async Task SendMessage(SendMessageInputModel inputModel)
+        {
+            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel);
+
+            await this.Clients.Users(inputModel.RecipientId)
+                .SendAsync("SendMessage", messageViewModel);
         }
     }
 }
