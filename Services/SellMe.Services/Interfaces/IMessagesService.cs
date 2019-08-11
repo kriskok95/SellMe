@@ -12,7 +12,7 @@
 
         Task<SendMessageBindingModel> GetMessageBindingModelByAdIdAsync(int adId);
 
-        Task<MessageDetailsViewModel> CreateMessageAsync(SendMessageInputModel inputModel);
+        Task<MessageDetailsViewModel> CreateMessageAsync(string senderId, string recipientId, int adId, string content);
 
         Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string sellerId);
 

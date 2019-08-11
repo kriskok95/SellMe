@@ -10,11 +10,11 @@
         <hr class="hr-sell-me" />
         <form asp-controller="Messages" asp-action="Send" method="post">
             <div class="form-group">
-                <label asp-for="InputModel.Content">Content:</label>
                 <textarea asp-for="InputModel.Content" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="InputModel.Content" class="text-danger"></span>
                 <input asp-for="InputModel.RecipientId" type="hidden" value="@Model.ViewModel.RecipientId" />
                 <input asp-for="InputModel.SenderId" type="hidden" value="@Model.ViewModel.SenderId" />
+                <span asp-validation-for="InputModel.SenderId" class="text-danger"></span>
                 <input asp-for="InputModel.AdId" type="hidden" value="@Model.ViewModel.AdId" />
             </div>
             <div class="row">
@@ -27,5 +27,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

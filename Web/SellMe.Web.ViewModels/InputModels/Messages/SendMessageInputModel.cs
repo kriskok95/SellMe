@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.ViewModels.InputModels.Messages
+﻿using SellMe.Web.Infrastructure.Attributes;
+
+namespace SellMe.Web.ViewModels.InputModels.Messages
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -10,8 +12,9 @@
         [Required]
         [MinLength(MessageMinLength, ErrorMessage = MessageMinLengthErrorMessage)]
         public string Content { get; set; }
-
+        
         [Required]
+        [ValidateAdOwner("RecipientId")]
         public string SenderId { get; set; }
 
         [Required]

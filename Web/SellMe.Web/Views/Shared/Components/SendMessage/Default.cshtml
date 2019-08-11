@@ -8,6 +8,7 @@
     </div>
     <input asp-for="@Model.AdId" type="hidden" value="@Model.AdId" />
     <input asp-for="@Model.SenderId" type="hidden" value="@Model.SenderId" />
+    <span asp-validation-for="@Model.SenderId" class="text-danger"></span>
     <input asp-for="@Model.RecipientId" type="hidden" value="@Model.RecipientId" />
     <div class="row mt-3">
         <div class="offset-5 col-2">
@@ -15,3 +16,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}

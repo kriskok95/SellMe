@@ -36,7 +36,17 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Send(SendMessageInputModel inputModel)
         {
-            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel);
+            if (!ModelState.IsValid)
+            {
+                var sendMessageBindingModel =
+                    await this.messagesService.GetMessageBindingModelByAdIdAsync(inputModel.AdId);
+                sendMessageBindingModel.InputModel = inputModel;
+
+                return this.View(sendMessageBindingModel);
+            }
+
+            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId,
+                inputModel.AdId, inputModel.Content);
 
             var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
 
@@ -47,6 +57,21 @@
 
             return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, recipientId = inputModel.RecipientId});
         }
+
+        //public async Task<IActionResult> ConversationSend(ConversationSendMessageInputModel inputModel)
+        //{
+        //    var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId,
+        //        inputModel.AdId, inputModel.Content);
+
+        //    var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
+
+        //    await this.hubContext.Clients.User(inputModel.RecipientId).SendAsync("MessageCount", unreadMessagesCount);
+
+        //    await this.hubContext.Clients.User(inputModel.RecipientId)
+        //        .SendAsync("SendMessage", messageViewModel);
+
+        //    return this.RedirectToAction("Details", new { adId = inputModel.AdId, senderId = inputModel.SenderId, recipientId = inputModel.RecipientId });
+        //}
 
         public async Task<IActionResult> Inbox()
         {

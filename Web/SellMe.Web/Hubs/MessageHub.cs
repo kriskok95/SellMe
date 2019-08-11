@@ -26,7 +26,7 @@ namespace SellMe.Web.Hubs
 
         public async Task SendMessage(SendMessageInputModel inputModel)
         {
-            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel);
+            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId, inputModel.AdId, inputModel.Content);
 
             await this.Clients.Users(inputModel.RecipientId)
                 .SendAsync("SendMessage", messageViewModel);

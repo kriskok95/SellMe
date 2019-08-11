@@ -57,9 +57,15 @@
             return sendMessageBindingModel;
         }
 
-        public async Task<MessageDetailsViewModel> CreateMessageAsync(SendMessageInputModel inputModel)
+        public async Task<MessageDetailsViewModel> CreateMessageAsync(string senderId, string recipientId, int adId, string content)
         {
-            var message = this.mapper.Map<Message>(inputModel);
+        var message = new Message
+        {
+            SenderId = senderId,
+            RecipientId = recipientId,
+            AdId = adId,
+            Content = content
+        };
 
             await this.context.Messages.AddAsync(message);
             await this.context.SaveChangesAsync();
@@ -72,7 +78,7 @@
             }
 
             var messageViewModel = mapper.Map<MessageDetailsViewModel>(messageFromDb);
-            messageViewModel.Sender = this.context.Users.FirstOrDefault(x => x.Id == inputModel.SenderId)?.UserName;
+            messageViewModel.Sender = this.context.Users.FirstOrDefault(x => x.Id == senderId)?.UserName;
 
             return messageViewModel;
         }
