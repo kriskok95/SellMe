@@ -30,8 +30,8 @@
                     {
                         var messageParams = new Dictionary<string, string>
                             {
+                        {"recipientId", message.RecipientId},
                         {"senderId", message.SenderId},
-                        {"sellerId", message.SellerId},
                         {"adId", message.AdId.ToString()}
                     };
 

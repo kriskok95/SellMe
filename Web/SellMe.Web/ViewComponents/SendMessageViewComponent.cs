@@ -13,27 +13,27 @@ namespace SellMe.Web.ViewComponents
         {
             this.usersService = usersService;
         }
-        public IViewComponentResult Invoke(string userId, string sellerId, int adId)
+        public IViewComponentResult Invoke(string user1Id, string user2Id, int adId)
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
             var senderId = string.Empty;
             var recipientId = string.Empty;
 
-            if (currentUserId == sellerId)
+            if (currentUserId == user2Id)
             {
-                senderId = sellerId;
-                recipientId = userId;
+                senderId = user2Id;
+                recipientId = user1Id;
             }
             else
             {
-                senderId = userId;
-                recipientId = sellerId;
+                senderId = user1Id;
+                recipientId = user2Id;
             }
 
             var inputModel = new SendMessageInputModel()
             {
-                SenderId =  senderId,
+                SenderId = senderId,
                 RecipientId = recipientId,
                 AdId = adId,
             };

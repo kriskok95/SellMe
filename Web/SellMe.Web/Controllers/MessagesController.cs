@@ -45,7 +45,7 @@
             await this.hubContext.Clients.User(inputModel.RecipientId)
                 .SendAsync("SendMessage", messageViewModel);
 
-            return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, sellerId = inputModel.RecipientId});
+            return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, recipientId = inputModel.RecipientId});
         }
 
         public async Task<IActionResult> Inbox()
@@ -64,7 +64,7 @@
 
         public async Task<IActionResult> Details(MessageDetailsBindingModel bindingModel)
         {
-            bindingModel.ViewModels = await this.messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.SellerId);
+            bindingModel.ViewModels = await this.messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);
             bindingModel.AdTitle = this.adsService.GetAdTitleById(bindingModel.AdId);
 
             return this.View(bindingModel);

@@ -7,11 +7,11 @@
 
     public class SentBoxMessageViewModel : BaseViewModel, IMapFrom<Message>, IHaveCustomMappings
     {
-        public string SenderId { get; set; }
+        public string RecipientId { get; set; }
 
         public string Sender { get; set; }
 
-        public string SellerId { get; set; }
+        public string SenderId { get; set; }
 
         public int AdId { get; set; }
 
@@ -23,7 +23,8 @@
         {
             configuration.CreateMap<Message, SentBoxMessageViewModel>()
                 .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn))
-                .ForMember(x => x.SellerId, cfg => cfg.MapFrom(x => x.Ad.SellerId));
+                .ForMember(x => x.SenderId, cfg => cfg.MapFrom(x => x.SenderId))
+                .ForMember(x => x.RecipientId, cfg => cfg.MapFrom(x => x.RecipientId));
         }
     }
 }

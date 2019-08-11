@@ -7,9 +7,9 @@
 
     public class MessageDetailsBindingModel : BaseViewModel
     {
-        public string SenderId { get; set; }
+        public string RecipientId { get; set; }
 
-        public string SellerId { get; set; }
+        public string SenderId { get; set; }
 
         public int AdId { get; set; }
 
