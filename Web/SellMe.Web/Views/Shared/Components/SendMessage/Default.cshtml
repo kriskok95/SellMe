@@ -3,7 +3,7 @@
 <div class="form-group">
     <div class="row">
         <label asp-for="@Model.Content">Content:</label>
-        <textarea asp-for="@Model.Content" class="form-control" rows="5"></textarea>
+        <textarea asp-for="@Model.Content" id="message-content" class="form-control" rows="5"></textarea>
         <span asp-validation-for="@Model.Content" class="text-danger"></span>
     </div>
     <input asp-for="@Model.AdId" type="hidden" value="@Model.AdId" />

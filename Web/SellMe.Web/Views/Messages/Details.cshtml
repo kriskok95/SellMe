@@ -51,7 +51,7 @@
 </div>
 <div class="row">
     <div class="offset-2 col-8">
-        <form asp-controller="Messages" asp-action="Send" method="post">
+        <form asp-controller="Messages" asp-action="Send" id="send-message-form" method="post">
             <vc:send-message user-id="@Model.SenderId" seller-id="@Model.SellerId" ad-id="@Model.AdId">
             </vc:send-message>
         </form>
@@ -61,5 +61,6 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+    <script src="~/js/send-message-signalr.js" asp-append-version="true"></script>
     <script src="~/js/send-message.js" asp-append-version="true"></script>
 }

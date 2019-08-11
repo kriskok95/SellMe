@@ -40,7 +40,6 @@
 
             var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
 
-
             await this.hubContext.Clients.User(inputModel.RecipientId).SendAsync("MessageCount", unreadMessagesCount);
 
             await this.hubContext.Clients.User(inputModel.RecipientId)
