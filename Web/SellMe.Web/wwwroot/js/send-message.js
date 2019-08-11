@@ -26,7 +26,7 @@
                 '<div class="row">' +
                 '<div class="offset-1 col-2">Me' +
                 '</div>' +
-                '<div class="offset-9 col-3">' +
+                '<div class="offset-6 col-3">' +
                 today +
                 '</div>' +
                 '<div class="offset-1 col-11 card bg-warning">' +
