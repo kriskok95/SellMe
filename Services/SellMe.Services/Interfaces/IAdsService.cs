@@ -47,5 +47,7 @@
         Task<AdsByUserBindingModel> GetAdsByUserBindingModel(string userId);
 
         Task EditAdById(EditAdInputModel inputModel);
+
+        Task<ICollection<AdForApprovementViewModel>> GetAdsForApprovementViewModels();
     }
 }

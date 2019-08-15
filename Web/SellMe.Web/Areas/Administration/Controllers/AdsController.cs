@@ -4,6 +4,7 @@
     using SellMe.Common;
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
+    using System.Threading.Tasks;
 
     public class AdsController : Controller
     {
@@ -14,13 +15,13 @@
             this.adsService = adsService;
         }
 
-        //[Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        //[Area("Administration")]
-        //public IActionResult Approvement()
-        //{
-        //    var adsForApprovementViewModels = this.adsService.GetAdsForApprovementViewModels();
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Area("Administration")]
+        public async Task<IActionResult> Approvement()
+        {
+            var adsForApprovementViewModels = await this.adsService.GetAdsForApprovementViewModels();
 
-
-        //}
+            return null;
+        }
     }
 }

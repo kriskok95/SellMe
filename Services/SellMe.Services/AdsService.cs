@@ -1,6 +1,4 @@
-﻿using CloudinaryDotNet.Actions;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
@@ -21,6 +19,7 @@ namespace SellMe.Services
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.BindingModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using CloudinaryDotNet.Actions;
     using SellMe.Web.ViewModels.BindingModels.Favorites;
     using System;
     using SellMe.Common;
@@ -437,6 +436,13 @@ namespace SellMe.Services
 
             context.Ads.Update(adFromDb);
             await context.SaveChangesAsync();
+        }
+
+        public Task<ICollection<AdForApprovementViewModel>> GetAdsForApprovementViewModels()
+        {
+            var adsForApprovement = this.context.Ads.Where(x => x.IsDeleted);
+
+            return null;
         }
 
         private void DeleteImages(ICollection<Image> images)

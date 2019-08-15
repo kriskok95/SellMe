@@ -26,4 +26,9 @@
     <ProjectReference Include="..\SellMe.Web.ViewModels\SellMe.Web.ViewModels.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Shared\" />
+  </ItemGroup>
+
 </Project>

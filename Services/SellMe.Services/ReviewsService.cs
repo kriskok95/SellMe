@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using SellMe.Services.Mapping;
-using SellMe.Services.Paging;
-using SellMe.Web.ViewModels.ViewModels.Reviews;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using System.Threading.Tasks;
     using SellMe.Web.ViewModels.BindingModels.Reviews;
     using SellMe.Services.Interfaces;
     using SellMe.Data;
     using SellMe.Data.Models;
+    using System;
+    using System.Linq;
+    using SellMe.Services.Mapping;
+    using SellMe.Services.Paging;
+    using SellMe.Web.ViewModels.ViewModels.Reviews;
 
     public class ReviewsService : IReviewsService
     {
