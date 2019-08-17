@@ -172,5 +172,12 @@
 
             return this.View(rejectedAdsByUser);
         }
+
+        public async Task<IActionResult> SubmitRejectedAd(int rejectionId)
+        {
+            var isSucceeded = await this.adService.SubmitRejectedAdAsync(rejectionId);
+
+            return this.Json(isSucceeded);
+        }
     }
 }

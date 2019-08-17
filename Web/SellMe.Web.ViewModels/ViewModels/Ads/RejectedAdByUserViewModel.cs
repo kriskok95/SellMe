@@ -8,6 +8,8 @@
 
     public class RejectedByUserAdViewModel : IMapFrom<AdRejection>, IHaveCustomMappings
     {
+        public int Id { get; set; }
+
         public int AdId { get; set; }
 
         public string AdTitle { get; set; }

@@ -59,5 +59,7 @@
         Task<ICollection<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels();
 
         Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync();
+
+        Task<bool> SubmitRejectedAdAsync(int rejectionId);
     }
 }

@@ -27,6 +27,7 @@
     public class AdsService : IAdsService
     {
         private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
+        private const string InvalidRejectionIdMessage = "Ad Rejection with the given id doesn't exist!";
         private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
 
         private readonly SellMeDbContext context;
@@ -535,11 +536,41 @@
 
             var rejectedAdByUserViewModels = await this.context
                 .AdRejections
-                .Where(x => x.Ad.SellerId == currentUserId)
+                .Where(x => x.Ad.SellerId == currentUserId && x.Ad.IsDeclined && !x.IsDeleted)
                 .To<RejectedByUserAdViewModel>()
                 .ToListAsync();
 
             return rejectedAdByUserViewModels;
+        }
+
+        public async Task<bool> SubmitRejectedAdAsync(int rejectionId)
+        {
+            if (!await this.context.AdRejections.AnyAsync(x => x.Id == rejectionId))
+            {
+                throw new ArgumentException(InvalidRejectionIdMessage);
+            }
+
+            var rejectionFromDb = await this.context
+                .AdRejections
+                .FirstOrDefaultAsync(x => x.Id == rejectionId);
+
+            if (!await this.context.Ads.AnyAsync(x => x.Id == rejectionFromDb.AdId))
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
+            }
+
+            var adFromDb = await this.context
+                .Ads
+                .FirstOrDefaultAsync(x => x.Id == rejectionFromDb.AdId);
+
+            adFromDb.IsDeclined = false;
+
+            rejectionFromDb.IsDeleted = true;
+            this.context.Update(rejectionFromDb);
+            this.context.Update(adFromDb);
+            await this.context.SaveChangesAsync();
+
+            return true;
         }
 
         private void DeleteImages(ICollection<Image> images)
