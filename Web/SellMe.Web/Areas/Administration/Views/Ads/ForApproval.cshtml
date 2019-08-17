@@ -39,7 +39,7 @@
                                 <button type="button" value="@ad.Id" class="btn btn-success approve-button">Approve</button>
                             </td>
                             <td>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-danger">Decline</a>
+                                <a asp-area="Administration" asp-controller="Ads" asp-action="RejectAd" asp-route-adId="@ad.Id" class="btn btn-danger">Reject</a>
                             </td>
                         </tr>
                     }

@@ -443,7 +443,7 @@
         {
             var adsForApprovementViewModels = await this.context
                 .Ads
-                .Where(x => !x.IsApproved)
+                .Where(x => !x.IsApproved && !x.IsDeclined)
                 .OrderBy(x => x.CreatedOn)
                 .To<AdForApprovalViewModel>()
                 .ToListAsync();
@@ -477,6 +477,56 @@
             await this.context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<object> GetRejectAdBindingModelAsync(int adId)
+        {
+            var adFromDb = await this.context
+                .Ads
+                .FirstOrDefaultAsync(x => x.Id == adId && !x.IsDeleted);
+
+            var rejectAdViewModel = this.mapper.Map<RejectAdViewModel>(adFromDb);
+
+            var rejectAdBindingModel = new RejectAdBindingModel
+            {
+                ViewModel = rejectAdViewModel
+            };
+
+            return rejectAdBindingModel;
+        }
+
+        public async Task CreateAdRejectionAsync(int adId, string comment)
+        {
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
+            }
+
+            var adFromDb = await this.context.Ads.FirstOrDefaultAsync(x => x.Id == adId);
+            adFromDb.IsDeclined = true;
+            this.context.Update(adFromDb);
+
+            var adRejection = new AdRejection
+            {
+                AdId = adId,
+                Comment = comment
+            };
+
+            await this.context.AdRejections.AddAsync(adRejection);
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels()
+        {
+            var currentUserId = this.usersService.GetCurrentUserId();
+
+            var waitingForApprovalViewModels = await this.context
+                .Ads
+                .Where(x => x.SellerId == currentUserId && !x.IsApproved && !x.IsDeclined)
+                .To<WaitingForApprovalByUserViewModel>()
+                .ToListAsync();
+
+            return waitingForApprovalViewModels;
         }
 
         private void DeleteImages(ICollection<Image> images)

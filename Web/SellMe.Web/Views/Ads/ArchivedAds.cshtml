@@ -30,7 +30,9 @@
                             <td><img style="height: 40px; width: 60px" src="@ad.ImageUrl" /></td>
                             <td>@ad.Title</td>
                             <td>@ad.Price$</td>
-                            <td><button type="button" class="btn btn-warning">Edit</button></td>
+                            <td>
+                                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
+                            </td>
                             <td><button type="button" value="@ad.Id" class="btn btn-success activate">Activate</button></td>
                         </tr>
                     }

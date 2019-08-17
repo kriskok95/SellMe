@@ -51,5 +51,11 @@
         Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync();
 
         Task<bool> ApproveAdAsync(int adId);
+
+        Task<object> GetRejectAdBindingModelAsync(int adId);
+
+        Task CreateAdRejectionAsync(int adId, string comment);
+
+        Task<ICollection<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels();
     }
 }

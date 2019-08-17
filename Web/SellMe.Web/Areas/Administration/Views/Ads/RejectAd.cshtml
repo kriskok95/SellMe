@@ -1,0 +1,24 @@
+﻿@model RejectAdBindingModel
+
+    <div class="row">
+        <div class="offset-2 col-8">
+            <h3 class="text-center">Reject approval</h3>
+            <hr class="hr-sell-me" />
+            <h3 class="text-center">@Model.ViewModel.AdTitle</h3>
+            <hr class="hr-sell-me" />
+            <h4>Leave a comment:</h4>
+            <hr class="hr-sell-me" />
+            <form asp-area="Administration" asp-controller="Ads" asp-action="RejectAd" method="post">
+                <div class="form-group">
+                    <textarea asp-for="InputModel.Comment" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="InputModel.Comment" class="text-danger"></span>
+                    <input asp-for="InputModel.AdId" type="hidden" value="@Model.ViewModel.AdId" />
+                </div>
+                <div class="row">
+                    <div class="offset-5 col-2">
+                        <button type="submit" class="btn btn-success btn-lg">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

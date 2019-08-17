@@ -54,6 +54,9 @@
 
             CreateMap<Address, EditAdAddressViewModel>();
 
+            CreateMap<Ad, RejectAdViewModel>()
+                .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Title))
+                .ForMember(x => x.AdId, cfg => cfg.MapFrom(x => x.Id));
         }
     }
 }

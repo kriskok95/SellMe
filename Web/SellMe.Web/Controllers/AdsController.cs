@@ -158,5 +158,12 @@
 
             return this.View(adsByUserBindingModel);
         }
+
+        public async Task<IActionResult> WaitingForApproval()
+        {
+            var waitingForApprovalAdsByUser = await this.adService.GetWaitingForApprovalByCurrentUserViewModels();
+
+            return this.View(waitingForApprovalAdsByUser);
+        }
     }
 }

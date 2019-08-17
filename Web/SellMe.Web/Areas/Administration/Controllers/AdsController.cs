@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Areas.Administration.Controllers
+﻿using SellMe.Web.ViewModels.InputModels.Ads;
+
+namespace SellMe.Web.Areas.Administration.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using SellMe.Common;
@@ -33,6 +35,26 @@
             var result = await this.adsService.ApproveAdAsync(adId);
 
             return Json(result);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Area("Administration")]
+        public async Task<IActionResult> RejectAd(int adId)
+        {
+            var rejectAdViewModel = await this.adsService.GetRejectAdBindingModelAsync(adId);
+
+            return this.View(rejectAdViewModel);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Area("Administration")]
+        [HttpPost]
+        public async Task<IActionResult> RejectAd(RejectAdInputModel inputModel)
+        {
+            await this.adsService.CreateAdRejectionAsync(inputModel.AdId, inputModel.Comment);
+            var adsForApprovementViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync();
+
+            return this.RedirectToAction("ForApproval", adsForApprovementViewModels);
         }
     }
 }
