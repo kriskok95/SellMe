@@ -41,6 +41,8 @@
 
         public DbSet<UpdateAd> UpdateAds { get; set; }
 
+        public DbSet<AdRejection> AdRejections { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();

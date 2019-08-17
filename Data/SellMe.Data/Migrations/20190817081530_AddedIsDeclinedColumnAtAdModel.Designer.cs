@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellMe.Data;
 
 namespace SellMe.Data.Migrations
 {
     [DbContext(typeof(SellMeDbContext))]
-    partial class SellMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190817081530_AddedIsDeclinedColumnAtAdModel")]
+    partial class AddedIsDeclinedColumnAtAdModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,31 +187,6 @@ namespace SellMe.Data.Migrations
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Ads");
-                });
-
-            modelBuilder.Entity("SellMe.Data.Models.AdRejection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AdId");
-
-                    b.Property<string>("Comment");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdId");
-
-                    b.ToTable("AdRejections");
                 });
 
             modelBuilder.Entity("SellMe.Data.Models.AdView", b =>
@@ -666,14 +643,6 @@ namespace SellMe.Data.Migrations
                         .WithMany("Ads")
                         .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SellMe.Data.Models.AdRejection", b =>
-                {
-                    b.HasOne("SellMe.Data.Models.Ad", "Ad")
-                        .WithMany("AdRejections")
-                        .HasForeignKey("AdId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SellMe.Data.Models.AdView", b =>

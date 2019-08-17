@@ -30,6 +30,8 @@
 
         public bool IsApproved { get; set; }
 
+        public bool IsDeclined { get; set; }
+
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
@@ -58,5 +60,7 @@
         public virtual ICollection<AdView> AdViews { get; set; }
 
         public virtual ICollection<UpdateAd> UpdateAds { get; set; }
+
+        public virtual ICollection<AdRejection> AdRejections { get; set; }
     }
 }
