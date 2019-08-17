@@ -6,7 +6,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class AdForApprovementViewModel : IMapFrom<Ad>
+    public class AdForApprovalViewModel : IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -17,9 +17,10 @@
         public decimal Price { get; set; }
 
         public string ImageUrl { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Ad, MyActiveAdsViewModel>()
+            configuration.CreateMap<Ad, AdForApprovalViewModel>()
                 .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.FirstOrDefault().ImageUrl));
         }
     }

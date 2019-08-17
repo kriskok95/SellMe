@@ -2,9 +2,9 @@
 //Archie Ad 
 $(document).ready(function () {
 	var elementForRemove;
-	$(".trElm").click(function () {
-		elementForRemove = $(this);
-	})
+    $(".trElm").click(function() {
+        elementForRemove = $(this);
+    });
 	$(".archive").click(function () {
 		var adId = $(this).val();
 		console.log(adId);

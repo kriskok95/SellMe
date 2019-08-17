@@ -154,7 +154,7 @@
 
         public async Task<IActionResult> AdsByUser(string userId)
         {
-            var adsByUserBindingModel = await this.adService.GetAdsByUserBindingModel(userId);
+            var adsByUserBindingModel = await this.adService.GetAdsByUserBindingModelAsync(userId);
 
             return this.View(adsByUserBindingModel);
         }

@@ -44,10 +44,12 @@
 
         Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText);
 
-        Task<AdsByUserBindingModel> GetAdsByUserBindingModel(string userId);
+        Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId);
 
         Task EditAdById(EditAdInputModel inputModel);
 
-        Task<ICollection<AdForApprovementViewModel>> GetAdsForApprovementViewModels();
+        Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync();
+
+        Task<bool> ApproveAdAsync(int adId);
     }
 }

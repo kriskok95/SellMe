@@ -27,6 +27,7 @@
     public class AdsService : IAdsService
     {
         private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
+        private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
 
         private readonly SellMeDbContext context;
         private readonly IAddressesService _addressesService;
@@ -378,7 +379,7 @@
             return adsBySearchViewModel;
         }
 
-        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModel(string userId)
+        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId)
         {
             var user = await this.userManager.FindByIdAsync(userId);
 
@@ -438,11 +439,44 @@
             await context.SaveChangesAsync();
         }
 
-        public Task<ICollection<AdForApprovementViewModel>> GetAdsForApprovementViewModels()
+        public async Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync()
         {
-            var adsForApprovement = this.context.Ads.Where(x => x.IsDeleted);
+            var adsForApprovementViewModels = await this.context
+                .Ads
+                .Where(x => !x.IsApproved)
+                .OrderBy(x => x.CreatedOn)
+                .To<AdForApprovalViewModel>()
+                .ToListAsync();
 
-            return null;
+            var adsForApprovementViewModel = new AdsForApprovalViewModel
+            {
+                AdsAdForApprovalViewModels = adsForApprovementViewModels
+            };
+
+
+            return adsForApprovementViewModel;
+        }
+
+        public async Task<bool> ApproveAdAsync(int adId)
+        {
+            var adFromDb = await this.context
+                .Ads
+                .FirstOrDefaultAsync(x => x.Id == adId);
+
+            if (adFromDb == null)
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
+            }
+
+            if (adFromDb.IsApproved)
+            {
+                throw new InvalidOperationException(AlreadyApprovedAdErrorMessage);
+            }
+
+            adFromDb.IsApproved = true;
+            await this.context.SaveChangesAsync();
+
+            return true;
         }
 
         private void DeleteImages(ICollection<Image> images)

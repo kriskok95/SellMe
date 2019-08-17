@@ -28,6 +28,8 @@
 
         public int Updates { get; set; }
 
+        public bool IsApproved { get; set; }
+
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
