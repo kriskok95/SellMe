@@ -56,5 +56,14 @@ namespace SellMe.Web.Areas.Administration.Controllers
 
             return this.RedirectToAction("ForApproval", adsForApprovementViewModels);
         }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Area("Administration")]
+        public async Task<IActionResult> RejectedAds()
+        {
+            var rejectedAdsViewModels = await this.adsService.GetRejectedAdAllViewModelsAsync();
+
+            return this.View(rejectedAdsViewModels);
+        }
     }
 }

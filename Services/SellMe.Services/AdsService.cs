@@ -573,6 +573,17 @@
             return true;
         }
 
+        public async Task<ICollection<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync()
+        {
+            var rejectedAdAllViewModels = await this.context.Ads
+                .Where(x => x.IsDeclined)
+                .OrderByDescending(x => x.CreatedOn)
+                .To<RejectedAdAllViewModel>()
+                .ToListAsync();
+
+            return rejectedAdAllViewModels;
+        }
+
         private void DeleteImages(ICollection<Image> images)
         {
             var cloudinary = CloudinaryHelper.SetCloudinary();
