@@ -258,7 +258,7 @@
         {
             var promotedAds = await this.context
                 .Ads
-                .Where(x => x.PromotionOrders.Any(y => y.IsActive))
+                .Where(x => x.PromotionOrders.Any(y => y.IsActive) && x.IsApproved && !x.IsDeleted)
                 .ToListAsync();
 
             var numbersCount = promotedAds.Count < GlobalConstants.PromotedAdsCountAtIndexPage
@@ -286,7 +286,7 @@
             var latestAddedAdViewModels = await this.context
                 .Ads
                 .OrderByDescending(x => x.CreatedOn)
-                .Where(x => !x.IsDeleted)
+                .Where(x => !x.IsDeleted && x.IsApproved)
                 .Take(GlobalConstants.LatestAddedAdsCountAtIndexPage)
                 .To<LatestAddedAdViewModel>()
                 .ToListAsync();
@@ -367,7 +367,7 @@
         {
             var adViewModels = await this.context
                 .Ads
-                .Where(x => x.Title.Contains(searchText))
+                .Where(x => x.Title.Contains(searchText) && x.IsApproved)
                 .To<AdViewModel>()
                 .ToListAsync();
 
@@ -385,7 +385,7 @@
 
             var adByUserViewModels = await this.context
                 .Ads
-                .Where(x => x.SellerId == userId && !x.IsDeleted && x.ActiveTo >= DateTime.UtcNow)
+                .Where(x => x.SellerId == userId && !x.IsDeleted && x.ActiveTo >= DateTime.UtcNow && x.IsApproved)
                 .To<AdViewModel>()
                 .ToListAsync();
 
@@ -498,7 +498,7 @@
         {
             var adsBySubcategory = this.context
                 .Ads
-                .Where(x => x.SubCategoryId == subcategoryId);
+                .Where(x => x.SubCategoryId == subcategoryId && x.IsApproved);
 
             return adsBySubcategory;
         }
@@ -554,7 +554,7 @@
         {
             var adsByUser = this.context
                 .Ads
-                .Where(x => x.SellerId == userId && !x.IsDeleted);
+                .Where(x => x.SellerId == userId && !x.IsDeleted && x.IsApproved);
 
             return adsByUser;
         }
@@ -578,7 +578,7 @@
         {
             var adsViewModel = this.context
                 .Ads
-                .Where(x => x.CategoryId == categoryId)
+                .Where(x => x.CategoryId == categoryId && x.IsApproved)
                 .To<AdViewModel>();
 
             return adsViewModel;

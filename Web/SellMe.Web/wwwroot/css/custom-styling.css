@@ -1,5 +1,9 @@
 ﻿/*Footer styling*/
 
+a:hover {
+    text-decoration: none;
+}
+
 .footer-dark {
     padding: 50px 0;
     color: #f0f9ff;
@@ -191,6 +195,8 @@ nav.sell-me-nav {
 /*.button-delete {
     margin-bottom: 10px;
 }*/
+
+
 
 
 
