@@ -529,6 +529,19 @@
             return waitingForApprovalViewModels;
         }
 
+        public async Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync()
+        {
+            var currentUserId = this.usersService.GetCurrentUserId();
+
+            var rejectedAdByUserViewModels = await this.context
+                .AdRejections
+                .Where(x => x.Ad.SellerId == currentUserId)
+                .To<RejectedByUserAdViewModel>()
+                .ToListAsync();
+
+            return rejectedAdByUserViewModels;
+        }
+
         private void DeleteImages(ICollection<Image> images)
         {
             var cloudinary = CloudinaryHelper.SetCloudinary();

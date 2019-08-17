@@ -12,6 +12,9 @@
                 <a class="nav-link" asp-controller="Ads" asp-action="WaitingForApproval">Waiting for approval</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" asp-controller="Ads" asp-action="Rejected">Rejected</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Ads" asp-action="ArchivedAds">Archived</a>
             </li>
         </ul>
@@ -60,7 +63,9 @@
 
                             <vc:title-length ad-title="@ad.Title"></vc:title-length>
                             <td>@ad.Price$</td>
-                            <td><a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a></td>
+                            <td>
+                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                            </td>
                             <td>
                                 <a asp-controller="Ads" asp-action="Update" asp-route-adId="@ad.Id" class="btn btn-success">Update</a>
                                 <div><small>Available: @ad.Updates</small></div>

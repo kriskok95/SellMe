@@ -57,5 +57,7 @@
         Task CreateAdRejectionAsync(int adId, string comment);
 
         Task<ICollection<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels();
+
+        Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync();
     }
 }

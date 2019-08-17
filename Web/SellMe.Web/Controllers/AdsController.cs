@@ -165,5 +165,12 @@
 
             return this.View(waitingForApprovalAdsByUser);
         }
+
+        public async Task<IActionResult> Rejected()
+        {
+            var rejectedAdsByUser = await this.adService.GetRejectedAdByUserViewModelsAsync();
+
+            return this.View(rejectedAdsByUser);
+        }
     }
 }
