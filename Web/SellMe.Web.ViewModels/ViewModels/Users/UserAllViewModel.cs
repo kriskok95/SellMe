@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-
-namespace SellMe.Web.ViewModels.ViewModels.Users
+﻿namespace SellMe.Web.ViewModels.ViewModels.Users
 {
     using System;
     using Microsoft.AspNetCore.Identity;
+    using AutoMapper;
 
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
@@ -21,7 +20,8 @@ namespace SellMe.Web.ViewModels.ViewModels.Users
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<SellMeUser, UserAllViewModel>()
-                .ForMember(x => x.Id, cfg => cfg.MapFrom(x => x.UserName))
+                .ForMember(x => x.Id, cfg => cfg.MapFrom(x => x.Id))
+                .ForMember(x => x.Username, cfg => cfg.MapFrom(x => x.UserName))
                 .ForMember(x => x.EmailConfirmed, cfg => cfg.MapFrom(x => x.EmailConfirmed))
                 .ForMember(x => x.CreatedOn, cfg => cfg.MapFrom(x => x.CreatedOn));
         }

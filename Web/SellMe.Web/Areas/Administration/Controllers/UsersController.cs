@@ -23,5 +23,14 @@
 
             return this.View(allUserViewModels);
         }
+
+        [Area("Administration")]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> Block(string userId)
+        {
+            var isBlocked = await this.usersService.BlockUserByIdAsync(userId);
+
+            return Json(isBlocked);
+        }
     }
 }

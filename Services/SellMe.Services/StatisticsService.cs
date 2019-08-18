@@ -18,7 +18,7 @@
 
         public async Task<AdministrationIndexStatisticViewModel> GetAdministrationIndexStatisticViewModel()
         {
-            var allUsersCount = await this.context.Users.CountAsync();
+            var allUsersCount = await this.context.Users.CountAsync(x => !x.IsDeleted);
             var allAdsCount = await this.context.Ads.CountAsync();
             var allPromotedAds = await this.context
                 .Ads

@@ -15,5 +15,7 @@
         Task<SellMeUser> GetUserByIdAsync(string userId);
 
         Task<IEnumerable<UserAllViewModel>> GetAllUserViewModelsAsync();
+
+        Task<bool> BlockUserByIdAsync(string userId);
     }
 }

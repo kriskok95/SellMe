@@ -17,12 +17,15 @@ namespace SellMe.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<SellMeUser> _signInManager;
+        
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<SellMeUser> _userManager;
 
-        public LoginModel(SignInManager<SellMeUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<SellMeUser> signInManager, ILogger<LoginModel> logger, UserManager<SellMeUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -74,6 +77,10 @@ namespace SellMe.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                if (_userManager.FindByNameAsync(Input.Username).Result.IsDeleted)
+                {
+                    return Page();
+                }
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {

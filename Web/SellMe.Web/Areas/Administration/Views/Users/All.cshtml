@@ -16,8 +16,8 @@
                 </thead>
                 <tbody>
                     @foreach (var user in @Model)
-                    {
-                    <tr>
+                {
+                    <tr class="elm">
                         <td>
                             Registered On: @user.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
                         </td>
@@ -28,12 +28,53 @@
                             @(user.EmailConfirmed ? "Yes" : "No")
                         </td>
                         <td>
-                            <a asp-area="Administration" asp-controller="Ads" asp-action="RejectAd" asp-route-adId="@user.Id" class="btn btn-danger">Block</a>
+                            <button class="btn btn-danger block-user" value="@user.Id">Block</button>
                         </td>
                     </tr>
-                    }
+                }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<partial name="_ModalPartial" />
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            var elementForRemove;
+            $(".elm").click(function () {
+                elementForRemove = $(this);
+            });
+
+            $('.block-user').on('click',
+                function () {
+                    let userId = $(this).val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/Administration/Users/Block",
+                        data: "userId=" + userId,
+                        dataType: "json",
+                        success: function () {
+                            console.log(10);
+                            elementForRemove.hide('slow', function () { elementForRemove.remove(); });
+                            $(function () {
+                                $('#modal').modal('show');
+                                $('.modal-message').html('You have successfully blocked this user!');
+                                $(function () {
+                                    var myModal = $('#modal');
+                                    clearTimeout(myModal.data('hideInterval'));
+                                    myModal.data('hideInterval', setTimeout(function () {
+                                        myModal.modal('hide');
+                                    }, 3000));
+                                });
+                            });
+                        }
+                    });
+                });
+        });
+    </script>
+}
