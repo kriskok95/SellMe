@@ -21,38 +21,40 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Comment</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Submit changes</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Picture</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Submit changes</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var rejection in @Model)
-                    {
-                        <tr class="elm">
-                            <td><img style="height: 40px; width: 60px" src="@rejection.ImageUrl" /></td>
-                            <td>@rejection.AdTitle</td>
-                            <td>@rejection.Comment</td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@rejection.AdId" class="btn btn-info">Details</a>
-                            </td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@rejection.AdId" class="btn btn-warning">Edit</a>
-                            </td>
-                            <td>
-                                <button class="btn btn-success create-button" value="@rejection.Id">Submit changes</button>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var rejection in @Model)
+                {
+                    <tr class="elm">
+                        <td><img style="height: 40px; width: 60px" src="@rejection.ImageUrl" /></td>
+                        <td>@rejection.AdTitle</td>
+                        <td>@rejection.Comment</td>
+                        <td>
+                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@rejection.AdId" class="btn btn-info">Details</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Ads" asp-action="Edit" asp-route-id="@rejection.AdId" class="btn btn-warning">Edit</a>
+                        </td>
+                        <td>
+                            <button class="btn btn-success create-button" value="@rejection.Id">Submit changes</button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<partial name="_ModalPartial" />
 
 @section Scripts
 {
