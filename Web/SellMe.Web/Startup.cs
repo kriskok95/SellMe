@@ -87,6 +87,7 @@ namespace SellMe.Web
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IUpdatesService, UpdatesService>();
             services.AddTransient<IReviewsService, ReviewsService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
