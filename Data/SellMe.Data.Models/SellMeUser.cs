@@ -16,6 +16,8 @@
             this.Ads = new HashSet<Ad>();
         }
 
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }

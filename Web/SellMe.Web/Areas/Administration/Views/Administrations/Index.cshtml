@@ -2,7 +2,7 @@
 
 <h3 class="text-center mb-3">Admin panel</h3>
 <nav class="navbar navbar-light bg-light mb-5">
-    <a class="navbar-brand" href="#">Registered users: @Model.AllUsersCount</a>
+    <a class="navbar-brand" asp-area="Administration" asp-controller="Users" asp-action="All">Registered users: @Model.AllUsersCount</a>
     <a class="navbar-brand" href="#">Active ads: @Model.AllAdsCount</a>
     <a class="navbar-brand" href="#">Promoted ads: @Model.AllPromotedAdsCount</a>
 </nav>

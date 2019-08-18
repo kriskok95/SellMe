@@ -1,0 +1,39 @@
+﻿@model IEnumerable<UserAllViewModel>
+
+<h3 class="text-center">Registered users:</h3>
+<hr class="hr-sell-me" />
+<div class="card text-center">
+    <div class="card-header">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Registered On</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Is Confirmed</th>
+                        <th scope="col">Block</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in @Model)
+                    {
+                    <tr>
+                        <td>
+                            Registered On: @user.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
+                        </td>
+                        <td>
+                            @user.Username
+                        </td>
+                        <td>
+                            @(user.EmailConfirmed ? "Yes" : "No")
+                        </td>
+                        <td>
+                            <a asp-area="Administration" asp-controller="Ads" asp-action="RejectAd" asp-route-adId="@user.Id" class="btn btn-danger">Block</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

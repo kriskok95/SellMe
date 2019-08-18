@@ -1,4 +1,10 @@
-﻿namespace SellMe.Services
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using SellMe.Data;
+using SellMe.Services.Mapping;
+using SellMe.Web.ViewModels.ViewModels.Users;
+
+namespace SellMe.Services
 {
     using SellMe.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
@@ -11,11 +17,13 @@
     {
         private readonly IHttpContextAccessor contextAccessor;
         private readonly UserManager<SellMeUser> userManager;
+        private readonly SellMeDbContext context;
 
-        public UsersService(IHttpContextAccessor contextAccessor, UserManager<SellMeUser> userManager)
+        public UsersService(IHttpContextAccessor contextAccessor, UserManager<SellMeUser> userManager, SellMeDbContext context)
         {
             this.contextAccessor = contextAccessor;
             this.userManager = userManager;
+            this.context = context;
         }
 
         public string GetCurrentUserId()
@@ -42,6 +50,15 @@
             var user = await this.userManager.FindByIdAsync(userId);
 
             return user;
+        }
+
+        public async Task<IEnumerable<UserAllViewModel>> GetAllUserViewModelsAsync()
+        {
+            var userAllViewModels = await this.context.SellMeUsers
+                .To<UserAllViewModel>()
+                .ToListAsync();
+
+            return userAllViewModels;
         }
     }
 }
