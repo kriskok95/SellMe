@@ -38,6 +38,12 @@ namespace SellMe.Web.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        [TempData]
+        public string SuccessfulRegistration { get; set; }
+
+        [TempData]
+        public string AlmostDoneMessage { get; set; }
+
         public class InputModel
         {
             [Required]
@@ -87,8 +93,11 @@ namespace SellMe.Web.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    this.AlmostDoneMessage = "Almost done...";
+                    this.SuccessfulRegistration = $"We've sent and email to {Input.Email}. Open it to activate your account.";
+
                     //await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect("/Identity/Account/Login");
                 }
                 foreach (var error in result.Errors)
                 {
