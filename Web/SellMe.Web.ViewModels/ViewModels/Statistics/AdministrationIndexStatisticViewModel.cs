@@ -6,6 +6,5 @@
 
         public int AllAdsCount { get; set; }
 
-        public int AllPromotedAdsCount { get; set; }
     }
 }

@@ -59,13 +59,6 @@
             return Json(subcategories);
         }
 
-        public async Task<IActionResult> All(int? pageNumber)
-        {
-            var adsAllViewModels = await this.adService.GetAllAdViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
-
-            return this.View(adsAllViewModels);
-        }
-
         public async Task<IActionResult> AdsByCategory(AdsByCategoryInputModel inputModel)
         {
             var adsByCategoryViewModel = await this.adService.GetAdsByCategoryViewModelAsync(inputModel.Id, inputModel.PageNumber?? DefaultPageNumber, DefaultPageSize);

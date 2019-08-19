@@ -15,7 +15,7 @@
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             var yyyy = today.getFullYear();
             var ampm = today.getHours() >= 12 ? 'PM' : 'AM';
-            var time = today.getHours() + ":" + today.getMinutes();
+            var time = today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 
             today = mm + '/' + dd + '/' + yyyy + ' ' + time + ' ' + ampm;
 

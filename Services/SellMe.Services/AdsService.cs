@@ -68,19 +68,6 @@
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<AdsAllViewModel> GetAllAdViewModelsAsync(int pageNumber, int pageSize)
-        {
-            var adsViewModels = this.GetAllAdsViewModel();
-            var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
-
-            var paginatedAds = await PaginatedList<AdViewModel>
-                .CreateAsync(adsViewModels, pageNumber, pageSize);
-
-            var adsAllViewModel = this.CreateAdsAllViewModel(paginatedAds, allCategoriesViewModel);
-
-            return adsAllViewModel;
-        }
-
         public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId, int pageNumber, int pageSize)
         {
             var adsViewModel = this.GetAllAdsByCategoryAsync(categoryId);
@@ -735,15 +722,6 @@
             };
 
             return adsAllViewModel;
-        }
-
-        private IQueryable<AdViewModel> GetAllAdsViewModel()
-        {
-            var adsViewModel = this.context
-                .Ads
-                .To<AdViewModel>();
-
-            return adsViewModel;
         }
 
         private async Task<string> UploadImages(IFormFile inputModelImage, string title)

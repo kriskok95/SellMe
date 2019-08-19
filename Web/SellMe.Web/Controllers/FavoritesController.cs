@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace SellMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
@@ -26,6 +28,7 @@
             this.favoritesService = favoritesService;
         }
 
+        [Authorize]
         public async Task<IActionResult> MyFavorites(int? pageNumber)
         {
             var loggedInUserId = this.userManager.GetUserId(this.User);
@@ -35,6 +38,7 @@
             return this.View(favoriteAdsBindingModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> Add(int adId)
         {
             bool isAdded = await this.favoritesService.AddToFavoritesAsync(adId);
@@ -42,6 +46,7 @@
             return Json(isAdded);
         }
 
+        [Authorize]
         public async Task<IActionResult> Remove(int adId)
         {
             bool isRemoved = await this.favoritesService.RemoveFromFavoritesAsync(adId);

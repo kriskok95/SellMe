@@ -14,8 +14,6 @@ namespace SellMe.Services.Interfaces
     {
         Task CreateAdAsync(CreateAdInputModel inputModel);
 
-        Task<AdsAllViewModel> GetAllAdViewModelsAsync(int pageNumber, int pageSize);
-
         Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId, int pageNumber, int pageSize);
 
         Task<AdDetailsViewModel> GetAdDetailsViewModelAsync(int adId);
