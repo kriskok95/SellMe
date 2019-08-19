@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WaitingForApprovalByUserViewModel>
+﻿@model SellMe.Services.Paging.PaginatedList<WaitingForApprovalByUserViewModel>
 
 <h3 class="text-center">Waiting for approval</h3>
 <h5 class="text-danger text-center mt-3 mb-3">@TempData["CreatedAd"]</h5>
@@ -49,4 +49,53 @@
             </table>
         </div>
     </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="row mt-3">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="WaitingForApproval"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (Model.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="WaitingForApproval"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="WaitingForApproval"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="WaitingForApproval"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>

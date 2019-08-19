@@ -519,17 +519,20 @@
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels()
+        public async Task<PaginatedList<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels(int pageNumber, int pageSize)
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
-            var waitingForApprovalViewModels = await this.context
+            var waitingForApprovalViewModels = this.context
                 .Ads
                 .Where(x => x.SellerId == currentUserId && !x.IsApproved && !x.IsDeclined)
-                .To<WaitingForApprovalByUserViewModel>()
-                .ToListAsync();
+                .To<WaitingForApprovalByUserViewModel>();
 
-            return waitingForApprovalViewModels;
+            var paginatedListViewModels =
+                await PaginatedList<WaitingForApprovalByUserViewModel>.CreateAsync(waitingForApprovalViewModels,
+                    pageNumber, pageSize);
+
+            return paginatedListViewModels;
         }
 
         public async Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync()

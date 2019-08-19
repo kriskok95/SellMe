@@ -58,7 +58,7 @@ namespace SellMe.Services.Interfaces
 
         Task CreateAdRejectionAsync(int adId, string comment);
 
-        Task<ICollection<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels();
+        Task<PaginatedList<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels(int pageNumber, int pageSize);
 
         Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync();
 

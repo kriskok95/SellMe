@@ -170,9 +170,9 @@
             return this.View(adsByUserBindingModel);
         }
 
-        public async Task<IActionResult> WaitingForApproval()
+        public async Task<IActionResult> WaitingForApproval(int? pageNumber)
         {
-            var waitingForApprovalAdsByUser = await this.adService.GetWaitingForApprovalByCurrentUserViewModels();
+            var waitingForApprovalAdsByUser = await this.adService.GetWaitingForApprovalByCurrentUserViewModels(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(waitingForApprovalAdsByUser);
         }
