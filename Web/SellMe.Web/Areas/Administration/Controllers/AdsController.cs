@@ -9,9 +9,11 @@ namespace SellMe.Web.Areas.Administration.Controllers
     using System.Threading.Tasks;
     using System.Diagnostics.CodeAnalysis;
 
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
     public class AdsController : Controller
     {
+        private const int DefaultPageSize = 10;
+        private const int DefaultPageNumber = 1;
+
         private readonly IAdsService adsService;
 
         public AdsController(IAdsService adsService)
@@ -68,9 +70,9 @@ namespace SellMe.Web.Areas.Administration.Controllers
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
-        public async Task<IActionResult> AllActiveAds()
+        public async Task<IActionResult> AllActiveAds(int? pageNumber)
         {
-            var allActiveAdViewModel = await this.adsService.GetAllActiveAdViewModelsAsync();
+            var allActiveAdViewModel = await this.adsService.GetAllActiveAdViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(allActiveAdViewModel);
         }

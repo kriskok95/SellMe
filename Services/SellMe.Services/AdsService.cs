@@ -585,15 +585,17 @@
             return rejectedAdAllViewModels;
         }
 
-        public async Task<IEnumerable<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync()
+        public async Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber, int pageSize)
         {
-            var activeAdAllViewModels = await this.context
+            var activeAdAllViewModels = this.context
                 .Ads
                 .Where(x => !x.IsDeleted && x.IsApproved)
-                .To<ActiveAdAllViewModel>()
-                .ToListAsync();
+                .To<ActiveAdAllViewModel>();
 
-            return activeAdAllViewModels;
+            var paginatedListViewModels =
+                await PaginatedList<ActiveAdAllViewModel>.CreateAsync(activeAdAllViewModels, pageNumber, pageSize);
+
+            return paginatedListViewModels;
         }
 
         public async Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDays()

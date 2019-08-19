@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ActiveAdAllViewModel>
+﻿@model SellMe.Services.Paging.PaginatedList<ActiveAdAllViewModel>
 
 <div class="card text-center">
     <div class="card-header">
@@ -18,40 +18,89 @@
                 </thead>
                 <tbody>
                     @foreach (var ad in @Model)
-                    {
-                        <tr class="trElm">
-                            <td>
-                                @ad.CreatedOn.ToString("dd/MM/yyyy")
-                            </td>
-                            <td>
-                                <div>
-                                    <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
-                                </div>
-                                @if (@ad.IsPromoted)
-                                {
-                                    <div class="mt-2">
-                                        <span class="label warning">Promo</span>
-                                    </div>
-                                }
-                            </td>
-                            <td>
-                                @ad.Title
-                            </td>
-                            <td>@ad.Price$</td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
-                            </td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
-                            </td>
-                            <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
-                            <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>
-                        </tr>
-                    }
+                {
+                    <tr class="trElm">
+                        <td>
+                            @ad.CreatedOn.ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            <div>
+                                <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
+                            </div>
+                            @if (@ad.IsPromoted)
+                            {
+                            <div class="mt-2">
+                                <span class="label warning">Promo</span>
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            @ad.Title
+                        </td>
+                        <td>@ad.Price$</td>
+                        <td>
+                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
+                        </td>
+                        <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
+                        <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="row mt-3">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="ActiveAds"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (Model.PageIndex == i)
+                    {
+            <li class="page-item active">
+                <a class="page-link" asp-action="AllActiveAds"
+                   asp-route-pageNumber="@i"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+            </li>
+                    }
+                    else
+                    {
+            <li class="page-item">
+                <a class="page-link" asp-action="AllActiveAds"
+                   asp-route-pageNumber="@i"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+            </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="AllActiveAds"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 @section Scripts

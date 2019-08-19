@@ -24,7 +24,8 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Ad, ActiveAdAllViewModel>()
-                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.FirstOrDefault().ImageUrl));
+                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.FirstOrDefault().ImageUrl))
+                .ForMember(x => x.IsPromoted, cfg => cfg.MapFrom(x => x.PromotionOrders.Any(y => y.IsActive)));
         }
     }
 }

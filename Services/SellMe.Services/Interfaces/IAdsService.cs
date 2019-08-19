@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services.Interfaces
+﻿using SellMe.Services.Paging;
+
+namespace SellMe.Services.Interfaces
 {
     using System.Threading.Tasks;
     using System.Collections.Generic;
@@ -64,7 +66,7 @@
 
         Task<ICollection<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync();
 
-        Task<IEnumerable<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync();
+        Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber, int pageSize);
 
         Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDays();
     }
