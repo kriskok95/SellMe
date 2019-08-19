@@ -24,6 +24,7 @@
             return this.View(allUserViewModels);
         }
 
+        [HttpPost]
         [Area("Administration")]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> Block(string userId)

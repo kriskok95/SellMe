@@ -19,10 +19,10 @@
         public async Task<AdministrationIndexStatisticViewModel> GetAdministrationIndexStatisticViewModel()
         {
             var allUsersCount = await this.context.Users.CountAsync(x => !x.IsDeleted);
-            var allAdsCount = await this.context.Ads.CountAsync();
+            var allAdsCount = await this.context.Ads.CountAsync(x => !x.IsDeleted);
             var allPromotedAds = await this.context
                 .Ads
-                .CountAsync(x => x.PromotionOrders.Any(y => y.IsActive && y.AdId == x.Id));
+                .CountAsync(x => x.PromotionOrders.Any(y => y.IsActive && y.AdId == x.Id && !x.IsDeleted));
 
             var administrationIndexStatisticViewModel = new AdministrationIndexStatisticViewModel
             {
