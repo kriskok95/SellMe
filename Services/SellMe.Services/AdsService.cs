@@ -584,6 +584,17 @@
             return rejectedAdAllViewModels;
         }
 
+        public async Task<IEnumerable<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync()
+        {
+            var activeAdAllViewModels = await this.context
+                .Ads
+                .Where(x => !x.IsDeleted && x.IsApproved)
+                .To<ActiveAdAllViewModel>()
+                .ToListAsync();
+
+            return activeAdAllViewModels;
+        }
+
         private void DeleteImages(ICollection<Image> images)
         {
             var cloudinary = CloudinaryHelper.SetCloudinary();

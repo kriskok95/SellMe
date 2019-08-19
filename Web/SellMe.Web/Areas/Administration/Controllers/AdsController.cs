@@ -65,5 +65,28 @@ namespace SellMe.Web.Areas.Administration.Controllers
 
             return this.View(rejectedAdsViewModels);
         }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Area("Administration")]
+        public async Task<IActionResult> AllActiveAds()
+        {
+            var allActiveAdViewModel = await this.adsService.GetAllActiveAdViewModelsAsync();
+
+            return this.View(allActiveAdViewModel);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Area("Administration")]
+        public async Task<IActionResult> ArchiveAd(int adId)
+        {
+            bool isArchived = await this.adsService.ArchiveAdByIdAsync(adId);
+
+            var result = new
+            {
+                success = true
+            };
+
+            return Json(result);
+        }
     }
 }

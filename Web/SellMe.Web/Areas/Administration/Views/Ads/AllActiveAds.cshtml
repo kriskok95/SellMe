@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ActiveAdAllViewModel>
+
+<div class="card text-center">
+    <div class="card-header">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Created On</th>
+                        <th scope="col">Picture</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Promote</th>
+                        <th scope="col">Archive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ad in @Model)
+                    {
+                        <tr class="trElm">
+                            <td>
+                                @ad.CreatedOn.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                <div>
+                                    <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
+                                </div>
+                                @if (@ad.IsPromoted)
+                                {
+                                    <div class="mt-2">
+                                        <span class="label warning">Promo</span>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @ad.Title
+                            </td>
+                            <td>@ad.Price$</td>
+                            <td>
+                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                            </td>
+                            <td>
+                                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
+                            </td>
+                            <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
+                            <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/archive-ad.js" asp-append-version="true"></script>
+}

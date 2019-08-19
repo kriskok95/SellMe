@@ -63,5 +63,7 @@
         Task<bool> SubmitRejectedAdAsync(int rejectionId);
 
         Task<ICollection<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync();
+
+        Task<IEnumerable<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync();
     }
 }
