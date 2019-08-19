@@ -177,9 +177,9 @@
             return this.View(waitingForApprovalAdsByUser);
         }
 
-        public async Task<IActionResult> Rejected()
+        public async Task<IActionResult> Rejected(int? pageNumber)
         {
-            var rejectedAdsByUser = await this.adService.GetRejectedAdByUserViewModelsAsync();
+            var rejectedAdsByUser = await this.adService.GetRejectedAdByUserViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(rejectedAdsByUser);
         }

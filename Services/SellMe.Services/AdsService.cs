@@ -535,17 +535,20 @@
             return paginatedListViewModels;
         }
 
-        public async Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync()
+        public async Task<PaginatedList<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync(int pageNumber, int pageSize)
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
-            var rejectedAdByUserViewModels = await this.context
+            var rejectedAdByUserViewModels = this.context
                 .AdRejections
                 .Where(x => x.Ad.SellerId == currentUserId && x.Ad.IsDeclined && !x.IsDeleted)
-                .To<RejectedByUserAdViewModel>()
-                .ToListAsync();
+                .To<RejectedByUserAdViewModel>();
 
-            return rejectedAdByUserViewModels;
+            var paginatedListViewModels =
+                await PaginatedList<RejectedByUserAdViewModel>.CreateAsync(rejectedAdByUserViewModels, pageNumber,
+                    pageSize);
+
+            return paginatedListViewModels;
         }
 
         public async Task<bool> SubmitRejectedAdAsync(int rejectionId)

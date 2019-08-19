@@ -60,7 +60,7 @@ namespace SellMe.Services.Interfaces
 
         Task<PaginatedList<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels(int pageNumber, int pageSize);
 
-        Task<ICollection<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync();
+        Task<PaginatedList<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync(int pageNumber, int pageSize);
 
         Task<bool> SubmitRejectedAdAsync(int rejectionId);
 
