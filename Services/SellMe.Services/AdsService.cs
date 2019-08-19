@@ -29,6 +29,7 @@
         private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
         private const string InvalidRejectionIdMessage = "Ad Rejection with the given id doesn't exist!";
         private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
+        private const int CreatedAdsStatisticDaysCount = 10;
 
         private readonly SellMeDbContext context;
         private readonly IAddressesService _addressesService;
@@ -593,6 +594,21 @@
                 .ToListAsync();
 
             return activeAdAllViewModels;
+        }
+
+        public async Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDays()
+        {
+            var adsCount = new List<int>();
+
+            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); i < DateTime.UtcNow; i = i.AddDays(1))
+            {
+                var currentDaysAdsCount = await this.context.Ads
+                    .CountAsync(x => x.CreatedOn.DayOfYear == i.DayOfYear);
+
+                adsCount.Add(currentDaysAdsCount);
+            }
+
+            return adsCount;
         }
 
         private void DeleteImages(ICollection<Image> images)

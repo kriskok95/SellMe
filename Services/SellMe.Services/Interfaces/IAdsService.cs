@@ -65,5 +65,7 @@
         Task<ICollection<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync();
 
         Task<IEnumerable<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync();
+
+        Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDays();
     }
 }
