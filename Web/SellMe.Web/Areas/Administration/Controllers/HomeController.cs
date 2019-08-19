@@ -7,13 +7,13 @@
     using System.Threading.Tasks;
     using Newtonsoft.Json;
 
-    public class AdministrationsController : Controller
+    public class HomeController : Controller
     {
         private readonly IStatisticsService statisticsService;
 
         private readonly JsonSerializerSettings jsonSetting;
 
-        public AdministrationsController(IStatisticsService statisticsService)
+        public HomeController(IStatisticsService statisticsService)
         {
             this.statisticsService = statisticsService;
             this.jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };

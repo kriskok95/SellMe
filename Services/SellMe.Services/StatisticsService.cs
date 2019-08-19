@@ -44,13 +44,13 @@
         public async Task<IEnumerable<DataPoint>> GetPointsForCreatedAds()
         {
             var lsatTenDates = this.GetLastTenDaysAsString();
-            var getOfAdForTheLastTenDays = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
+            var countOfCreatedAds = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
 
             var dataPoints = new List<DataPoint>();
 
-            for (int i = 0; i < CreatedAdsStatisticDaysCount; i++)
+            for (int i = 1; i <= CreatedAdsStatisticDaysCount; i++)
             {
-                var dataPoint = new DataPoint(getOfAdForTheLastTenDays[i], lsatTenDates[i]);
+                var dataPoint = new DataPoint(countOfCreatedAds[i], lsatTenDates[i]);
                 dataPoints.Add(dataPoint);
             }
 
@@ -61,7 +61,7 @@
         {
             var dates = new List<string>();
 
-            for (DateTime dt = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); dt < DateTime.UtcNow; dt = dt.AddDays(1))
+            for (DateTime dt = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); dt <= DateTime.UtcNow; dt = dt.AddDays(1))
             {
                 dates.Add(dt.ToString("dd MMM"));
             }

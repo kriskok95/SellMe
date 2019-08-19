@@ -600,7 +600,7 @@
         {
             var adsCount = new List<int>();
 
-            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); i < DateTime.UtcNow; i = i.AddDays(1))
+            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); i <= DateTime.UtcNow; i = i.AddDays(1))
             {
                 var currentDaysAdsCount = await this.context.Ads
                     .CountAsync(x => x.CreatedOn.DayOfYear == i.DayOfYear);
