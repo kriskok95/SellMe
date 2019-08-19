@@ -13,6 +13,9 @@
         private const int DefaultPageSize = 10;
         private const int DefaultPageNumber = 1;
 
+        private const string SuccessfullyCreatedAdMessage =
+            "Your ad was successfully created. It will be reviewed by an administrator and approved as soon as possible!";
+
         private readonly IAdsService adService;
         private readonly ISubCategoriesService subCategoriesService;
 
@@ -39,7 +42,10 @@
 
             await this.adService.CreateAdAsync(inputModel);
 
-            return this.Redirect("/");
+            TempData["CreatedAd"] = SuccessfullyCreatedAdMessage;
+                
+
+            return this.RedirectToAction("WaitingForApproval");
         }
 
         public async Task<IActionResult> GetSubcategoriesAsync(int categoryId)
