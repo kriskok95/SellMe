@@ -7,46 +7,95 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th scope="col">Created On</th>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">Approve</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Created On</th>
+                    <th scope="col">Picture</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Approve</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var ad in @Model.AdsAdForApprovalViewModels)
-                    {
-                        <tr class="elm">
-                            <td>
-                                Created On: @ad.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
-                            </td>
-                            <td>
-                                <div>
-                                    <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
-                                </div>
-                            </td>
-                            <td>
-                                @ad.Title
-                            </td>
-                            <td>@ad.Price$</td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
-                            </td>
-                            <td>
-                                <button type="button" value="@ad.Id" class="btn btn-success approve-button">Approve</button>
-                            </td>
-                            <td>
-                                <a asp-area="Administration" asp-controller="Ads" asp-action="RejectAd" asp-route-adId="@ad.Id" class="btn btn-danger">Reject</a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var ad in @Model.AdsAdForApprovalViewModels)
+                {
+                    <tr class="elm">
+                        <td>
+                            Created On: @ad.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
+                        </td>
+                        <td>
+                            <div>
+                                <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
+                            </div>
+                        </td>
+                        <td>
+                            @ad.Title
+                        </td>
+                        <td>@ad.Price$</td>
+                        <td>
+                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                        </td>
+                        <td>
+                            <button type="button" value="@ad.Id" class="btn btn-success approve-button">Approve</button>
+                        </td>
+                        <td>
+                            <a asp-area="Administration" asp-controller="Ads" asp-action="RejectAd" asp-route-adId="@ad.Id" class="btn btn-danger">Reject</a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
+</div>
+
+@{
+    var prevDisabled = !Model.AdsAdForApprovalViewModels.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.AdsAdForApprovalViewModels.HasNextPage ? "disabled" : "";
+}
+<div class="row mt-3">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="ForApproval"
+                   asp-route-pageNumber="@(Model.AdsAdForApprovalViewModels.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.AdsAdForApprovalViewModels.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.AdsAdForApprovalViewModels.TotalPages; i++)
+                {
+                    if (Model.AdsAdForApprovalViewModels.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="ForApproval"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="ForApproval"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="ForApproval"
+                   asp-route-pageNumber="@(Model.AdsAdForApprovalViewModels.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <partial name="_ModalPartial" />

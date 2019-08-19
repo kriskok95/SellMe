@@ -23,11 +23,11 @@ namespace SellMe.Web.Areas.Administration.Controllers
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
-        public async Task<IActionResult> ForApproval()
+        public async Task<IActionResult> ForApproval(int? pageNumber)
         {
-            var adsForApprovementViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync();
+            var adsForApprovalViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
-            return this.View(adsForApprovementViewModels);
+            return this.View(adsForApprovalViewModels);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
@@ -54,9 +54,9 @@ namespace SellMe.Web.Areas.Administration.Controllers
         public async Task<IActionResult> RejectAd(RejectAdInputModel inputModel)
         {
             await this.adsService.CreateAdRejectionAsync(inputModel.AdId, inputModel.Comment);
-            var adsForApprovementViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync();
+            var adsForApprovalViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync(DefaultPageNumber, DefaultPageSize);
 
-            return this.RedirectToAction("ForApproval", adsForApprovementViewModels);
+            return this.RedirectToAction("ForApproval", adsForApprovalViewModels);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]

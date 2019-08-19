@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace SellMe.Web.ViewModels.ViewModels.Ads
+﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
+    using SellMe.Services.Paging;
+
     public class AdsForApprovalViewModel : BaseViewModel
     {
-        public IEnumerable<AdForApprovalViewModel> AdsAdForApprovalViewModels { get; set; }
+        public PaginatedList<AdForApprovalViewModel> AdsAdForApprovalViewModels { get; set; }
 
     }
 }

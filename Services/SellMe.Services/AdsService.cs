@@ -441,22 +441,23 @@
             await context.SaveChangesAsync();
         }
 
-        public async Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync()
+        public async Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync(int pageNumber, int pageSize)
         {
-            var adsForApprovementViewModels = await this.context
+            var adForApprovalViewModels = this.context
                 .Ads
                 .Where(x => !x.IsApproved && !x.IsDeclined)
                 .OrderBy(x => x.CreatedOn)
-                .To<AdForApprovalViewModel>()
-                .ToListAsync();
+                .To<AdForApprovalViewModel>();
 
-            var adsForApprovementViewModel = new AdsForApprovalViewModel
+            var paginatedListViewModels = await PaginatedList<AdForApprovalViewModel>.CreateAsync(adForApprovalViewModels, pageNumber, pageSize);
+
+            var adsForApprovalViewModel = new AdsForApprovalViewModel
             {
-                AdsAdForApprovalViewModels = adsForApprovementViewModels
+                AdsAdForApprovalViewModels = paginatedListViewModels
             };
 
 
-            return adsForApprovementViewModel;
+            return adsForApprovalViewModel;
         }
 
         public async Task<bool> ApproveAdAsync(int adId)

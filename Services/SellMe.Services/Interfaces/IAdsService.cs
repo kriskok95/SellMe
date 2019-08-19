@@ -50,7 +50,7 @@ namespace SellMe.Services.Interfaces
 
         Task EditAdById(EditAdInputModel inputModel);
 
-        Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync();
+        Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync(int pageNumber, int PageSize);
 
         Task<bool> ApproveAdAsync(int adId);
 
