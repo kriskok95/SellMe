@@ -16,6 +16,9 @@
         private const string SuccessfullyCreatedAdMessage =
             "Your ad was successfully created. It will be reviewed by an administrator and approved as soon as possible!";
 
+        private const string SuccessfullyUpdatedAdMessage =
+            "You ad was successfully updated and moved at the top of the page!";
+
         private readonly IAdsService adService;
         private readonly ISubCategoriesService subCategoriesService;
 
@@ -139,6 +142,8 @@
         public async Task<IActionResult> Update(UpdateAdInputModel inputModel)
         {
             await this.adService.UpdateAdByIdAsync(inputModel.AdId);
+
+            TempData["SuccessfulUpdateMessage"] = SuccessfullyUpdatedAdMessage;
 
             return this.RedirectToAction("ActiveAds");
         }
