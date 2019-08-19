@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RejectedAdAllViewModel>
+﻿@model SellMe.Services.Paging.PaginatedList<RejectedAdAllViewModel>
 
 <h3 class="text-center">Rejected ads:</h3>
 <hr class="hr-sell-me" />
@@ -7,35 +7,84 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th scope="col">Created On</th>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Details</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Created On</th>
+                    <th scope="col">Picture</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Details</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var ad in @Model)
-                    {
-                        <tr>
-                            <td>
-                                Created On: @ad.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
-                            </td>
-                            <td>
-                                <div>
-                                    <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
-                                </div>
-                            </td>
-                            <td>
-                                @ad.Title
-                            </td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var ad in @Model)
+                {
+                    <tr>
+                        <td>
+                            Created On: @ad.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
+                        </td>
+                        <td>
+                            <div>
+                                <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
+                            </div>
+                        </td>
+                        <td>
+                            @ad.Title
+                        </td>
+                        <td>
+                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="row mt-3">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="RejectedAds"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (Model.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="RejectedAds"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="RejectedAds"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="RejectedAds"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>

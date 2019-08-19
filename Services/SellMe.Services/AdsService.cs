@@ -575,15 +575,17 @@
             return true;
         }
 
-        public async Task<ICollection<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync()
+        public async Task<PaginatedList<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync(int pageNumber, int pageSize)
         {
-            var rejectedAdAllViewModels = await this.context.Ads
+            var rejectedAdAllViewModels = this.context.Ads
                 .Where(x => x.IsDeclined)
                 .OrderByDescending(x => x.CreatedOn)
-                .To<RejectedAdAllViewModel>()
-                .ToListAsync();
+                .To<RejectedAdAllViewModel>();
 
-            return rejectedAdAllViewModels;
+            var paginatedListViewModels =
+                await PaginatedList<RejectedAdAllViewModel>.CreateAsync(rejectedAdAllViewModels, pageNumber, pageSize);
+
+            return paginatedListViewModels;
         }
 
         public async Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber, int pageSize)

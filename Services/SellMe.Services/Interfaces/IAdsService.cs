@@ -64,7 +64,7 @@ namespace SellMe.Services.Interfaces
 
         Task<bool> SubmitRejectedAdAsync(int rejectionId);
 
-        Task<ICollection<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync();
+        Task<PaginatedList<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync(int pageNumber, int pageSize);
 
         Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber, int pageSize);
 

@@ -61,9 +61,9 @@ namespace SellMe.Web.Areas.Administration.Controllers
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
-        public async Task<IActionResult> RejectedAds()
+        public async Task<IActionResult> RejectedAds(int? pageNumber)
         {
-            var rejectedAdsViewModels = await this.adsService.GetRejectedAdAllViewModelsAsync();
+            var rejectedAdsViewModels = await this.adsService.GetRejectedAdAllViewModelsAsync(pageNumber?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(rejectedAdsViewModels);
         }
