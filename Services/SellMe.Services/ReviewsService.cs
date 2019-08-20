@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using System.Collections.Generic;
+
+namespace SellMe.Services
 {
     using System.Threading.Tasks;
     using SellMe.Web.ViewModels.BindingModels.Reviews;
@@ -35,10 +37,23 @@
                 OwnerId = userId,
                 OwnerUsername = owner.UserName,
                 SenderId = this.usersService.GetCurrentUserId(),
+                Votes = this.GetVotesByStars(userId),
+                AverageVote = this.context.Reviews.Where(x => x.OwnerId == userId).Average(x => x.Rating),
                 ViewModels = paginatedReviewViewModels,
             };
 
             return reviewsBindingModel;
+        }
+
+        private List<int> GetVotesByStars(string userId)
+        {
+            List<int> result = new List<int>();
+            for (int i = 1; i <= 5; i++)
+            {
+                result.Add(this.context.Reviews.Count(x => x.OwnerId == userId && x.Rating == i));
+            }
+
+            return result;
         }
 
         private IQueryable<ReviewViewModel> GetReviewViewModelsByUserId(string userId)

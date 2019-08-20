@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.ViewModels.BindingModels.Reviews
+﻿using System.Collections.Generic;
+
+namespace SellMe.Web.ViewModels.BindingModels.Reviews
 {
     using SellMe.Web.ViewModels.InputModels.Reviews;
     using SellMe.Web.ViewModels.ViewModels;
@@ -12,6 +14,10 @@
         public string SenderId { get; set; }
 
         public string OwnerUsername{ get; set; }
+
+        public List<int> Votes { get; set; }
+
+        public double AverageVote { get; set; }
 
         public ReviewInputModel InputModel { get; set; }
 

@@ -4,8 +4,9 @@
 
     public class ReviewInputModel
     {
-        public const int ReviewMinimumLength = 5;
-        public const string ReviewMinimumLengthErrorMessage = "The review should be at least {1} characters.";
+        private const int ReviewMinimumLength = 5;
+        private const string ReviewMinimumLengthErrorMessage = "The review should be at least {1} characters.";
+        private const string RatingErrorMessage = "Please click the number of stars you want to rate this shop.";
 
         [Required]
         public string OwnerId { get; set; }
@@ -17,8 +18,8 @@
         [MinLength(ReviewMinimumLength, ErrorMessage = ReviewMinimumLengthErrorMessage)]
         public string Content { get; set; }
 
-        //TODO: Create custom validation attribute for the rating field.
         [Required]
+        [Range(1, 5, ErrorMessage = RatingErrorMessage)]
         public int Rating { get; set; }
     }
 }
