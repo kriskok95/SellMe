@@ -1,11 +1,6 @@
-﻿@using SellMe.Services
-@model EditAdBindingModel
-@inject IAddressesService AddressesService
-@inject IConditionsService ConditionsService
+﻿@model EditAdBindingModel
 @{
     ViewData["Title"] = "Edit ad";
-    var conditions = this.ConditionsService.GetConditionViewModels();
-    var countries = this.AddressesService.GetAllCountries();
 }
 
 <link rel="stylesheet" href="~/css/file-uploader.css" type="text/css" asp-append-version="true" />
@@ -54,16 +49,8 @@
                 <div class="form-group">
                     <label asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.ConditionId">Condition</label>
                     <select asp-for="@Model.EditAdInputModel.EditAdDetailsInputModel.ConditionId" class="form-control">
-                        <option selected="true" disabled="disabled">--Select--</option>"
-                        @foreach (var condition in conditions)
-                        {
-                            if (condition.Name == @Model.EditAdViewModel.EditAdDetailsViewModel.ConditionName)
-                            {
-                                <option value="@condition.Id" selected="selected">@condition.Name</option>
-                                continue;
-                            }
-                            <option value="@condition.Id">@condition.Name</option>
-                        }
+                        <vc:conditions-edit-dropdown ad-condition="@Model.EditAdViewModel.EditAdDetailsViewModel.ConditionName">
+                        </vc:conditions-edit-dropdown>
                     </select>
                     <span asp-validation-for="@Model.EditAdInputModel.EditAdDetailsInputModel.ConditionId" class="text-danger"></span>
                 </div>
@@ -129,29 +116,20 @@
                 <div class="form-group">
                     <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.Country">Country</label>
                     <select asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.Country" class="form-control">
-                        @*TODO: refactor this*@
-                        @foreach (var country in @countries)
-                        {
-                            if (country == @Model.EditAdViewModel.EditAdAddressViewModel.Country)
-                            {
-                                <option selected="selected">@country</option>
-                                continue;
-                            }
-                            <option>@country</option>
-
-                        }
+                        <vc:countries-edit-dropdown ad-country="@Model.EditAdViewModel.EditAdAddressViewModel.Country">
+                        </vc:countries-edit-dropdown>
                     </select>
                     <span asp-validation-for="@Model.EditAdInputModel.EditAdAddressInputModel.Country" class="text-danger"></span>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.City">City</label>
                             <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.City" value="@Model.EditAdViewModel.EditAdAddressViewModel.City" class="form-control">
                             <span asp-validation-for="@Model.EditAdInputModel.EditAdAddressInputModel.City" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.Street">Street Address</label>
                             <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.Street" value="@Model.EditAdViewModel.EditAdAddressViewModel.Street" class="form-control">
@@ -160,14 +138,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.District">District</label>
                             <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.District" value="@Model.EditAdViewModel.EditAdAddressViewModel.District" class="form-control">
                             <span asp-validation-for="@Model.EditAdInputModel.EditAdAddressInputModel.District" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.ZipCode">Zip/Postal Code</label>
                             <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.ZipCode" value="@Model.EditAdViewModel.EditAdAddressViewModel.ZipCode" class="form-control">
@@ -176,14 +154,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.PhoneNumber">Phone Number</label>
                             <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.PhoneNumber" value="@Model.EditAdViewModel.EditAdAddressViewModel.PhoneNumber" class="form-control">
                             <span asp-validation-for="@Model.EditAdInputModel.EditAdAddressInputModel.PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.EmailAddress">Email Address</label>
                             <input asp-for="@Model.EditAdInputModel.EditAdAddressInputModel.EmailAddress" , value="@Model.EditAdViewModel.EditAdAddressViewModel.EmailAddress" class="form-control">

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace SellMe.Web.ViewModels.ViewModels.Messages
 {
@@ -14,8 +15,6 @@ namespace SellMe.Web.ViewModels.ViewModels.Messages
 
         public string Content { get; set; }
 
-        //[DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{MM/dd/yyyy}")]
         public string SentOn { get; set; }
 
         public string Sender { get; set; }
@@ -24,7 +23,7 @@ namespace SellMe.Web.ViewModels.ViewModels.Messages
         {
             configuration.CreateMap<Message, MessageDetailsViewModel>()
                 .ForMember(x => x.Sender, cfg => cfg.MapFrom(x => x.Sender.UserName))
-                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")));
+                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn.ToLocalTime().ToString("MM/dd/yyyy hh:mm tt")));
         }
     }
 }

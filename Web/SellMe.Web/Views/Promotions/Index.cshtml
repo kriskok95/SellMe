@@ -2,10 +2,10 @@
 
 <h3 class="text-center">@Model.AdTitle</h3>
 <hr class="hr-sell-me" />
-<div class="d-flex justify-content-around">
+<div class="row d-flex justify-content-around">
     @foreach (var promotion in @Model.PromotionViewModels)
     {
-        <div class="card" style="width: 18rem;">
+        <div class="card mb-3" style="width: 18rem;">
             <div class="card-header">
                 <h4 class="text-center">@promotion.Type</h4>
             </div>

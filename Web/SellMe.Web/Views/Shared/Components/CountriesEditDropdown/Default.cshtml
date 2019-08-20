@@ -1,0 +1,11 @@
+﻿@model CountriesDropDownEditViewModel
+
+@foreach (var country in @Model.Countries)
+{
+    if (country == @Model.AdCountry)
+    {
+        <option selected="selected">@country</option>
+        continue;
+    }
+    <option>@country</option>
+}

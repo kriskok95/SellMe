@@ -22,7 +22,7 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Message, SentBoxMessageViewModel>()
-                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn))
+                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn.ToLocalTime()))
                 .ForMember(x => x.SenderId, cfg => cfg.MapFrom(x => x.SenderId))
                 .ForMember(x => x.RecipientId, cfg => cfg.MapFrom(x => x.RecipientId));
         }

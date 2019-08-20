@@ -1,12 +1,8 @@
 ﻿@model CreateAdInputModel
-@inject IConditionsService ConditionsService;
 @{
     ViewData["Title"] = "Create ad";
 }
 
-@{
-    var conditions = this.ConditionsService.GetConditionViewModels();
-}
 
 <link rel="stylesheet" href="~/css/file-uploader.css" type="text/css" asp-append-version="true" />
 
@@ -52,11 +48,8 @@
                 <div class="form-group">
                     <label asp-for="CreateAdDetailInputModel.ConditionId">Condition</label>
                     <select asp-for="CreateAdDetailInputModel.ConditionId" class="form-control">
-                        <option selected="true" disabled="disabled">--Select--</option>"
-                        @foreach (var condition in conditions)
-                        {
-                            <option value="@condition.Id">@condition.Name</option>
-                        }
+                        <vc:conditions-dropdown>
+                        </vc:conditions-dropdown>
                     </select>
                     <span asp-validation-for="CreateAdDetailInputModel.ConditionId" class="text-danger"></span>
                 </div>
@@ -98,14 +91,14 @@
                     <span asp-validation-for="CreateAdAddressInputModel.Country" class="text-danger"></span>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.City">City</label>
                             <input asp-for="CreateAdAddressInputModel.City" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.City" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.Street">Street Address</label>
                             <input asp-for="CreateAdAddressInputModel.Street" class="form-control">
@@ -114,14 +107,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.District">District</label>
                             <input asp-for="CreateAdAddressInputModel.District" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.District" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.ZipCode">Zip/Postal Code</label>
                             <input asp-for="CreateAdAddressInputModel.ZipCode" class="form-control">
@@ -130,14 +123,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.PhoneNumber">Phone Number</label>
                             <input asp-for="CreateAdAddressInputModel.PhoneNumber" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="CreateAdAddressInputModel.EmailAddress">Email Address</label>
                             <input asp-for="CreateAdAddressInputModel.EmailAddress" class="form-control">
@@ -156,12 +149,6 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/get-subcategories.js" asp-append-version="true"></script>
     <script src="~/js/upload-image.js" asp-append-version="true"></script>
-    <script>
-        $(".container-fluid").on('click', '.button-delete', function () {
-            console.log(this);
-            $(this).closest(".image").remove();
-        });
-    </script>
 }
 
 

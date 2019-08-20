@@ -17,11 +17,11 @@
             this.context = context;
         }
 
-        public ICollection<CreateAdConditionViewModel> GetConditionViewModels()
+        public ICollection<ConditionViewModel> GetConditionViewModels()
         {
             var conditionViewModels = this.context
                 .Conditions
-                .To<CreateAdConditionViewModel>()
+                .To<ConditionViewModel>()
                 .ToList();
 
             return conditionViewModels;

@@ -5,6 +5,6 @@
 
     public interface IConditionsService
     {
-        ICollection<CreateAdConditionViewModel> GetConditionViewModels();
+        ICollection<ConditionViewModel> GetConditionViewModels();
     }
 }

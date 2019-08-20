@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ConditionViewModel>
+
+@foreach (var condition in @Model)
+{
+    if (condition.Name == (string)ViewData["adCondition"])
+    {
+        <option value="@condition.Id" selected="selected">@condition.Name</option>
+        continue;
+    }
+    <option value="@condition.Id">@condition.Name</option>
+}
