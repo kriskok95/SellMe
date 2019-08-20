@@ -20,66 +20,68 @@
             </li>
         </ul>
         <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">Update</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Promote</th>
-                        <th scope="col">Archive</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ad in @Model.Ads)
-                    {
-                        <tr class="trElm">
-                            <td>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        From: @ad.ActiveFrom.ToString("dd/MM")
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        To: @ad.ActiveTo.ToString("dd/MM")
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
-                                </div>
-                                @if (@ad.IsPromoted)
-                                {
-                                    <div class="mt-2">
-                                        <span class="label warning">Promo</span>
-                                    </div>
-                                }
-                            </td>
-
-                            <vc:title-length ad-title="@ad.Title"></vc:title-length>
-                            <td>@ad.Price$</td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
-                            </td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Update" asp-route-adId="@ad.Id" class="btn btn-success">Update</a>
-                                <div><small>Available: @ad.Updates</small></div>
-                            </td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
-                            </td>
-                            <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
-                            <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Picture</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Details</th>
+                            <th scope="col">Update</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Promote</th>
+                            <th scope="col">Archive</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var ad in @Model.Ads)
+                        {
+                            <tr class="trElm">
+                                <td>
+                                    <div class="row">
+                                        <div class="col text-left">
+                                            From: @ad.ActiveFrom.ToString("dd/MM")
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col text-left">
+                                            To: @ad.ActiveTo.ToString("dd/MM")
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
+                                    </div>
+                                    @if (@ad.IsPromoted)
+                                    {
+                                        <div class="mt-2">
+                                            <span class="label warning">Promo</span>
+                                        </div>
+                                    }
+                                </td>
+
+                                <vc:title-length ad-title="@ad.Title"></vc:title-length>
+                                <td>@ad.Price$</td>
+                                <td>
+                                    <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                                </td>
+                                <td>
+                                    <a asp-controller="Ads" asp-action="Update" asp-route-adId="@ad.Id" class="btn btn-success">Update</a>
+                                    <div><small>Available: @ad.Updates</small></div>
+                                </td>
+                                <td>
+                                    <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
+                                </td>
+                                <td><a asp-controller="Promotions" asp-action="Index" asp-route-adId="@ad.Id" class="btn btn-primary">Promote</a></td>
+                                <td><button type="button" value="@ad.Id" class="btn btn-danger archive">Archive</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

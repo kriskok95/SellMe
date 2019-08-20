@@ -1,41 +1,43 @@
-﻿@model SellMe.Services.Paging.PaginatedList<RejectedAdAllViewModel>
+﻿@model PaginatedList<RejectedAdAllViewModel>
 
 <h3 class="text-center">Rejected ads:</h3>
 <hr class="hr-sell-me" />
 <div class="card text-center">
     <div class="card-header">
         <div class="card-body">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Created On</th>
-                    <th scope="col">Picture</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Details</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var ad in @Model)
-                {
-                    <tr>
-                        <td>
-                            Created On: @ad.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
-                        </td>
-                        <td>
-                            <div>
-                                <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
-                            </div>
-                        </td>
-                        <td>
-                            @ad.Title
-                        </td>
-                        <td>
-                            <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Created On</th>
+                            <th scope="col">Picture</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ad in @Model)
+                        {
+                            <tr>
+                                <td>
+                                    Created On: @ad.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
+                                </td>
+                                <td>
+                                    <div>
+                                        <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
+                                    </div>
+                                </td>
+                                <td>
+                                    @ad.Title
+                                </td>
+                                <td>
+                                    <a asp-controller="Ads" asp-action="Details" asp-route-id="@ad.Id" class="btn btn-info">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

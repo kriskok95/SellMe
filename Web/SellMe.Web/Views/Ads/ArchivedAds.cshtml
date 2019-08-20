@@ -19,31 +19,33 @@
             </li>
         </ul>
         <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Activate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ad in @Model.Ads)
-                    {
-                        <tr class="removeElement">
-                            <td><img style="height: 40px; width: 60px" src="@ad.ImageUrl" /></td>
-                            <td>@ad.Title</td>
-                            <td>@ad.Price$</td>
-                            <td>
-                                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
-                            </td>
-                            <td><button type="button" value="@ad.Id" class="btn btn-success activate">Activate</button></td>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Picture</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Activate</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var ad in @Model.Ads)
+                        {
+                            <tr class="removeElement">
+                                <td><img style="height: 40px; width: 60px" src="@ad.ImageUrl" /></td>
+                                <td>@ad.Title</td>
+                                <td>@ad.Price$</td>
+                                <td>
+                                    <a asp-controller="Ads" asp-action="Edit" asp-route-id="@ad.Id" class="btn btn-warning">Edit</a>
+                                </td>
+                                <td><button type="button" value="@ad.Id" class="btn btn-success activate">Activate</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

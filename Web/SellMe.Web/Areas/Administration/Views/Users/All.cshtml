@@ -5,35 +5,37 @@
 <div class="card text-center">
     <div class="card-header">
         <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Registered On</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Is Confirmed</th>
-                        <th scope="col">Block</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in @Model)
-                {
-                    <tr class="elm">
-                        <td>
-                            Registered On: @user.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
-                        </td>
-                        <td>
-                            @user.Username
-                        </td>
-                        <td>
-                            @(user.EmailConfirmed ? "Yes" : "No")
-                        </td>
-                        <td>
-                            <button class="btn btn-danger block-user" value="@user.Id">Block</button>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Registered On</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Is Confirmed</th>
+                            <th scope="col">Block</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in @Model)
+                        {
+                            <tr class="elm">
+                                <td>
+                                    Registered On: @user.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
+                                </td>
+                                <td>
+                                    @user.Username
+                                </td>
+                                <td>
+                                    @(user.EmailConfirmed ? "Yes" : "No")
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger block-user" value="@user.Id">Block</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
