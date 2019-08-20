@@ -68,5 +68,10 @@
             await this.context.Reviews.AddAsync(review);
             await this.context.SaveChangesAsync();
         }
+
+        public bool CheckOwnerIdAndSellerId(string creatorId, string ownerId)
+        {
+            return creatorId == ownerId;
+        }
     }
 }
