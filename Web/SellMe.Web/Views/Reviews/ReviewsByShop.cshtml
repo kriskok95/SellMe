@@ -2,6 +2,8 @@
 
 <link href="~/css/star-rating.css" rel="stylesheet" asp-append-version="true" />
 
+<div asp-validation-summary="All" class="text-danger"></div>
+
 <h3 class="text-center mb-3">@Model.OwnerUsername's shop</h3>
 <div class="card text-center mb-3">
     <div class="card-header">
@@ -98,7 +100,7 @@
     <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
-                <a asp-action="ReviewsByShop"
+                <a asp-action="ReviewsByShop" asp-route-userId="@Model.OwnerId"
                    asp-route-pageNumber="@(Model.ViewModels.PageIndex - 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @prevDisabled">
@@ -112,7 +114,7 @@
                     if (Model.ViewModels.PageIndex == i)
                     {
                         <li class="page-item active">
-                            <a class="page-link" asp-action="ReviewsByShop"
+                            <a class="page-link" asp-action="ReviewsByShop" asp-route-userId="@Model.OwnerId"
                                asp-route-pageNumber="@i"
                                asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
                         </li>
@@ -120,7 +122,7 @@
                     else
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="ReviewsByShop"
+                            <a class="page-link" asp-action="ReviewsByShop" asp-route-userId="@Model.OwnerId"
                                asp-route-pageNumber="@i"
                                asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
                         </li>
@@ -128,7 +130,7 @@
                 }
             }
             <li class="page-item">
-                <a asp-action="ReviewsByShop"
+                <a asp-action="ReviewsByShop" asp-route-userId="@Model.OwnerId"
                    asp-route-pageNumber="@(Model.ViewModels.PageIndex + 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @nextDisabled">
