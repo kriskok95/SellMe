@@ -1,8 +1,7 @@
-﻿using SellMe.Services.Interfaces;
-
-namespace SellMe.Web.ViewComponents
+﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
+    using SellMe.Services.Interfaces;
 
     public class ConditionsDropdownViewComponent : ViewComponent
     {

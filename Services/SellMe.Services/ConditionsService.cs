@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Services
 {
-    using SellMe.Services.Interfaces;
-    using SellMe.Data.Models;
     using System.Linq;
+
+    using SellMe.Services.Interfaces;
     using SellMe.Data;
     using System.Collections.Generic;
     using SellMe.Services.Mapping;
