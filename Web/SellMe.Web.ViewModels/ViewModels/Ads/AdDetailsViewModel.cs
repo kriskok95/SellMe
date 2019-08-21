@@ -38,6 +38,8 @@
 
         public double Rating { get; set; }
 
+        public int Votes { get; set; }
+
         public AddressViewModel AddressViewModel { get; set; }
 
         public ICollection<string> Images { get; set; }

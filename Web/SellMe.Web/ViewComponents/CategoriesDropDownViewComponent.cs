@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web.ViewComponents
+﻿using System.Threading.Tasks;
+
+namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
     using SellMe.Services.Interfaces;
@@ -12,9 +14,9 @@
             this.categoriesService = categoriesService;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var categories = this.categoriesService.GetCategoryViewModelsAsync();
+            var categories = await this.categoriesService.GetCategoryViewModelsAsync();
             return this.View(categories);
         }
     }

@@ -42,11 +42,16 @@
         <h5 class="text-muted"><i class="fas fa-search-plus"></i> Views: @Model.Views</h5>
     </div>
     <div class="col-4 mt-2">
-        <a asp-controller="Ads" asp-action="AdsByUser" asp-route-userId="@Model.SellerId"><h5><i class="fas fa-user"></i> Seller: @Model.Seller, Raiting: @Model.Rating.ToString("F1") <i class="fas fa-star"></i></h5></a>
+        <a asp-controller="Ads" asp-action="AdsByUser" asp-route-userId="@Model.SellerId"><h5><i class="fas fa-user"></i> Seller: @Model.Seller, </h5></a>
     </div>
-    <div class="offset-2 col-8">
-        <hr class="hr-sell-me" />
+</div>
+<div class="row">
+    <div class="offset-2 col-4 mt-2">
+        <h5 class="text-muted"><i class="fas fa-star"></i> Seller Raiting: @Model.Rating.ToString("F1") with @Model.Votes votes</h5>
     </div>
+</div>
+<div class="offset-2 col-8">
+    <hr class="hr-sell-me" />
 </div>
 <div class="row">
     <div class="offset-2 col-8">

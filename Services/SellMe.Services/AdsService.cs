@@ -90,6 +90,10 @@
             var addressForGivenAd = await this.addressesService.GetAddressByIdAsync(adFromDb.AddressId);
 
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
+
+            var rating = adFromDb.Seller.OwnedReviews.Any() ? adFromDb.Seller.OwnedReviews.Average(x => x.Rating) : 0;
+            adDetailsViewModel.Rating = rating;
+
             var addressViewModel = mapper.Map<AddressViewModel>(addressForGivenAd);
             adDetailsViewModel.Observed = await this.GetObservedAdsByAdIdAsync(adId);
 

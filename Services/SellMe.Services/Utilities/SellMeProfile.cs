@@ -31,7 +31,7 @@
                 .ForMember(x => x.Images, cfg => cfg.MapFrom(x => x.Images.Select(img => img.ImageUrl)))
                 .ForMember(x => x.Phone, cfg => cfg.MapFrom(x => x.Address.PhoneNumber))
                 .ForMember(x => x.Views, cfg => cfg.MapFrom(x => x.AdViews.Count))
-                .ForMember(x => x.Rating, cfg => cfg.MapFrom(x => x.Seller.OwnedReviews.Average(y => y.Rating)));
+                .ForMember(x => x.Votes, cfg => cfg.MapFrom(x => x.Seller.OwnedReviews.Count));
 
             CreateMap<Address, AddressViewModel>();
 
