@@ -4,9 +4,9 @@
     using Microsoft.EntityFrameworkCore;
     using SellMe.Data;
 
-    public class ConnectionFactory
+    public static class InitializeContext
     {
-        public SellMeDbContext CreateContextForInMemory()
+        public static SellMeDbContext CreateContextForInMemory()
         {
             var option = new DbContextOptionsBuilder<SellMeDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;

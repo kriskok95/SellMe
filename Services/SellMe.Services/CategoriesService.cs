@@ -23,12 +23,12 @@
             this.context = context;
         }
 
-        public ICollection<CreateAdCategoryViewModel> GetCategoryViewModels()
+        public async Task<ICollection<CreateAdCategoryViewModel>> GetCategoryViewModelsAsync()
         {
-            var categoryViewModels = this.context
+            var categoryViewModels = await this.context
                 .Categories
                 .To<CreateAdCategoryViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return categoryViewModels;
         }
@@ -47,7 +47,7 @@
             return category;
         }
 
-        public async Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelAsync()
+        public async Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelsAsync()
         {
             var allCategories = await this.context
                 .Categories

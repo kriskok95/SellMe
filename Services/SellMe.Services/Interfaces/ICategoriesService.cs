@@ -7,11 +7,11 @@
 
     public interface ICategoriesService
     {
-        ICollection<CreateAdCategoryViewModel> GetCategoryViewModels();
+        Task<ICollection<CreateAdCategoryViewModel>> GetCategoryViewModelsAsync();
 
         Task<Category> GetCategoryByIdAsync(int categoryId);
 
-        Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelAsync();
+        Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelsAsync();
 
         Task<string> GetCategoryNameByIdAsync(int categoryId);
     }

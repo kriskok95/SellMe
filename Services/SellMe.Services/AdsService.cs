@@ -74,7 +74,7 @@
             var paginatedAdsViewModel =
                 await PaginatedList<AdViewModel>.CreateAsync(adsViewModel, pageNumber, pageSize);
 
-            var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
+            var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelsAsync();
             var subcategoryViewModels = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
             string categoryName = await this.categoriesService.GetCategoryNameByIdAsync(categoryId);
 
@@ -690,7 +690,7 @@
         }
 
         private AdsByCategoryViewModel CreateAdsByCategoryViewModel(PaginatedList<AdViewModel> paginatedAdViewModels,
-            ICollection<CategoryViewModel> allCategoriesViewModel, string categoryName,
+            IEnumerable<CategoryViewModel> allCategoriesViewModel, string categoryName,
             ICollection<AdsByCategorySubcategoryViewModel> subcategoryViewModels, int categoryId)
         {
             var adsByCategoryViewModel = new AdsByCategoryViewModel

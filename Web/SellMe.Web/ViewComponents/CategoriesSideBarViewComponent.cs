@@ -17,7 +17,7 @@
         public IViewComponentResult Invoke()
         {
             var categories = this.categoriesService
-                .GetAllCategoryViewModelAsync()
+                .GetAllCategoryViewModelsAsync()
                 .GetAwaiter()
                 .GetResult()
                 .ToList();

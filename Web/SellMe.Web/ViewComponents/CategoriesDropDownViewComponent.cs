@@ -14,7 +14,7 @@
 
         public IViewComponentResult Invoke()
         {
-            var categories = this.categoriesService.GetCategoryViewModels();
+            var categories = this.categoriesService.GetCategoryViewModelsAsync();
             return this.View(categories);
         }
     }

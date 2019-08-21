@@ -19,7 +19,7 @@ namespace SellMe.Services
 
         public async Task<IndexViewModel> GetIndexViewModel()
         {
-            var categoriesViewModel = await this.categoriesService.GetAllCategoryViewModelAsync();
+            var categoriesViewModel = await this.categoriesService.GetAllCategoryViewModelsAsync();
             var promotedAdViewModel = await this.adsService.GetPromotedAdViewModels();
             var latestAddedAdsViewModel = await this.adsService.GetLatestAddedAdViewModels();
 
