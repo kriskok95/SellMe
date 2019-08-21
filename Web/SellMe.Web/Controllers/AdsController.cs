@@ -68,7 +68,7 @@
 
         public async Task<IActionResult> Details(AdDetailsInputModel inputModel)
         {
-            AdDetailsViewModel adDetailsViewModel = await this.adService.GetAdDetailsViewModelAsync(inputModel.Id);
+            var adDetailsViewModel = await this.adService.GetAdDetailsViewModelAsync(inputModel.Id);
 
             return this.View(adDetailsViewModel);
         }

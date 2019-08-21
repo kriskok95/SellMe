@@ -28,7 +28,6 @@
 
         public string SubcategoryName { get; set; }
 
-        //TODO: Change property name to type
         public string ConditionName { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -36,6 +35,8 @@
         public int Views { get; set; }
 
         public int Observed { get; set; }
+
+        public double Rating { get; set; }
 
         public AddressViewModel AddressViewModel { get; set; }
 
@@ -48,6 +49,7 @@
                 .ForMember(x => x.Phone, cfg => cfg.MapFrom(x => x.Address.PhoneNumber))
                 .ForMember(x => x.Views, cfg => cfg.MapFrom(x => x.AdViews.Count))
                 .ForMember(x => x.Seller, cfg => cfg.MapFrom(x => x.Seller.UserName));
+
         }
     }
 }

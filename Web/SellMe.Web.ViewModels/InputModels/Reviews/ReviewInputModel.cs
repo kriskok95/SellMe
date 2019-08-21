@@ -5,6 +5,8 @@
     public class ReviewInputModel
     {
         private const int ReviewMinimumLength = 5;
+        private const int MinVoteStars = 1;
+        private const int MaxVoteStars = 5;
         private const string ReviewMinimumLengthErrorMessage = "The review should be at least {1} characters.";
         private const string RatingErrorMessage = "Please click the number of stars you want to rate this shop.";
 
@@ -19,7 +21,7 @@
         public string Content { get; set; }
 
         [Required]
-        [Range(1, 5, ErrorMessage = RatingErrorMessage)]
+        [Range(MinVoteStars, MaxVoteStars, ErrorMessage = RatingErrorMessage)]
         public int Rating { get; set; }
     }
 }
