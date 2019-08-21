@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services
 {
+    using System;
     using System.Linq;
     using SellMe.Data;
     using SellMe.Data.Models;
@@ -12,30 +13,38 @@
 
     public class SubCategoriesService : ISubCategoriesService
     {
-        private readonly SellMeDbContext context;
-        private readonly ICategoriesService categoryService;
+        private const string InvalidCategoryIdErrorMessage = "Category with the given id doesn't exist!";
 
-        public SubCategoriesService(SellMeDbContext context, ICategoriesService categoryService)
+        private readonly SellMeDbContext context;
+
+        public SubCategoriesService(SellMeDbContext context)
         {
             this.context = context;
-            this.categoryService = categoryService;
         }
 
         public async Task<ICollection<CreateAdSubcategoryViewModel>> GetSubcategoriesByCategoryIdAsync(int categoryId)
         {
-            Category category = await this.categoryService.GetCategoryByIdAsync(categoryId);
+            if (!this.context.Categories.Any(x => x.Id == categoryId))
+            {
+                throw new ArgumentException(InvalidCategoryIdErrorMessage);
+            }
 
-            var subcategoryViewModels = category
+            var subcategoryViewModels = await this.context
                 .SubCategories
-                .AsQueryable()
+                .Where(x => x.CategoryId == categoryId)
                 .To<CreateAdSubcategoryViewModel>()
-                .ToList();
+                .ToListAsync();
 
             return subcategoryViewModels;
         }
 
         public async Task<ICollection<AdsByCategorySubcategoryViewModel>> GetAdsByCategorySubcategoryViewModelsAsync(int categoryId)
         {
+            if (!this.context.Categories.Any(x => x.Id == categoryId))
+            {
+                throw new ArgumentException(InvalidCategoryIdErrorMessage);
+            }
+
             var subcategoryViewModels = await this.context
                 .SubCategories
                 .Where(x => x.CategoryId == categoryId)
