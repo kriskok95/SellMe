@@ -10,7 +10,7 @@
     {
         string GetCurrentUserId();
 
-        SellMeUser GetCurrentUser();
+        Task<SellMeUser> GetCurrentUserAsync();
 
         Task<SellMeUser> GetUserByIdAsync(string userId);
 

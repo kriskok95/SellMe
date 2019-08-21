@@ -1,5 +1,8 @@
 ﻿namespace SellMe.Services
 {
+    using System;
+    using Microsoft.EntityFrameworkCore;
+
     using SellMe.Services.Interfaces;
     using System.Linq;
     using SellMe.Data;
@@ -9,6 +12,11 @@
 
     public class FavoritesService : IFavoritesService
     {
+        private const string CurrentUserIsNullErrorMessage = "Current user can't be null";
+        private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
+        private const string AdIsAlreadyInFavoritesErrorMessage = "The given ad is already added to favorites!";
+        private const string AdIsNotInFavoritesListErrorMessage = "The given ad isn't in the favorites list!";
+
         private readonly IUsersService usersService;
         private readonly SellMeDbContext context;
 
@@ -20,11 +28,16 @@
 
         public async Task<bool> AddToFavoritesAsync(int adId)
         {
-            var currentUser = this.usersService.GetCurrentUser();
+            var currentUser = await this.usersService.GetCurrentUserAsync();
 
             if (currentUser == null)
             {
-                return false;
+                throw new InvalidOperationException(CurrentUserIsNullErrorMessage);
+            }
+
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
             }
 
             var isInFavorites = currentUser.SellMeUserFavoriteProducts
@@ -32,7 +45,7 @@
 
             if (isInFavorites)
             {
-                return false;
+                throw new InvalidOperationException(AdIsAlreadyInFavoritesErrorMessage);
             }
 
             await this.CreateSellMeUserFavoriteProductAsync(adId, currentUser.Id);
@@ -41,11 +54,16 @@
 
         public async Task<bool> RemoveFromFavoritesAsync(int adId)
         {
-            var currentUser = this.usersService.GetCurrentUser();
+            var currentUser = await this.usersService.GetCurrentUserAsync();
 
             if (currentUser == null)
             {
-                return false;
+                throw new InvalidOperationException(CurrentUserIsNullErrorMessage);
+            }
+
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
             }
 
             var isInFavorites = currentUser.SellMeUserFavoriteProducts
@@ -53,13 +71,13 @@
 
             if (!isInFavorites)
             {
-                return false;
+                throw new InvalidOperationException(AdIsNotInFavoritesListErrorMessage);
             }
 
             await this.RemoveSellMeUserFavoriteProductAsync(adId, currentUser.Id);
             return true;
         }
-
+        
         private async Task RemoveSellMeUserFavoriteProductAsync(int adId, string currentUserId)
         {
             var sellMeUserFavoriteProduct = this.context.SellMeUserFavoriteProducts.First(x => x.AdId == adId && x.SellMeUserId == currentUserId);

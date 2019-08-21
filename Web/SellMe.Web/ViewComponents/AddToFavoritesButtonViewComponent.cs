@@ -1,4 +1,6 @@
-﻿ namespace SellMe.Web.ViewComponents
+﻿ using System.Threading.Tasks;
+
+ namespace SellMe.Web.ViewComponents
 {
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
@@ -13,9 +15,9 @@
             this.usersService = usersService;
         }
 
-        public IViewComponentResult Invoke(int adId)
+        public async Task<IViewComponentResult> InvokeAsync(int adId)
         {
-            var currentUser = this.usersService.GetCurrentUser();
+            var currentUser = await this.usersService.GetCurrentUserAsync();
 
             if (currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == adId))
             {

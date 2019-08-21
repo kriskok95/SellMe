@@ -1,8 +1,9 @@
-﻿@model AdViewModel
+﻿@using Microsoft.AspNetCore.Internal
+@model AdViewModel
 @inject IUsersService UsersService
 
 @{
-    var currentUser = this.UsersService.GetCurrentUser();
+    var currentUser = await this.UsersService.GetCurrentUserAsync();
 }
 
 <div class="row">

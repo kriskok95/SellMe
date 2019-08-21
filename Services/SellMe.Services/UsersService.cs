@@ -39,11 +39,9 @@
             return currentUserId;
         }
 
-        public SellMeUser GetCurrentUser()
+        public async Task<SellMeUser> GetCurrentUserAsync()
         {
-            var currentUser = this.userManager.GetUserAsync(this.contextAccessor.HttpContext.User)
-                .GetAwaiter()
-                .GetResult();
+            var currentUser = await this.userManager.GetUserAsync(this.contextAccessor.HttpContext.User);
 
             return currentUser;
         }
