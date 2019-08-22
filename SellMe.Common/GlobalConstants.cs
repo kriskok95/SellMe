@@ -3,6 +3,7 @@
     public static  class GlobalConstants
     {
         public const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
+        public const string InvalidPromotionIdErrorMessage = "Promotion with the given id doesn't exist!";
 
         public const string AdministratorRoleName = "Administrator";
         public const string ConditionBrandNewName = "Brand New";

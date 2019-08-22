@@ -1,5 +1,6 @@
 ﻿namespace SellMe.Services
 {
+    using SellMe.Common;
     using SellMe.Services.Interfaces;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -17,7 +18,7 @@
         private readonly IAdsService adsService;
         private readonly SellMeDbContext context;
 
-        public PromotionsService(IAdsService adsService, SellMeDbContext context)
+        public PromotionsService(SellMeDbContext context, IAdsService adsService)
         {
             this.adsService = adsService;
             this.context = context;
@@ -25,6 +26,11 @@
 
         public async Task<PromotionBindingModel> GetPromotionBindingModelByAdIdAsync(int adId)
         {
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
             var adFromDb = await this.adsService.GetAdByIdAsync(adId);
 
             var promotionViewModels = await this.context
@@ -44,6 +50,16 @@
 
         public async Task CreatePromotionOrderAsync(int adId, int promotionId)
         {
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
+            if (!await this.context.Promotions.AnyAsync(x => x.Id == promotionId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidPromotionIdErrorMessage);
+            }
+
             var adFromDb = await this.adsService.GetAdByIdAsync(adId);
             var promotionFromDb = await this.GetPromotionByIdAsync(promotionId);
 

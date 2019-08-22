@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using SellMe.Web.ViewModels.BindingModels.Reviews;
     using SellMe.Services.Interfaces;
@@ -18,7 +17,7 @@ namespace SellMe.Services
         private readonly IUsersService usersService;
         private readonly SellMeDbContext context;
 
-        public ReviewsService(IUsersService usersService, SellMeDbContext context)
+        public ReviewsService(SellMeDbContext context, IUsersService usersService)
         {
             this.usersService = usersService;
             this.context = context;

@@ -11,7 +11,7 @@
 
         public string AdTitle { get; set; }
 
-        public IEnumerable<PromotionViewModel> PromotionViewModels { get; set; }
+        public List<PromotionViewModel> PromotionViewModels { get; set; }
 
         public PromotionInputModel PromotionInputModel { get; set; }
     }
