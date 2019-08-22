@@ -240,7 +240,7 @@
                 adFromDb.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
                 adFromDb.Updates--;
 
-                await this.updatesService.CreateUpdateAd(adId);
+                await this.updatesService.CreateUpdateAdAsync(adId);
 
                 this.context.Update(adFromDb);
                 await this.context.SaveChangesAsync();

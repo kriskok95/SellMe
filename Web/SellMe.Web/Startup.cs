@@ -1,8 +1,7 @@
-﻿using SellMe.Web.Hubs;
-
-namespace SellMe.Web
+﻿namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
+    using SellMe.Web.Hubs;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI;
     using Microsoft.AspNetCore.Hosting;

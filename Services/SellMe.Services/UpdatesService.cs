@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
-using SellMe.Data;
-using SellMe.Data.Models;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using System;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+
+    using SellMe.Common;
+    using SellMe.Data;
+    using SellMe.Data.Models;
     using SellMe.Services.Interfaces;
 
     public class UpdatesService : IUpdatesService
@@ -15,8 +18,13 @@ namespace SellMe.Services
             this.context = context;
         }
 
-        public async Task CreateUpdateAd(int adId)
+        public async Task CreateUpdateAdAsync(int adId)
         {
+            if(!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
             var updateAd = new UpdateAd
             {
                 AdId = adId

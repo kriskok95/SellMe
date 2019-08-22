@@ -4,6 +4,6 @@
 
     public interface IUpdatesService
     {
-        Task CreateUpdateAd(int adId);
+        Task CreateUpdateAdAsync(int adId);
     }
 }
