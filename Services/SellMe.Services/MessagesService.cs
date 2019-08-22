@@ -1,4 +1,6 @@
-﻿namespace SellMe.Services
+﻿using SellMe.Common;
+
+namespace SellMe.Services
 {
     using System;
     using AutoMapper;
@@ -16,14 +18,12 @@
 
     public class MessagesService : IMessagesService
     {
-        private const string InvalidMessageIdErrorMessage = "Message with given ID doesn't exist!";
-
         private readonly IAdsService adsService;
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
         private readonly SellMeDbContext context;
 
-        public MessagesService(IAdsService adsService, IMapper mapper, IUsersService usersService, SellMeDbContext context)
+        public MessagesService(SellMeDbContext context, IAdsService adsService, IUsersService usersService, IMapper mapper)
         {
             this.adsService = adsService;
             this.mapper = mapper;
@@ -33,12 +33,12 @@
 
         public async Task<SendMessageViewModel> GetMessageViewModelByAdIdAsync(int adId)
         {
-            var ad = await this.adsService.GetAdByIdAsync(adId);
-
-            if (ad == null)
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
             {
-                return null;
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
+
+            var ad = await this.adsService.GetAdByIdAsync(adId);
 
             var sendMessageViewModel = mapper.Map<SendMessageViewModel>(ad);
             sendMessageViewModel.SenderId = this.usersService.GetCurrentUserId();
@@ -48,6 +48,11 @@
 
         public async Task<SendMessageBindingModel> GetMessageBindingModelByAdIdAsync(int adId)
         {
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
             var sendMessageViewModel = await this.GetMessageViewModelByAdIdAsync(adId);
             var sendMessageBindingModel = new SendMessageBindingModel
             {
@@ -59,7 +64,12 @@
 
         public async Task<MessageDetailsViewModel> CreateMessageAsync(string senderId, string recipientId, int adId, string content)
         {
-        var message = new Message
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
+            var message = new Message
         {
             SenderId = senderId,
             RecipientId = recipientId,
@@ -72,49 +82,23 @@
 
             var messageFromDb = this.context.Messages.FirstOrDefault(x => x.Id == message.Id);
 
-            if (messageFromDb == null)
-            {
-                throw new ArgumentException(InvalidMessageIdErrorMessage);
-            }
-
             var messageViewModel = mapper.Map<MessageDetailsViewModel>(messageFromDb);
-            messageViewModel.Sender = this.context.Users.FirstOrDefault(x => x.Id == senderId)?.UserName;
+            var sender = await this.usersService.GetUserByIdAsync(senderId);
+            messageViewModel.Sender = sender.UserName;
 
             return messageViewModel;
         }
 
-        private async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()
-        {
-            var currentUserId = this.usersService.GetCurrentUserId();
-
-            var inboxMessagesFromDb = this.GetInboxMessagesByUserId(currentUserId);
-
-            await this.context.SaveChangesAsync();
-
-            var inboxMessageViewModels = await inboxMessagesFromDb
-                .OrderByDescending(x => x.CreatedOn)
-                .To<InboxMessageViewModel>()
-                .ToListAsync();
-
-            return inboxMessageViewModels;
-        }
-
-        private async Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync()
-        {
-            var currentUserId = this.usersService.GetCurrentUserId();
-
-            var sentBoxMessagesFromDb = this.GetSentBoxMessagesByUserId(currentUserId);
-            var sentBoxMessageViewModels = await sentBoxMessagesFromDb
-                .OrderByDescending(x => x.CreatedOn)
-                .To<SentBoxMessageViewModel>()
-                .ToListAsync();
-
-            return sentBoxMessageViewModels;
-        }
+        
 
         public async Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string recipientId)
         {
-            var messagesFromFb = this.GetMessagesDetailsByAd(adId, senderId, recipientId);
+            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
+            var messagesFromFb = this.GetMessagesFromDb(adId, senderId, recipientId);
             var currentUserId = this.usersService.GetCurrentUserId();
             if (currentUserId == recipientId)
             {
@@ -157,7 +141,16 @@
             return sentBoxMessagesBindingModel;
         }
 
-        private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string sellerId)
+        public async Task<int> GetUnreadMessagesCountAsync(string userId)
+        {
+            var unreadMessagesCount = await this.context
+                .Messages
+                .CountAsync(x => x.RecipientId == userId && !x.IsRead);
+
+            return unreadMessagesCount;
+        }
+
+        private IQueryable<Message> GetMessagesFromDb(int adId, string senderId, string sellerId)
         {
             var messagesFromDb = this.context.Messages
                 .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == sellerId) && (x.RecipientId == sellerId || x.RecipientId == senderId))
@@ -189,13 +182,33 @@
             return inboxMessages;
         }
 
-        public async Task<int> GetUnreadMessagesCountAsync(string userId)
+        private async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()
         {
-            var unreadMessagesCount = await this.context
-                .Messages
-                .CountAsync(x => x.RecipientId == userId && !x.IsRead);
+            var currentUserId = this.usersService.GetCurrentUserId();
 
-            return unreadMessagesCount;
+            var inboxMessagesFromDb = this.GetInboxMessagesByUserId(currentUserId);
+
+            await this.context.SaveChangesAsync();
+
+            var inboxMessageViewModels = await inboxMessagesFromDb
+                .OrderByDescending(x => x.CreatedOn)
+                .To<InboxMessageViewModel>()
+                .ToListAsync();
+
+            return inboxMessageViewModels;
+        }
+
+        private async Task<ICollection<SentBoxMessageViewModel>> GetSentBoxViewModelByCurrentUserAsync()
+        {
+            var currentUserId = this.usersService.GetCurrentUserId();
+
+            var sentBoxMessagesFromDb = this.GetSentBoxMessagesByUserId(currentUserId);
+            var sentBoxMessageViewModels = await sentBoxMessagesFromDb
+                .OrderByDescending(x => x.CreatedOn)
+                .To<SentBoxMessageViewModel>()
+                .ToListAsync();
+
+            return sentBoxMessageViewModels;
         }
     }
 }

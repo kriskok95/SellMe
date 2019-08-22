@@ -44,26 +44,6 @@
             return reviewsBindingModel;
         }
 
-        private List<int> GetVotesByStars(string userId)
-        {
-            List<int> result = new List<int>();
-            for (int i = 1; i <= 5; i++)
-            {
-                result.Add(this.context.Reviews.Count(x => x.OwnerId == userId && x.Rating == i));
-            }
-
-            return result;
-        }
-
-        private IQueryable<ReviewViewModel> GetReviewViewModelsByUserId(string userId)
-        {
-            var reviewViewModels = this.context.Reviews
-                .Where(x => x.OwnerId == userId)
-                .To<ReviewViewModel>();
-
-            return reviewViewModels;
-        }
-
         public async Task CreateReview(string ownerId, string creatorId, string content, int rating)
         {
             if (ownerId == creatorId)
@@ -86,6 +66,25 @@
         public bool CheckOwnerIdAndSellerId(string creatorId, string ownerId)
         {
             return creatorId == ownerId;
+        }
+
+        private IQueryable<ReviewViewModel> GetReviewViewModelsByUserId(string userId)
+        {
+            var reviewViewModels = this.context.Reviews
+                .Where(x => x.OwnerId == userId)
+                .To<ReviewViewModel>();
+
+            return reviewViewModels;
+        }
+        private List<int> GetVotesByStars(string userId)
+        {
+            List<int> result = new List<int>();
+            for (int i = 1; i <= 5; i++)
+            {
+                result.Add(this.context.Reviews.Count(x => x.OwnerId == userId && x.Rating == i));
+            }
+
+            return result;
         }
     }
 }
