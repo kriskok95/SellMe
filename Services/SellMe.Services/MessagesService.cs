@@ -1,4 +1,6 @@
-﻿using SellMe.Common;
+﻿=  
+using Castle.Core.Internal;
+using SellMe.Common;
 
 namespace SellMe.Services
 {
@@ -98,7 +100,7 @@ namespace SellMe.Services
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
-            var messagesFromFb = this.GetMessagesFromDb(adId, senderId, recipientId);
+            var messagesFromFb = this.GetMessagesDetailsByAd(adId, senderId, recipientId);
             var currentUserId = this.usersService.GetCurrentUserId();
             if (currentUserId == recipientId)
             {
@@ -117,16 +119,11 @@ namespace SellMe.Services
             return messageDetailsViewModels;
         }
 
-        public async Task<InboxMessagesBindingModel> GetInboxMessagesBindingModelAsync()
+        public async Task<IEnumerable<InboxMessageViewModel>> GetInboxMessagesViewModelsAsync()
         {
             var inboxMessageViewModels = await this.GetInboxViewModelsByCurrentUserAsync();
 
-            var inboxMessagesBindingModel = new InboxMessagesBindingModel
-            {
-                Messages = inboxMessageViewModels
-            };
-
-            return inboxMessagesBindingModel;
+            return inboxMessageViewModels;
         }
 
         public async Task<SentBoxMessagesBindingModel> GetSentBoxMessagesBindingModelAsync()
@@ -143,6 +140,11 @@ namespace SellMe.Services
 
         public async Task<int> GetUnreadMessagesCountAsync(string userId)
         {
+            if (userId.IsNullOrEmpty())
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
             var unreadMessagesCount = await this.context
                 .Messages
                 .CountAsync(x => x.RecipientId == userId && !x.IsRead);
@@ -150,7 +152,7 @@ namespace SellMe.Services
             return unreadMessagesCount;
         }
 
-        private IQueryable<Message> GetMessagesFromDb(int adId, string senderId, string sellerId)
+        private IQueryable<Message> GetMessagesDetailsByAd(int adId, string senderId, string sellerId)
         {
             var messagesFromDb = this.context.Messages
                 .Where(x => x.AdId == adId && (x.SenderId == senderId || x.SenderId == sellerId) && (x.RecipientId == sellerId || x.RecipientId == senderId))
@@ -172,12 +174,12 @@ namespace SellMe.Services
 
         private IQueryable<Message> GetInboxMessagesByUserId(string currentUserId)
         {
-
             var inboxMessages = this.context
                 .Ads
                 .Where(x => x.Messages.Any(y => y.RecipientId == currentUserId))
                 .Select(x => x.Messages.OrderByDescending(y => y.CreatedOn)
                     .FirstOrDefault());
+
 
             return inboxMessages;
         }
@@ -185,6 +187,11 @@ namespace SellMe.Services
         private async Task<ICollection<InboxMessageViewModel>> GetInboxViewModelsByCurrentUserAsync()
         {
             var currentUserId = this.usersService.GetCurrentUserId();
+
+            if (currentUserId == null)
+            {
+                throw new InvalidOperationException(GlobalConstants.UserIsNotLogInErrorMessage);
+            }
 
             var inboxMessagesFromDb = this.GetInboxMessagesByUserId(currentUserId);
 

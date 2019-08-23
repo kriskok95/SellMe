@@ -443,6 +443,108 @@
             Assert.Equal(2, context.Messages.Count(x => x.IsRead));
         }
 
+        [Fact]
+        public async Task GetInboxMessagesViewModelsAsync_WithoutLoggedInUser_ShouldThrowAndInvalidOperationException()
+        {
+
+            //Arrange
+            var expectedErrorMessage = "User is not logged in!";
+
+            var moqAdsService = new Mock<IAdsService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqIMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+
+            //Assert and act
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                this.messagesService.GetInboxMessagesViewModelsAsync());
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task GetUnreadMessagesCountAsync_WithEmptyOrNullUserId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "User id can't be null or empty!";
+
+            var moqAdsService = new Mock<IAdsService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqIMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+
+            //Assert and act
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.messagesService.GetUnreadMessagesCountAsync(string.Empty));
+            var ex2 = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.messagesService.GetUnreadMessagesCountAsync(null));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+            Assert.Equal(expectedErrorMessage, ex2.Message);
+        }
+
+        [Fact]
+        public async Task GetUnreadMessagesCountAsync_WithValidData_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expected = 2;
+
+            var moqAdsService = new Mock<IAdsService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqIMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+
+            var messages = new List<Message>
+            {
+                new Message
+                {
+                    AdId = 1,
+                    SenderId = "SenderId",
+                    RecipientId = "RecipientId",
+                    Content = "Content1",
+                    IsRead = false,
+                },
+                new Message
+                {
+                    AdId = 1,
+                    SenderId = "SenderId",
+                    RecipientId = "RecipientId",
+                    Content = "Content2",
+                    IsRead = false,
+
+                },
+                new Message
+                {
+                    AdId = 1,
+                    SenderId = "SenderId",
+                    RecipientId = "FakeRecipientId",
+                    Content = "Content3",
+                    IsRead = false,
+                },
+                new Message
+                {
+                    AdId = 1,
+                    SenderId = "SenderId",
+                    RecipientId = "RecipientId",
+                    Content = "Content3",
+                    IsRead = true,
+                },
+            };
+
+            await context.Messages.AddRangeAsync(messages);
+            await context.SaveChangesAsync();
+
+            //Act
+            var actual = await this.messagesService.GetUnreadMessagesCountAsync("RecipientId");
+
+            Assert.Equal(expected, actual);
+        }
+
+
         private Ad CreateTestingAd()
         {
             var testingAd = new Ad

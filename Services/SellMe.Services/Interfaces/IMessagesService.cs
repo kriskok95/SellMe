@@ -18,7 +18,7 @@
 
         Task<int> GetUnreadMessagesCountAsync(string userId);
 
-        Task<InboxMessagesBindingModel> GetInboxMessagesBindingModelAsync();
+        Task<IEnumerable<InboxMessageViewModel>> GetInboxMessagesViewModelsAsync();
 
         Task<SentBoxMessagesBindingModel>GetSentBoxMessagesBindingModelAsync();
     }

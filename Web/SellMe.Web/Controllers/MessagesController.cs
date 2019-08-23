@@ -60,9 +60,9 @@
 
         public async Task<IActionResult> Inbox()
         {
-            var inboxMessagesBindingModel = await this.messagesService.GetInboxMessagesBindingModelAsync();
+            var inboxMessagesViewModels = await this.messagesService.GetInboxMessagesViewModelsAsync();
 
-            return this.View(inboxMessagesBindingModel);
+            return this.View(inboxMessagesViewModels);
         }
 
         public async Task<IActionResult> SentBox()

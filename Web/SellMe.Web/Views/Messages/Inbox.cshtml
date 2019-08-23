@@ -1,4 +1,4 @@
-﻿@model InboxMessagesBindingModel
+﻿@model IEnumerable<InboxMessageViewModel>
 
 @{
     ViewData["Title"] = "Inbox";
@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var message in Model.Messages)
+                    @foreach (var message in Model)
                     {
                         var messageParams = new Dictionary<string, string>
                             {
