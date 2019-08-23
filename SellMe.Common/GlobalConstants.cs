@@ -14,6 +14,9 @@
         public const int PromotedAdsCountAtIndexPage = 16;
         public const int LatestAddedAdsCountAtIndexPage = 16;
 
+        public const int DefaultPageNumber = 1;
+        public const int DefaultPageSize = 10;
+
         public const int AdDuration = 30;
     }
 }

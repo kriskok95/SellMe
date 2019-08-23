@@ -1,5 +1,7 @@
 ﻿namespace SellMe.Services
 {
+    using Castle.Core.Internal;
+    using SellMe.Common;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using SellMe.Web.ViewModels.BindingModels.Reviews;
@@ -14,6 +16,13 @@
 
     public class ReviewsService : IReviewsService
     {
+        private const string CreateReviewArgumentsNotNullOrEmptyErrorMessage = "Some of the arguments are null or empty!";
+
+        private const string OwnerOfTheAdCantLeaveReviewErrorMessage =
+            "Seller of the ad can't leave reviews for his ads!";
+
+        private const string ArgumentOutOfRangeErrorMessage = "The rating must be in range between 1 and 5";
+
         private readonly IUsersService usersService;
         private readonly SellMeDbContext context;
 
@@ -25,6 +34,11 @@
 
         public async Task<ReviewsBindingModel> GetReviewsBindingModelByUserId(string userId, int pageNumber, int pageSize)
         {
+            if (userId.IsNullOrEmpty())
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
             var owner = await this.usersService.GetUserByIdAsync(userId);
 
             var reviewViewModel = this.GetReviewViewModelsByUserId(userId);
@@ -50,9 +64,19 @@
 
         public async Task CreateReview(string ownerId, string creatorId, string content, int rating)
         {
+            if (ownerId.IsNullOrEmpty() || creatorId.IsNullOrEmpty() || content.IsNullOrEmpty())
+            {
+                throw new ArgumentException(CreateReviewArgumentsNotNullOrEmptyErrorMessage);
+            }
+
+            if (rating < 1 || rating > 5)
+            {
+                throw new ArgumentException(ArgumentOutOfRangeErrorMessage);
+            }
+
             if (ownerId == creatorId)
             {
-                throw new InvalidOperationException("Seller of the ad can't leave reviews for his ads!");
+                throw new InvalidOperationException(OwnerOfTheAdCantLeaveReviewErrorMessage);
             }
 
             var review = new Review
