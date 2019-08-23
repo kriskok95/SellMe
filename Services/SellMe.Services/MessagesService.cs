@@ -1,9 +1,7 @@
-﻿=  
-using Castle.Core.Internal;
-using SellMe.Common;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using Castle.Core.Internal;
+    using SellMe.Common;
     using System;
     using AutoMapper;
     using System.Threading.Tasks;

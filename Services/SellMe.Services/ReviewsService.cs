@@ -31,13 +31,17 @@
             var paginatedReviewViewModels =
                 await PaginatedList<ReviewViewModel>.CreateAsync(reviewViewModel, pageNumber, pageSize);
 
+            var averageRating = this.context.Reviews.Count(x => x.OwnerId == userId) > 0
+                ? this.context.Reviews.Where(x => x.OwnerId == userId).Average(x => x.Rating)
+                : 0;
+
             var reviewsBindingModel = new ReviewsBindingModel
             {
                 OwnerId = userId,
                 OwnerUsername = owner.UserName,
                 SenderId = this.usersService.GetCurrentUserId(),
                 Votes = this.GetVotesByStars(userId),
-                AverageVote = this.context.Reviews.Where(x => x.OwnerId == userId).Average(x => x.Rating),
+                AverageVote = averageRating,
                 ViewModels = paginatedReviewViewModels,
             };
 

@@ -410,8 +410,6 @@
             adFromDb.Price = inputModel.EditAdDetailsInputModel.Price;
             adFromDb.AvailabilityCount = inputModel.EditAdDetailsInputModel.Availability;
             adFromDb.ConditionId = inputModel.EditAdDetailsInputModel.ConditionId;
-            //adFromDb.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result})
-            //    .ToList();
 
             foreach (var image in imageUrls)
             {
@@ -425,8 +423,6 @@
             adFromDb.Address.ZipCode = inputModel.EditAdAddressInputModel.ZipCode;
             adFromDb.Address.PhoneNumber = inputModel.EditAdAddressInputModel.PhoneNumber;
             adFromDb.Address.EmailAddress = inputModel.EditAdAddressInputModel.EmailAddress;
-
-            
 
             context.Ads.Update(adFromDb);
             await context.SaveChangesAsync();
@@ -446,7 +442,6 @@
             {
                 AdsAdForApprovalViewModels = paginatedListViewModels
             };
-
 
             return adsForApprovalViewModel;
         }
@@ -611,21 +606,6 @@
             }
 
             return adsCount;
-        }
-
-        private void DeleteImages(ICollection<Image> images)
-        {
-            var cloudinary = CloudinaryHelper.SetCloudinary();
-
-            //var resultImages = images.Select(x => x.ImageUrl.Split('/', '.', x));
-
-            var delParams = new DelResParams
-            {
-                PublicIds = images.Select(x => x.ImageUrl).ToList()
-            };
-
-
-            CloudinaryHelper.DeleteImages(cloudinary, delParams);
         }
 
         private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)
