@@ -1,4 +1,6 @@
-﻿namespace SellMe.Tests
+﻿using SellMe.Web.ViewModels.ViewModels.Subcategories;
+
+namespace SellMe.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -1127,5 +1129,664 @@
             Assert.Equal(expectedActiveFrom, testingAd.ActiveFrom.Day);
             Assert.Equal(expectedActiveTo, testingAd.ActiveTo.Day);
         }
+
+        [Fact]
+        public async Task GetPromotedAdViewModels_WithValidData_ShouldReturnExpectedAdsCount()
+        {
+
+            //Arrange
+            var expected = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    PromotionOrders = new List<PromotionOrder>
+                    {
+                        new PromotionOrder
+                        {
+                            ActiveTo = DateTime.UtcNow.AddDays(30)
+                        }
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                    PromotionOrders = new List<PromotionOrder>
+                    {
+                        new PromotionOrder
+                        {
+                            ActiveTo = DateTime.UtcNow.AddDays(20)
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Price = 250,
+                    IsApproved = false,
+                    IsDeleted = false,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                    PromotionOrders = new List<PromotionOrder>
+                    {
+                        new PromotionOrder
+                        {
+                            ActiveTo = DateTime.UtcNow.AddDays(15)
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Audi A8",
+                    PromotionOrders = new List<PromotionOrder>
+                    {
+                        new PromotionOrder
+                        {
+                            ActiveTo = DateTime.UtcNow.AddDays(-20)
+                        }
+                    }
+                },
+
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetPromotedAdViewModels();
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetPromotedAdViewModels_WithoutAds_ShouldReturnAnEmptyCollection()
+        {
+            //Arrange
+            var expected = 0;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetPromotedAdViewModels();
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetLatestAddedAdViewModels_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expected = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Price = 250,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetLatestAddedAdViewModels();
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetLatestAddedAdViewModels_WithoutAds_ShouldReturnAnEmptyCollection()
+        {
+            //Arrange
+            var expected = 0;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetLatestAddedAdViewModels();
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetAdsBySubcategoryViewModelAsync_WithInvalidCategoryId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Category with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdsBySubcategoryViewModelAsync(1, 2, 1, 10));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task GetAdsBySubcategoryViewModelAsync_WithInvalidSubcategoryId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Subcategory with the give id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingCategory = new Category
+            {
+                Id = 1, Name = "Electronics"
+            };
+
+            await context.Categories.AddAsync(testingCategory);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task GetAdsBySubcategoryViewModelAsync_WithValidDate_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expectedAdsCount = 2;
+            var expectedSubcategoriesCount = 3;
+            var expectedSubcategoryId = 1;
+            var expectedCategoryId = 1;
+
+                var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            moqSubcategoriesService.Setup(x => x.GetAdsByCategorySubcategoryViewModelsAsync(1))
+                .ReturnsAsync(new List<AdsByCategorySubcategoryViewModel>
+                {
+                    new AdsByCategorySubcategoryViewModel
+                    {
+                        Id = 1,
+                        Name = "Phones",
+                    },
+                    new AdsByCategorySubcategoryViewModel
+                    {
+                        Id = 2,
+                        Name = "Monitors",
+                    },
+                    new AdsByCategorySubcategoryViewModel
+                    {
+                        Id = 3,
+                        Name = "Tvs",
+                    },
+                });
+
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "Perfect condition",
+                    Price = 100,
+                    CategoryId = 1,
+                    SubCategoryId = 1,
+                    CreatedOn = DateTime.UtcNow,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl =  "https://www.webpagetest.org2"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Xiaomi mi 9",
+                    Description = "Perfect condition",
+                    Price = 800,
+                    CategoryId = 1,
+                    SubCategoryId = 1,
+                    CreatedOn = DateTime.UtcNow,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl =  "https://www.webpagetest.org3"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung tv",
+                    Description = "Brand new",
+                    Price = 100,
+                    CategoryId = 1,
+                    SubCategoryId = 2,
+                    CreatedOn = DateTime.UtcNow,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl =  "https://www.webpagetest.org2"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+            };
+
+            var testingCategory = new Category
+            {
+                Id = 1,
+                Name = "Electronics"
+            };
+
+            var testingSubcategory = new SubCategory
+            {
+                Id = 1,
+                CategoryId = 1,
+                Name = "Phones"
+            };
+
+            await context.SubCategories.AddAsync(testingSubcategory);
+            await context.AddRangeAsync(testingAds);
+            await context.Categories.AddAsync(testingCategory);
+            await context.SaveChangesAsync();
+
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10);
+
+            //Assert
+            Assert.Equal(expectedSubcategoriesCount, actual.AdsByCategorySubcategoryViewModels.Count);
+            Assert.Equal(expectedAdsCount, actual.AdsBySubcategoryViewModels.Count);
+            Assert.Equal(expectedCategoryId, actual.CategoryId);
+            Assert.Equal(expectedSubcategoryId, actual.SubcategoryId);
+        }
+
+        [Fact]
+        public async Task GetMyActiveAdsViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("CurrentUserId");
+
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "CurrentUserId",
+                    Updates = 3,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(30),
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "CurrentUserId",
+                    Updates = 10,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(25),
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Price = 250,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    SellerId = "FakeSellerId",
+                    Updates = 0,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(10),
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetMyActiveAdsViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async Task GetFavoriteAdsViewModelsAsync_WithNullOrEmptyUserId_ShouldThrowAnArgumentException(string userId)
+        {
+            //Arrange
+            var expectedErrorMessage = "User id can't be null or empty!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetFavoriteAdsViewModelsAsync(userId, 1, 10));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        //[Fact]
+        //public async Task GetFavoriteAdsViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        //{
+        //    //Arrange
+        //    var expectedCount = 2;
+
+        //    var moqAddressService = new Mock<IAddressesService>();
+        //    var moqUsersService = new Mock<IUsersService>();
+        //    moqUsersService.Setup(x => x.GetCurrentUserId())
+        //        .Returns("SellMeUserId");
+
+        //    var moqCategoriesService = new Mock<ICategoriesService>();
+        //    var moqUpdatesService = new Mock<IUpdatesService>();
+        //    var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+        //    var moqMapper = new Mock<IMapper>();
+        //    var context = InitializeContext.CreateContextForInMemory();
+
+        //    var testingAds = new List<Ad>
+        //    {
+        //        new Ad
+        //        {
+        //            Id = 1,
+        //            Title = "Iphone 6s",
+        //            Price = 100,
+        //            IsApproved = true,
+        //            IsDeleted = false,
+        //            SellerId = "SellMeUserId",
+        //            Updates = 3,
+        //            ActiveFrom = DateTime.UtcNow,
+        //            ActiveTo = DateTime.UtcNow.AddDays(30),
+        //            SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+        //            {
+        //                new SellMeUserFavoriteProduct
+        //                {
+        //                    AdId = 1,
+        //                    SellMeUserId = "SellMeUserId"
+        //                }
+        //            },
+        //            Images = new List<Image>
+        //            {
+        //                new Image
+        //                {
+        //                    ImageUrl = "https://www.webpagetest.org1"
+        //                }
+        //            }
+        //        },
+        //        new Ad
+        //        {
+        //            Id = 2,
+        //            Title = "Samsung TV",
+        //            Price = 100,
+        //            IsApproved = true,
+        //            IsDeleted = false,
+        //            SellerId = "SellMeUserId",
+        //            Updates = 10,
+        //            ActiveFrom = DateTime.UtcNow,
+        //            ActiveTo = DateTime.UtcNow.AddDays(25),
+        //            SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+        //            {
+        //                new SellMeUserFavoriteProduct
+        //                {
+        //                    AdId = 1,
+        //                    SellMeUserId = "SellMeUserId"
+        //                }
+        //            },
+        //            Images = new List<Image>
+        //            {
+        //                new Image
+        //                {
+        //                    ImageUrl = "https://www.webpagetest.org2"
+        //                }
+        //            },
+        //        },
+        //        new Ad
+        //        {
+        //            Id = 4,
+        //            Title = "Motorola phone",
+        //            Price = 250,
+        //            IsApproved = true,
+        //            IsDeleted = true,
+        //            SellerId = "FakeSellerId",
+        //            Updates = 0,
+        //            ActiveFrom = DateTime.UtcNow,
+        //            ActiveTo = DateTime.UtcNow.AddDays(10),
+        //            SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+        //            {
+        //                new SellMeUserFavoriteProduct
+        //                {
+        //                    AdId = 1,
+        //                    SellMeUserId = "FakeSellerId"
+        //                }
+        //            },
+        //            Images = new List<Image>
+        //            {
+        //                new Image
+        //                {
+        //                    ImageUrl = "https://www.webpagetest.org3"
+        //                }
+        //            },
+        //        },
+        //    };
+
+        //    await context.Ads.AddRangeAsync(testingAds);
+        //    await context.SaveChangesAsync();
+
+        //    this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+        //    //Act
+        //    var actual = await this.adsService.GetFavoriteAdsViewModelsAsync("SellMeUserId", 1, 10);
+
+        //    //Assert
+        //    Assert.Equal(expectedCount, actual.Count);
+        //}
     }
 }

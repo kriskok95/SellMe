@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Castle.Core.Internal;
 
 namespace SellMe.Services
 {
@@ -20,7 +21,6 @@ namespace SellMe.Services
     using SellMe.Web.ViewModels.ViewModels.Addresses;
     using SellMe.Web.ViewModels.BindingModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Subcategories;
-    using SellMe.Web.ViewModels.BindingModels.Favorites;
     using System;
     using SellMe.Common;
 
@@ -248,6 +248,16 @@ namespace SellMe.Services
 
         public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize)
         {
+            if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidCategoryIdErrorMessage);
+            }
+
+            if (!await this.context.SubCategories.AnyAsync(x => x.CategoryId == categoryId && x.Id == subcategoryId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidSubcategoryIdErrorMessage);
+            }
+
             var subcategories = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
             var adsBySubcategory = this.GetAdsBySubcategory(subcategoryId);
 
@@ -268,36 +278,31 @@ namespace SellMe.Services
             return adsBySubcategoryViewModel;
         }
 
-        public async Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<MyActiveAdsViewModel>> GetMyActiveAdsViewModelsAsync(int pageNumber, int pageSize)
         {
             var myActiveAdViewModel = this.GetMyAdsViewModels();
 
             var paginatedActiveAdViewModels =
                 await PaginatedList<MyActiveAdsViewModel>.CreateAsync(myActiveAdViewModel, pageNumber, pageSize);
 
-            var bindingModel = new MyActiveAdsBindingModel
-            {
-                Ads = paginatedActiveAdViewModels,
-            };
-
-            return bindingModel;
+            return paginatedActiveAdViewModels;
         }
 
-        public async Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId, int pageNumber, int pageSize)
+        public async Task<PaginatedList<FavoriteAdViewModel>> GetFavoriteAdsViewModelsAsync(string userId, int pageNumber, int pageSize)
         {
+            if (userId.IsNullOrEmpty())
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
             var user = await this.usersService.GetCurrentUserAsync();
 
-            var favoriteAdViewModels = this.GetFavoriteAdsByUser(user);
+            var favoriteAdViewModels = this.GetFavoriteAdViewModelsByUser(user);
 
             var paginatedFavoriteAds =
                 await PaginatedList<FavoriteAdViewModel>.CreateAsync(favoriteAdViewModels, pageNumber, pageSize);
 
-            var favoriteAdsBindingModel = new FavoriteAdsBindingModel
-            {
-                Favorites = paginatedFavoriteAds
-            };
-
-            return favoriteAdsBindingModel;
+            return paginatedFavoriteAds;
         }
 
         public async Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync(int pageNumber, int pageSize)
@@ -602,7 +607,7 @@ namespace SellMe.Services
         {
             var adsBySubcategory = this.context
                 .Ads
-                .Where(x => x.SubCategoryId == subcategoryId && x.IsApproved);
+                .Where(x => x.SubCategoryId == subcategoryId && x.IsApproved && !x.IsDeleted);
 
             return adsBySubcategory;
         }
@@ -672,11 +677,12 @@ namespace SellMe.Services
             return adsByUser;
         }
 
-        private IQueryable<FavoriteAdViewModel> GetFavoriteAdsByUser(SellMeUser user)
+        private IQueryable<FavoriteAdViewModel> GetFavoriteAdViewModelsByUser(SellMeUser user)
         {
             var favoriteAdsViewModels = this.context
                 .SellMeUserFavoriteProducts
                 .Where(x => x.SellMeUserId == user.Id)
+                .OrderByDescending(x => x.CreatedOn)
                 .To<FavoriteAdViewModel>();
 
             return favoriteAdsViewModels;

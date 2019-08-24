@@ -1,9 +1,9 @@
-﻿@model FavoriteAdsBindingModel
+﻿@model PaginatedList<FavoriteAdViewModel>
 
 <div class="row">
     <div class="col">
         <h3 class="text-center mb-4">Favorites:</h3>
-        @foreach (var ad in @Model.Favorites)
+        @foreach (var ad in @Model)
         {
             <vc:favorite-ad view-model="@ad"></vc:favorite-ad>
         }
@@ -11,25 +11,25 @@
 </div>
 
 @{
-    var prevDisabled = !Model.Favorites.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Favorites.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <div class="row">
     <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
                 <a asp-action="MyFavorites"
-                   asp-route-pageNumber="@(Model.Favorites.PageIndex - 1)"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @prevDisabled">
                     &laquo;
                 </a>
             </li>
-            @if (Model.Favorites.TotalPages > 1)
+            @if (Model.TotalPages > 1)
             {
-                for (int i = 1; i <= Model.Favorites.TotalPages; i++)
+                for (int i = 1; i <= Model.TotalPages; i++)
                 {
-                    if (Model.Favorites.PageIndex == i)
+                    if (Model.PageIndex == i)
                     {
                         <li class="page-item active">
                             <a class="page-link" asp-action="MyFavorites"
@@ -49,7 +49,7 @@
             }
             <li class="page-item">
                 <a asp-action="MyFavorites"
-                   asp-route-pageNumber="@(Model.Favorites.PageIndex + 1)"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @nextDisabled">
                     &raquo;

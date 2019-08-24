@@ -8,7 +8,6 @@ namespace SellMe.Services.Interfaces
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Data.Models;
     using SellMe.Web.ViewModels.BindingModels.Ads;
-    using SellMe.Web.ViewModels.BindingModels.Favorites;
 
     public interface IAdsService
     {
@@ -36,9 +35,9 @@ namespace SellMe.Services.Interfaces
 
         Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize);
 
-        Task<MyActiveAdsBindingModel> GetMyActiveAdsBindingModelAsync(int pageNumber, int pageSize);
+        Task<PaginatedList<MyActiveAdsViewModel>> GetMyActiveAdsViewModelsAsync(int pageNumber, int pageSize);
 
-        Task<FavoriteAdsBindingModel> GetFavoriteAdsBindingModelAsync(string userId, int pageNumber, int pageSize);
+        Task<PaginatedList<FavoriteAdViewModel>> GetFavoriteAdsViewModelsAsync(string userId, int pageNumber, int pageSize);
 
         Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync(int pageNumber, int pageSize);
 

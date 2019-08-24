@@ -6,7 +6,7 @@
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
 
-    public class FavoriteAdViewModel : BaseViewModel, IMapFrom<SellMeUserFavoriteProduct>, IHaveCustomMappings
+    public class FavoriteAdViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {
         public int Id { get; set; }
 

@@ -232,7 +232,7 @@ namespace SellMe.Tests
         }
 
         [Fact]
-        public async Task CheckOwnerIdAndSellerId_WithOwnerEqualsToCreator_ShouldReturnTrue()
+        public void CheckOwnerIdAndSellerId_WithOwnerEqualsToCreator_ShouldReturnTrue()
         {
             //Arrange
             var moqUsersService = new Mock<IUsersService>();
@@ -240,7 +240,7 @@ namespace SellMe.Tests
             this.reviewsService = new ReviewsService(context, moqUsersService.Object);
 
             //Act
-            var actual = this.reviewsService.CheckOwnerIdAndSellerId("CreatorId", "CreatorId");
+            var actual =  this.reviewsService.CheckOwnerIdAndSellerId("CreatorId", "CreatorId");
 
             //Assert
             Assert.True(actual);

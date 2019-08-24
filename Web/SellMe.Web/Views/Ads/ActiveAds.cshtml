@@ -1,4 +1,4 @@
-﻿@model MyActiveAdsBindingModel
+﻿@model PaginatedList<MyActiveAdsViewModel>
 
 <h3 class="text-center">My Active Ads:</h3>
 <h5 class="text-center text-danger mb-3 mt-3">@TempData["SuccessfulUpdateMessage"]</h5>
@@ -36,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ad in @Model.Ads)
+                        @foreach (var ad in @Model)
                         {
                             <tr class="trElm">
                                 <td>
@@ -86,25 +86,25 @@
     </div>
 </div>
 @{
-    var prevDisabled = !Model.Ads.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Ads.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <div class="row mt-3">
     <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
                 <a asp-action="ActiveAds"
-                   asp-route-pageNumber="@(Model.Ads.PageIndex - 1)"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @prevDisabled">
                     &laquo;
                 </a>
             </li>
-            @if (Model.Ads.TotalPages > 1)
+            @if (Model.TotalPages > 1)
             {
-                for (int i = 1; i <= Model.Ads.TotalPages; i++)
+                for (int i = 1; i <= Model.TotalPages; i++)
                 {
-                    if (Model.Ads.PageIndex == i)
+                    if (Model.PageIndex == i)
                     {
                         <li class="page-item active">
                             <a class="page-link" asp-action="ActiveAds"
@@ -124,7 +124,7 @@
             }
             <li class="page-item">
                 <a asp-action="ActiveAds"
-                   asp-route-pageNumber="@(Model.Ads.PageIndex + 1)"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @nextDisabled">
                     &raquo;

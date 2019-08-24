@@ -33,9 +33,9 @@ namespace SellMe.Web.Controllers
         {
             var loggedInUserId = this.userManager.GetUserId(this.User);
 
-            var favoriteAdsBindingModel = await this.adsService.GetFavoriteAdsBindingModelAsync(loggedInUserId, pageNumber?? DefaultPageNumber, DefaultPageSize);
+            var favoriteAdsViewModels = await this.adsService.GetFavoriteAdsViewModelsAsync(loggedInUserId, pageNumber?? DefaultPageNumber, DefaultPageSize);
 
-            return this.View(favoriteAdsBindingModel);
+            return this.View(favoriteAdsViewModels);
         }
 
         [Authorize]
