@@ -107,7 +107,7 @@
         [Authorize]
         public async Task<IActionResult> ActivateAd(int adId)
         {
-            bool isActivated = await this.adService.ActivateAdById(adId);
+            bool isActivated = await this.adService.ActivateAdByIdAsync(adId);
 
             var result = new
             {

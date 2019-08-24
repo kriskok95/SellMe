@@ -22,11 +22,11 @@ namespace SellMe.Services.Interfaces
 
         Task<bool> ArchiveAdByIdAsync(int adId);
 
-        Task<bool> ActivateAdById(int adId);
+        Task<bool> ActivateAdByIdAsync(int adId);
 
         Task<EditAdBindingModel> GetEditAdBindingModelById(int adId);
 
-        string GetAdTitleById(int adId);
+        Task<string> GetAdTitleByIdAsync(int adId);
 
         Task UpdateAdByIdAsync(int adId);
 

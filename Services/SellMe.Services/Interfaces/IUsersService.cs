@@ -17,5 +17,7 @@
         Task<IEnumerable<UserAllViewModel>> GetAllUserViewModelsAsync();
 
         Task<bool> BlockUserByIdAsync(string userId);
+
+        Task<double> GetRatingByUser(string sellerId);
     }
 }

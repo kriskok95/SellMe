@@ -78,6 +78,15 @@
             return true;
         }
 
+        public async Task<double> GetRatingByUser(string sellerId)
+        {
+            var user = await this.GetUserByIdAsync(sellerId);
+
+            var rating = user.OwnedReviews.Any() ? user.OwnedReviews.Average(x => x.Rating) : 0;
+
+            return rating;
+        }
+
         private async Task DeleteAdsByUserId(string userId)
         {
             var ads = this.context

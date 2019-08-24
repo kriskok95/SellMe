@@ -50,10 +50,5 @@
             stream.Dispose();
             return uploadResult.SecureUri.AbsoluteUri;
         }
-
-        public static void DeleteImages(Cloudinary cloudinary, DelResParams delParams)
-        {
-            cloudinary.DeleteResources(delParams);
-        }
     }
 }

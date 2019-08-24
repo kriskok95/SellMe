@@ -75,7 +75,7 @@
         public async Task<IActionResult> Details(MessageDetailsBindingModel bindingModel)
         {
             bindingModel.ViewModels = await this.messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);
-            bindingModel.AdTitle = this.adsService.GetAdTitleById(bindingModel.AdId);
+            bindingModel.AdTitle = await this.adsService.GetAdTitleByIdAsync(bindingModel.AdId);
 
             return this.View(bindingModel);
         }
