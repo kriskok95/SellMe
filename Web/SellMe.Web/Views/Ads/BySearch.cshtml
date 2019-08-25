@@ -1,6 +1,54 @@
-﻿@model AdsBySearchViewModel
+﻿@model PaginatedList<AdViewModel>
 
-@foreach (var ad in @Model.AdsBySearchViewModels)
+@foreach (var ad in @Model)
 {
     <vc:listed-ad view-model="@ad"></vc:listed-ad>
 }
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="row">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="BySearch"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (Model.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="BySearch"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="BySearch"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="BySearch"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

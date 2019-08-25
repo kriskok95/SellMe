@@ -305,58 +305,52 @@ namespace SellMe.Services
             return paginatedFavoriteAds;
         }
 
-        public async Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<MyArchivedAdsViewModel>> GetArchivedAdsViewModelsAsync(int pageNumber, int pageSize)
         {
             var archivedAdViewModels = this.GetMyArchivedAdsViewModels();
 
             var paginatedArchivedAdViewModels =
                 await PaginatedList<MyArchivedAdsViewModel>.CreateAsync(archivedAdViewModels, pageNumber, pageSize);
 
-            var archivedAdsBindingModel = new ArchivedAdsBindingModel
-            {
-                Ads = paginatedArchivedAdViewModels
-            };
-
-            return archivedAdsBindingModel;
+            return paginatedArchivedAdViewModels;
         }
 
-        public async Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText)
+        public async Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber, int pageSize)
         {
-            var adViewModels = await this.context
+            var adViewModels = this.context
                 .Ads
                 .Where(x => x.Title.Contains(searchText) && x.IsApproved)
-                .To<AdViewModel>()
-                .ToListAsync();
+                .To<AdViewModel>();
 
-            var adsBySearchViewModel = new AdsBySearchViewModel
-            {
-                AdsBySearchViewModels = adViewModels
-            };
+            var paginatedAdsBySearchViewModels =
+                await PaginatedList<AdViewModel>.CreateAsync(adViewModels, pageNumber, pageSize);
 
-            return adsBySearchViewModel;
+            return paginatedAdsBySearchViewModels;
         }
 
-        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId)
+        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber, int pageSize)
         {
             var user = await this.usersService.GetUserByIdAsync(userId);
 
-            var adByUserViewModels = await this.context
+            var adByUserViewModels = this.context
                 .Ads
                 .Where(x => x.SellerId == userId && !x.IsDeleted && x.ActiveTo >= DateTime.UtcNow && x.IsApproved)
-                .To<AdViewModel>()
-                .ToListAsync();
+                .To<AdViewModel>();
+
+            var adsByUserPaginatedList =
+                await PaginatedList<AdViewModel>.CreateAsync(adByUserViewModels, pageNumber, pageSize);
 
             var adsByUserBindingModel = new AdsByUserBindingModel
             {
                 UserId = user.Id,
                 Username = user.UserName,
-                AdViewModels = adByUserViewModels
+                AdViewModels = adsByUserPaginatedList
             };
 
             return adsByUserBindingModel;
         }
 
-        public async Task EditAdById(EditAdInputModel inputModel)
+        public async Task EditAd(EditAdInputModel inputModel)
         {
             var adFromDb = await this.context.Ads.FirstOrDefaultAsync(x => x.Id == inputModel.AdId);
 

@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.BindingModels.Ads
 {
-    using System.Collections.Generic;
+    using SellMe.Services.Paging;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using SellMe.Web.ViewModels.ViewModels;
 
@@ -10,6 +10,6 @@
 
         public string Username { get; set; }
 
-        public IEnumerable<AdViewModel> AdViewModels { get; set; }
+        public PaginatedList<AdViewModel> AdViewModels { get; set; }
     }
 }

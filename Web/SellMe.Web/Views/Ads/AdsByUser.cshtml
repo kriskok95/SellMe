@@ -22,6 +22,58 @@
 <partial name="_AddToFavoritesModalPartial" />
 <partial name="_RemoveFromFavoritesModalPartial" />
 
+@{
+    var prevDisabled = !Model.AdViewModels.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.AdViewModels.HasNextPage ? "disabled" : "";
+}
+<div class="row">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="AdsByUser"
+                   asp-route-userId="@Model.UserId"
+                   asp-route-pageNumber="@(Model.AdViewModels.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.AdViewModels.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.AdViewModels.TotalPages; i++)
+                {
+                    if (Model.AdViewModels.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="AdsByUser"
+                               asp-route-userId="@Model.UserId"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="AdsByUser"
+                               asp-route-userId="@Model.UserId"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="AdsByUser"
+                   asp-route-userId="@Model.UserId"
+                   asp-route-pageNumber="@(Model.AdViewModels.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 @section Scripts
 {

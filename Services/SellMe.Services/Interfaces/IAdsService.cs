@@ -39,13 +39,13 @@ namespace SellMe.Services.Interfaces
 
         Task<PaginatedList<FavoriteAdViewModel>> GetFavoriteAdsViewModelsAsync(string userId, int pageNumber, int pageSize);
 
-        Task<ArchivedAdsBindingModel> GetArchivedAdsBindingModelAsync(int pageNumber, int pageSize);
+        Task<PaginatedList<MyArchivedAdsViewModel>> GetArchivedAdsViewModelsAsync(int pageNumber, int pageSize);
 
-        Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText);
+        Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber, int pageSize);
 
-        Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId);
+        Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber, int pageSize);
 
-        Task EditAdById(EditAdInputModel inputModel);
+        Task EditAd(EditAdInputModel inputModel);
 
         Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync(int pageNumber, int PageSize);
 

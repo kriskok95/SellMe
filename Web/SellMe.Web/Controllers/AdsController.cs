@@ -98,10 +98,10 @@
         public async Task<IActionResult> ArchivedAds(int? pageNumber)
         {
 
-            var archivedAdsBindingModel = await this.adService.GetArchivedAdsBindingModelAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
+            var archivedAdsViewModels = await this.adService.GetArchivedAdsViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
 
-            return this.View(archivedAdsBindingModel);
+            return this.View(archivedAdsViewModels);
         }
 
         [Authorize]
@@ -128,7 +128,7 @@
         [HttpPost]
         public async Task<IActionResult> Edit(EditAdBindingModel bindingModel)
         {
-            await this.adService.EditAdById(bindingModel.EditAdInputModel);
+            await this.adService.EditAd(bindingModel.EditAdInputModel);
             return this.Redirect("/");
         }
 
@@ -151,14 +151,14 @@
 
         public async Task<IActionResult> BySearch(AdsBySearchInputModel inputModel)
         {
-            var adsBySearchBindingModel = await this.adService.GetAdsBySearchViewModelAsync(inputModel.Search);
+            var adsBySearchViewModels = await this.adService.GetAdsBySearchViewModelsAsync(inputModel.Search, DefaultPageNumber, DefaultPageSize);
 
-             return this.View(adsBySearchBindingModel);
+             return this.View(adsBySearchViewModels);
         }
 
-        public async Task<IActionResult> AdsByUser(string userId)
+        public async Task<IActionResult> AdsByUser(string userId, int? pageNumber)
         {
-            var adsByUserBindingModel = await this.adService.GetAdsByUserBindingModelAsync(userId);
+            var adsByUserBindingModel = await this.adService.GetAdsByUserBindingModelAsync(userId, pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
             return this.View(adsByUserBindingModel);
         }

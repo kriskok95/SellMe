@@ -1,4 +1,8 @@
-﻿using SellMe.Web.ViewModels.ViewModels.Subcategories;
+﻿using System.IO;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using SellMe.Web.ViewModels.ViewModels.Subcategories;
 
 namespace SellMe.Tests
 {
@@ -1403,7 +1407,8 @@ namespace SellMe.Tests
 
             var testingCategory = new Category
             {
-                Id = 1, Name = "Electronics"
+                Id = 1,
+                Name = "Electronics"
             };
 
             await context.Categories.AddAsync(testingCategory);
@@ -1425,7 +1430,7 @@ namespace SellMe.Tests
             var expectedSubcategoryId = 1;
             var expectedCategoryId = 1;
 
-                var moqAddressService = new Mock<IAddressesService>();
+            var moqAddressService = new Mock<IAddressesService>();
             var moqUsersService = new Mock<IUsersService>();
             var moqCategoriesService = new Mock<ICategoriesService>();
             var moqUpdatesService = new Mock<IUpdatesService>();
@@ -1675,118 +1680,717 @@ namespace SellMe.Tests
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
-        //[Fact]
-        //public async Task GetFavoriteAdsViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
-        //{
-        //    //Arrange
-        //    var expectedCount = 2;
+        [Fact]
+        public async Task GetFavoriteAdsViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
 
-        //    var moqAddressService = new Mock<IAddressesService>();
-        //    var moqUsersService = new Mock<IUsersService>();
-        //    moqUsersService.Setup(x => x.GetCurrentUserId())
-        //        .Returns("SellMeUserId");
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserAsync())
+                .ReturnsAsync(new SellMeUser
+                {
+                    Id = "CurrentUserId",
+                    UserName = "CurrentUser"
+                });
 
-        //    var moqCategoriesService = new Mock<ICategoriesService>();
-        //    var moqUpdatesService = new Mock<IUpdatesService>();
-        //    var moqSubcategoriesService = new Mock<ISubCategoriesService>();
-        //    var moqMapper = new Mock<IMapper>();
-        //    var context = InitializeContext.CreateContextForInMemory();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
 
-        //    var testingAds = new List<Ad>
-        //    {
-        //        new Ad
-        //        {
-        //            Id = 1,
-        //            Title = "Iphone 6s",
-        //            Price = 100,
-        //            IsApproved = true,
-        //            IsDeleted = false,
-        //            SellerId = "SellMeUserId",
-        //            Updates = 3,
-        //            ActiveFrom = DateTime.UtcNow,
-        //            ActiveTo = DateTime.UtcNow.AddDays(30),
-        //            SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
-        //            {
-        //                new SellMeUserFavoriteProduct
-        //                {
-        //                    AdId = 1,
-        //                    SellMeUserId = "SellMeUserId"
-        //                }
-        //            },
-        //            Images = new List<Image>
-        //            {
-        //                new Image
-        //                {
-        //                    ImageUrl = "https://www.webpagetest.org1"
-        //                }
-        //            }
-        //        },
-        //        new Ad
-        //        {
-        //            Id = 2,
-        //            Title = "Samsung TV",
-        //            Price = 100,
-        //            IsApproved = true,
-        //            IsDeleted = false,
-        //            SellerId = "SellMeUserId",
-        //            Updates = 10,
-        //            ActiveFrom = DateTime.UtcNow,
-        //            ActiveTo = DateTime.UtcNow.AddDays(25),
-        //            SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
-        //            {
-        //                new SellMeUserFavoriteProduct
-        //                {
-        //                    AdId = 1,
-        //                    SellMeUserId = "SellMeUserId"
-        //                }
-        //            },
-        //            Images = new List<Image>
-        //            {
-        //                new Image
-        //                {
-        //                    ImageUrl = "https://www.webpagetest.org2"
-        //                }
-        //            },
-        //        },
-        //        new Ad
-        //        {
-        //            Id = 4,
-        //            Title = "Motorola phone",
-        //            Price = 250,
-        //            IsApproved = true,
-        //            IsDeleted = true,
-        //            SellerId = "FakeSellerId",
-        //            Updates = 0,
-        //            ActiveFrom = DateTime.UtcNow,
-        //            ActiveTo = DateTime.UtcNow.AddDays(10),
-        //            SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
-        //            {
-        //                new SellMeUserFavoriteProduct
-        //                {
-        //                    AdId = 1,
-        //                    SellMeUserId = "FakeSellerId"
-        //                }
-        //            },
-        //            Images = new List<Image>
-        //            {
-        //                new Image
-        //                {
-        //                    ImageUrl = "https://www.webpagetest.org3"
-        //                }
-        //            },
-        //        },
-        //    };
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "Perfect condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "CurrentUserId",
+                    Updates = 3,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(30),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Phones",
+                    },
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "CurrentUserId"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Description = "Perfect Condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "CurrentUserId",
+                    Updates = 10,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(25),
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "CurrentUserId"
+                        }
+                    },
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Description = "Description",
+                    Price = 250,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    SellerId = "FakeSellerId",
+                    Updates = 0,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(10),
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "FakeSellerId"
+                        }
+                    },
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                },
+            };
 
-        //    await context.Ads.AddRangeAsync(testingAds);
-        //    await context.SaveChangesAsync();
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
 
-        //    this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
 
-        //    //Act
-        //    var actual = await this.adsService.GetFavoriteAdsViewModelsAsync("SellMeUserId", 1, 10);
+            //Act
+            var actual = await this.adsService.GetFavoriteAdsViewModelsAsync("SellMeUserId", 1, 10);
 
-        //    //Assert
-        //    Assert.Equal(expectedCount, actual.Count);
-        //}
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetArchivedAdsViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("CurrentUserId");
+
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "Perfect condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    SellerId = "CurrentUserId",
+                    Updates = 3,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(30),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Phones",
+                    },
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "CurrentUserId"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Description = "Perfect Condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    SellerId = "CurrentUserId",
+                    Updates = 10,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(25),
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "CurrentUserId"
+                        }
+                    },
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Description = "Description",
+                    Price = 250,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "CurrentUserId",
+                    Updates = 0,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(10),
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "CurrentUserId"
+                        }
+                    },
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetArchivedAdsViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetAdsBySearchViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "Perfect condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    SellerId = "CurrentUserId",
+                    Updates = 3,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(30),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Phones",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Description = "Perfect Condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = true,
+                    SellerId = "CurrentUserId",
+                    Updates = 10,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(25),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Description = "Description",
+                    Price = 250,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "CurrentUserId",
+                    Updates = 0,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(10),
+                    SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
+                    {
+                        new SellMeUserFavoriteProduct
+                        {
+                            AdId = 1,
+                            SellMeUserId = "CurrentUserId"
+                        }
+                    },
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetAdsBySearchViewModelsAsync("phone", 1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetAdsByUserBindingModelAsync_WithValidData_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expectedCount = 2;
+            var expectedSellerId = "SellerId";
+            var expectedSellerUsername = "Seller";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetUserByIdAsync("SellerId"))
+                .ReturnsAsync(new SellMeUser
+                {
+                    Id = "SellerId",
+                    UserName = "Seller"
+                });
+
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "Perfect condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "SellerId",
+                    Updates = 3,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(30),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Phones",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org1"
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Samsung TV",
+                    Description = "Perfect Condition",
+                    Price = 100,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "SellerId",
+                    Updates = 10,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(25),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org2"
+                        }
+                    },
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Motorola phone",
+                    Description = "Description",
+                    Price = 250,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    SellerId = "FakeSellerId",
+                    Updates = 0,
+                    ActiveFrom = DateTime.UtcNow,
+                    ActiveTo = DateTime.UtcNow.AddDays(10),
+                    Category = new Category
+                    {
+                        Name = "Electronics",
+                    },
+                    SubCategory = new SubCategory
+                    {
+                        Name = "Tvs",
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl = "https://www.webpagetest.org3"
+                        }
+                    },
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act
+            var actual = await this.adsService.GetAdsByUserBindingModelAsync("SellerId", 1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.AdViewModels.Count);
+            Assert.Equal(expectedSellerId, actual.UserId);
+            Assert.Equal(expectedSellerUsername, actual.Username);
+        }
+
+        [Fact]
+        public async Task EditAdById_WithInvalidAd_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Ad with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.EditAd(new EditAdInputModel()));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task EditAdById_WithValidData_ShouldEditAd()
+        {
+            //Arrange
+            var expectedAdId = 1;
+            var expectedTitle = "Iphone 6s new";
+            var expectedDescription = "Perfect Condition new";
+            var expectedAvailability = 2;
+            var expectedPrice = 110;
+            var expectedCountry = "Bulgaria New";
+            var expectedCity = "Sofia New";
+            var expectedStreet = "Ivan Vazov New";
+            var expectedDistinct = "Student city New";
+            var expectedZipCode = 1200;
+            var expectedPhoneNumber = "085253235";
+            var expectedEmailAddress = "kristian-new@gmail.com";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Category = new Category { Id = 1, Name = "Electronics" },
+                SubCategory = new SubCategory { Id = 2, CategoryId = 1, Name = "Phones" },
+                CategoryId = 1,
+                IsApproved = true,
+                ActiveFrom = DateTime.UtcNow,
+                ActiveTo = DateTime.UtcNow.AddDays(30),
+                AvailabilityCount = 1,
+                Updates = 0,
+                Price = 120,
+                Condition = new Condition { Name = "Brand New" },
+                Address = new Address
+                {
+                    Country = "Bulgaria",
+                    City = "Sofia",
+                    Street = "Ivan Vazov",
+                    District = "Student city",
+                    ZipCode = 1000,
+                    PhoneNumber = "0895335532",
+                    EmailAddress = "Ivan@gmail.com"
+                },
+            };
+
+            await context.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+
+            var editAdInputModel = new EditAdInputModel
+            {
+                AdId = 1,
+                EditAdDetailsInputModel = new EditAdDetailsInputModel
+                {
+                    Title = "Iphone 6s new",
+                    Description = "Perfect Condition new",
+                    Availability = 2,
+                    Price = 110,
+                },
+                EditAdAddressInputModel = new EditAdAddressInputModel
+                {
+                    Country = "Bulgaria New",
+                    City = "Sofia New",
+                    Street = "Ivan Vazov New",
+                    District = "Student city New",
+                    ZipCode = 1200,
+                    PhoneNumber = "085253235",
+                    EmailAddress = "kristian-new@gmail.com"
+                }
+            };
+
+            
+        //Act
+        await this.adsService.EditAd(editAdInputModel);
+
+            //Assert
+            Assert.Equal(expectedAdId, testingAd.Id);
+            Assert.Equal(expectedTitle, testingAd.Title);
+            Assert.Equal(expectedDescription, testingAd.Description);
+            Assert.Equal(expectedAvailability, testingAd.AvailabilityCount);
+            Assert.Equal(expectedPrice, testingAd.Price);
+            Assert.Equal(expectedCountry, testingAd.Address.Country);
+            Assert.Equal(expectedCity, testingAd.Address.City);
+            Assert.Equal(expectedStreet, testingAd.Address.Street);
+            Assert.Equal(expectedDistinct, testingAd.Address.District);
+            Assert.Equal(expectedPhoneNumber, testingAd.Address.PhoneNumber);
+            Assert.Equal(expectedEmailAddress, testingAd.Address.EmailAddress);
+
+        }
     }
 }
