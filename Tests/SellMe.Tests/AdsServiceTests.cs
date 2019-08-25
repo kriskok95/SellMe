@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using SellMe.Data;
 using SellMe.Web.ViewModels.ViewModels.Subcategories;
 
 namespace SellMe.Tests
@@ -45,6 +46,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var moqIFormFile = new Mock<IFormFile>();
+            moqCloudinaryService.Setup(x => x.UploadPictureAsync(moqIFormFile.Object, "FileName"))
+                .ReturnsAsync("http://test.com");
+
             var moqMapper = new Mock<IMapper>();
             moqMapper.Setup(x => x.Map<Ad>(It.IsAny<CreateAdInputModel>()))
                 .Returns(new Ad
@@ -80,6 +85,10 @@ namespace SellMe.Tests
                     ConditionId = 1,
                     CategoryId = 1,
                     SubCategoryId = 2,
+                    Images = new List<IFormFile>
+                    {
+                        moqIFormFile.Object
+                    }
                 }
             };
 
@@ -2353,6 +2362,10 @@ namespace SellMe.Tests
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
             var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var moqIFormFile = new Mock<IFormFile>();
+            moqCloudinaryService.Setup(x => x.UploadPictureAsync(moqIFormFile.Object, "ImageName"))
+                .ReturnsAsync("test");
+
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -2370,6 +2383,7 @@ namespace SellMe.Tests
                 Updates = 0,
                 Price = 120,
                 Condition = new Condition { Name = "Brand New" },
+                Images = new List<Image>(),
                 Address = new Address
                 {
                     Country = "Bulgaria",
@@ -2396,6 +2410,10 @@ namespace SellMe.Tests
                     Description = "Perfect Condition new",
                     Availability = 2,
                     Price = 110,
+                    Images = new List<IFormFile>
+                    {
+                        moqIFormFile.Object
+                    }
                 },
                 EditAdAddressInputModel = new EditAdAddressInputModel
                 {
@@ -2409,9 +2427,9 @@ namespace SellMe.Tests
                 }
             };
 
-            
-        //Act
-        await this.adsService.EditAd(editAdInputModel);
+
+            //Act
+            await this.adsService.EditAd(editAdInputModel);
 
             //Assert
             Assert.Equal(expectedAdId, testingAd.Id);
@@ -2427,6 +2445,914 @@ namespace SellMe.Tests
             Assert.Equal(expectedPhoneNumber, testingAd.Address.PhoneNumber);
             Assert.Equal(expectedEmailAddress, testingAd.Address.EmailAddress);
 
+        }
+
+        [Fact]
+        public async Task GetAdsForApprovalViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = false,
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = false,
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = true,
+                }
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetAdsForApprovalViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetAdsForApprovalViewModelsAsync_WithValidData_ShouldReturnCorrectOrder()
+        {
+            //Arrange
+            var expectedAdsIds = new List<int> { 2, 1 };
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = false,
+                    CreatedOn = DateTime.UtcNow.AddDays(-10),
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = false,
+                    CreatedOn = DateTime.UtcNow.AddDays(-1),
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = true,
+                }
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetAdsForApprovalViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedAdsIds[0], actual[0].Id);
+            Assert.Equal(expectedAdsIds[1], actual[1].Id);
+        }
+
+        [Fact]
+        public async Task ApproveAdAsync_WithInvalidAdId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Ad with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.ApproveAdAsync(1));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task ApproveAdAsync_WithAlreadyApprovedAd_ShouldThrowAnInvalidOperationException()
+        {
+            //Arrange
+            var expectedErrorMessage = "The given ad is already approved!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Price = 200,
+                IsApproved = true,
+            };
+
+            await context.Ads.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => this.adsService.ApproveAdAsync(1));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task ApproveAdAsync_WithValidData_ShouldReturnTrue()
+        {
+            //Arrange
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Price = 200,
+                IsApproved = false,
+            };
+
+            await context.Ads.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.ApproveAdAsync(1);
+
+            //Assert
+            Assert.True(actual);
+            Assert.True(testingAd.IsApproved);
+        }
+
+        [Fact]
+        public async Task GetRejectAdBindingModelAsync_WithInvalidAdId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Ad with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetRejectAdBindingModelAsync(1));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task GetRejectAdBindingModelAsync_WithValidData_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expected = new RejectAdViewModel
+            {
+                AdId = 1,
+                AdTitle = "Iphone 6s"
+            };
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            moqMapper.Setup(x => x.Map<RejectAdViewModel>(It.IsAny<Ad>()))
+                .Returns(new RejectAdViewModel { AdId = 1, AdTitle = "Iphone 6s" });
+
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Price = 200,
+                IsApproved = false,
+            };
+
+            await context.Ads.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetRejectAdBindingModelAsync(1);
+
+            //Assert
+            Assert.Equal(expected.AdId, actual.ViewModel.AdId);
+            Assert.Equal(expected.AdTitle, actual.ViewModel.AdTitle);
+        }
+
+        [Fact]
+        public async Task CreateAdRejectionAsync_WithInvalidAdId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Ad with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.CreateAdRejectionAsync(1, "Comment"));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async Task CreateAdRejectionAsync_WithNullOrEmptyComment_ShouldThrowAnArgumentException(string comment)
+        {
+            //Arrange
+            var expectedErrorMessage = "The comment can't be null or empty string!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Price = 200,
+            };
+
+            await context.Ads.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.CreateAdRejectionAsync(1, comment));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task CreateAdRejectionAsync_WithValidData_ShouldCreateRejection()
+        {
+            //Arrange
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Price = 200,
+                IsDeclined = false,
+            };
+
+            await context.Ads.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            await this.adsService.CreateAdRejectionAsync(1, "Comment");
+
+            //Assert
+            Assert.Single(context.AdRejections);
+            Assert.True(testingAd.IsDeclined);
+        }
+
+        [Fact]
+        public async Task GetWaitingForApprovalByCurrentUserViewModels_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expected = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("CurrentUserId");
+
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    SellerId = "CurrentUserId",
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = false,
+                },
+                new Ad
+                {
+                    Id = 2,
+                    SellerId = "CurrentUserId",
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = false,
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = true,
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Fake Ad",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 5435,
+                    IsApproved = false,
+                    IsDeclined = true,
+                }
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetWaitingForApprovalByCurrentUserViewModels(1, 10);
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetRejectedAdByUserViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expected = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("CurrentUserId");
+
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    SellerId = "CurrentUserId",
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = false,
+                    IsDeclined = true,
+                    AdRejections = new List<AdRejection>
+                    {
+                        new AdRejection
+                        {
+                            Id = 1,
+                            AdId = 1,
+                            Comment = "Comment",
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 2,
+                    SellerId = "CurrentUserId",
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = false,
+                    IsDeclined = true,
+                    AdRejections = new List<AdRejection>
+                    {
+                        new AdRejection
+                        {
+                            Id = 2,
+                            AdId = 2,
+                            Comment = "Comment",
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = false,
+                    IsDeclined = true,
+                    IsDeleted = true,
+                    AdRejections = new List<AdRejection>
+                    {
+                        new AdRejection
+                        {
+                            Id = 3,
+                            AdId = 3,
+                            Comment = "Comment",
+                        }
+                    }
+                },
+                new Ad
+                {
+                    Id = 4,
+                    Title = "Fake Ad",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 5435,
+                    IsApproved = false,
+                    IsDeclined = false,
+                    AdRejections = new List<AdRejection>
+                    {
+                        new AdRejection
+                        {
+                            Id = 4,
+                            AdId = 4,
+                            Comment = "Comment",
+                        }
+                    }
+                }
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetRejectedAdByUserViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+
+        [Fact]
+        public async Task SubmitRejectedAdAsync_WithInvalidRejectionId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Ad Rejection with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.SubmitRejectedAdAsync(1));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task SubmitRejectedAdAsync_WithNonExistingAdId_ShouldThrowAnArgumentException()
+        {
+            //Arrange
+            var expectedErrorMessage = "Ad with the given id doesn't exist!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAdRejection = new AdRejection
+            {
+                Id = 1,
+                AdId = 1,
+                Comment = "Comment",
+            };
+            await context.AdRejections.AddAsync(testingAdRejection);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.SubmitRejectedAdAsync(1));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task SubmitRejectedAdAsync_WithValidData_ShouldReturnTrue()
+        {
+            //Arrange
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Price = 200,
+                IsDeclined = true,
+            };
+
+            var testingAdRejection = new AdRejection
+            {
+                AdId = 1,
+                Comment = "Comment",
+            };
+            await context.Ads.AddAsync(testingAd);
+            await context.AdRejections.AddAsync(testingAdRejection);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.SubmitRejectedAdAsync(1);
+
+            Assert.True(actual);
+            Assert.False(testingAd.IsDeclined);
+        }
+
+        [Fact]
+        public async Task GetRejectedAdAllViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    SellerId = "CurrentUserId",
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = false,
+                    IsDeclined = true,
+                },
+                new Ad
+                {
+                    Id = 2,
+                    SellerId = "CurrentUserId",
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = false,
+                    IsDeclined = true,
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = false,
+                    IsDeclined = false,
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetRejectedAdAllViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetRejectedAdAllViewModelsAsync_WithValidData_ShouldReturnCorrectOrder()
+        {
+            //Arrange
+            var expectedIds = new List<int> {2, 3, 1};
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    SellerId = "CurrentUserId",
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = false,
+                    IsDeclined = true,
+                    CreatedOn = DateTime.UtcNow.AddDays(-24),
+                },
+                new Ad
+                {
+                    Id = 2,
+                    SellerId = "CurrentUserId",
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = false,
+                    IsDeclined = true,
+                    CreatedOn = DateTime.UtcNow.AddDays(-1),
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = false,
+                    IsDeclined = true,
+                    CreatedOn = DateTime.UtcNow.AddDays(-10),
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetRejectedAdAllViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedIds[0], actual[0].Id);
+            Assert.Equal(expectedIds[1], actual[1].Id);
+            Assert.Equal(expectedIds[2], actual[2].Id);
+        }
+
+        [Fact]
+        public async Task GetAllActiveAdViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expectedCount = 2;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    SellerId = "CurrentUserId",
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+                new Ad
+                {
+                    Id = 2,
+                    SellerId = "CurrentUserId",
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = true,
+                    IsDeleted = true,
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetAllActiveAdViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedCount, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetAllActiveAdViewModelsAsync_WithValidData_ShouldReturnCorrectOrder()
+        {
+            //Arrange
+            var expectedIds = new List<int> { 2, 3, 1 };
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+
+            var context = InitializeContext.CreateContextForInMemory();
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    SellerId = "CurrentUserId",
+                    Title = "Iphone 6s",
+                    Description = "PerfectCondition",
+                    Price = 200,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    CreatedOn = DateTime.UtcNow.AddDays(-24),
+                },
+                new Ad
+                {
+                    Id = 2,
+                    SellerId = "CurrentUserId",
+                    Title = "Motorola phone",
+                    Description = "PerfectCondition",
+                    Price = 500,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    CreatedOn = DateTime.UtcNow.AddDays(-1),
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung TVs",
+                    SellerId = "CurrentUserId",
+                    Description = "brand new",
+                    Price = 2000,
+                    IsApproved = true,
+                    IsDeleted = false,
+                    CreatedOn = DateTime.UtcNow.AddDays(-10),
+                },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetAllActiveAdViewModelsAsync(1, 10);
+
+            //Assert
+            Assert.Equal(expectedIds[0], actual[0].Id);
+            Assert.Equal(expectedIds[1], actual[1].Id);
+            Assert.Equal(expectedIds[2], actual[2].Id);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace SellMe.Services
         private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
         private const string InvalidRejectionIdMessage = "Ad Rejection with the given id doesn't exist!";
         private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
+        private const string CommentNullOrEmptyErrorMessage = "The comment can't be null or empty string!";
         private const int CreatedAdsStatisticDaysCount = 10;
 
         private readonly SellMeDbContext context;
@@ -37,11 +38,11 @@ namespace SellMe.Services
         private readonly IUpdatesService updatesService;
         private readonly ISubCategoriesService subCategoriesService;
         private readonly IMapper mapper;
-        private readonly ICloudinaryService cloudinary;
+        private readonly ICloudinaryService cloudinaryService;
 
         public AdsService(SellMeDbContext context, IAddressesService addressesService, IUsersService usersService,
             ICategoriesService categoriesService, IUpdatesService updatesService,
-            ISubCategoriesService subCategoriesService, IMapper mapper, ICloudinaryService cloudinary)
+            ISubCategoriesService subCategoriesService, IMapper mapper, ICloudinaryService cloudinaryService)
         {
             this.context = context;
             this.addressesService = addressesService;
@@ -50,14 +51,14 @@ namespace SellMe.Services
             this.updatesService = updatesService;
             this.subCategoriesService = subCategoriesService;
             this.mapper = mapper;
-            this.cloudinary = cloudinary;
+            this.cloudinaryService = cloudinaryService;
         }
 
         public async Task CreateAdAsync(CreateAdInputModel inputModel)
         {
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(async x =>
-                    await this.cloudinary.UploadPictureAsync(x, inputModel.CreateAdDetailInputModel.Title))
+                    await this.cloudinaryService.UploadPictureAsync(x, inputModel.CreateAdDetailInputModel.Title))
                 .Select(x => x.Result)
                 .ToList();
 
@@ -377,7 +378,7 @@ namespace SellMe.Services
 
             var imageUrls = inputModel.EditAdDetailsInputModel.Images
                 .Select(async x =>
-                    await this.cloudinary.UploadPictureAsync(x, inputModel.EditAdDetailsInputModel.Title))
+                    await this.cloudinaryService.UploadPictureAsync(x, inputModel.EditAdDetailsInputModel.Title))
                 .Select(x => x.Result)
                 .ToList();
 
@@ -404,23 +405,18 @@ namespace SellMe.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<AdForApprovalViewModel>> GetAdsForApprovalViewModelsAsync(int pageNumber, int pageSize)
         {
             var adForApprovalViewModels = this.context
                 .Ads
                 .Where(x => !x.IsApproved && !x.IsDeclined)
-                .OrderBy(x => x.CreatedOn)
+                .OrderByDescending(x => x.CreatedOn)
                 .To<AdForApprovalViewModel>();
 
             var paginatedListViewModels =
                 await PaginatedList<AdForApprovalViewModel>.CreateAsync(adForApprovalViewModels, pageNumber, pageSize);
 
-            var adsForApprovalViewModel = new AdsForApprovalViewModel
-            {
-                AdsAdForApprovalViewModels = paginatedListViewModels
-            };
-
-            return adsForApprovalViewModel;
+            return paginatedListViewModels;
         }
 
         public async Task<bool> ApproveAdAsync(int adId)
@@ -445,11 +441,16 @@ namespace SellMe.Services
             return true;
         }
 
-        public async Task<object> GetRejectAdBindingModelAsync(int adId)
+        public async Task<RejectAdBindingModel> GetRejectAdBindingModelAsync(int adId)
         {
             var adFromDb = await this.context
                 .Ads
                 .FirstOrDefaultAsync(x => x.Id == adId && !x.IsDeleted);
+
+            if (adFromDb == null)
+            {
+                throw new ArgumentException(InvalidAdIdErrorMessage);
+            }
 
             var rejectAdViewModel = this.mapper.Map<RejectAdViewModel>(adFromDb);
 
@@ -466,6 +467,11 @@ namespace SellMe.Services
             if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(InvalidAdIdErrorMessage);
+            }
+
+            if (comment.IsNullOrEmpty())
+            {
+                throw new ArgumentException(CommentNullOrEmptyErrorMessage);
             }
 
             var adFromDb = await this.context.Ads.FirstOrDefaultAsync(x => x.Id == adId);
@@ -506,7 +512,8 @@ namespace SellMe.Services
 
             var rejectedAdByUserViewModels = this.context
                 .AdRejections
-                .Where(x => x.Ad.SellerId == currentUserId && x.Ad.IsDeclined && !x.IsDeleted)
+                .Where(x => x.Ad.SellerId == currentUserId && x.Ad.IsDeclined && !x.Ad.IsDeleted)
+                .OrderByDescending(x => x.CreatedOn)
                 .To<RejectedByUserAdViewModel>();
 
             var paginatedListViewModels =
@@ -549,7 +556,8 @@ namespace SellMe.Services
         public async Task<PaginatedList<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync(int pageNumber,
             int pageSize)
         {
-            var rejectedAdAllViewModels = this.context.Ads
+            var rejectedAdAllViewModels = this.context
+                .Ads
                 .Where(x => x.IsDeclined)
                 .OrderByDescending(x => x.CreatedOn)
                 .To<RejectedAdAllViewModel>();
@@ -566,6 +574,7 @@ namespace SellMe.Services
             var activeAdAllViewModels = this.context
                 .Ads
                 .Where(x => !x.IsDeleted && x.IsApproved)
+                .OrderByDescending(x => x.CreatedOn)
                 .To<ActiveAdAllViewModel>();
 
             var paginatedListViewModels =

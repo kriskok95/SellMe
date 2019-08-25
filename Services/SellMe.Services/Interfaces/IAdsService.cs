@@ -47,11 +47,11 @@ namespace SellMe.Services.Interfaces
 
         Task EditAd(EditAdInputModel inputModel);
 
-        Task<AdsForApprovalViewModel> GetAdsForApprovalViewModelsAsync(int pageNumber, int PageSize);
+        Task<PaginatedList<AdForApprovalViewModel>> GetAdsForApprovalViewModelsAsync(int pageNumber, int PageSize);
 
         Task<bool> ApproveAdAsync(int adId);
 
-        Task<object> GetRejectAdBindingModelAsync(int adId);
+        Task<RejectAdBindingModel> GetRejectAdBindingModelAsync(int adId);
 
         Task CreateAdRejectionAsync(int adId, string comment);
 

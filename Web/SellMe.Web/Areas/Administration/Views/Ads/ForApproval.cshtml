@@ -1,4 +1,4 @@
-﻿@model AdsForApprovalViewModel
+﻿@model PaginatedList<AdForApprovalViewModel>
 
 <h3 class="text-center">Waiting for approval:</h3>
 <hr class="hr-sell-me" />
@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ad in @Model.AdsAdForApprovalViewModels)
+                        @foreach (var ad in @Model)
                         {
                             <tr class="elm">
                                 <td>
@@ -52,25 +52,25 @@
 </div>
 
 @{
-    var prevDisabled = !Model.AdsAdForApprovalViewModels.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.AdsAdForApprovalViewModels.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <div class="row mt-3">
     <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
                 <a asp-action="ForApproval"
-                   asp-route-pageNumber="@(Model.AdsAdForApprovalViewModels.PageIndex - 1)"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @prevDisabled">
                     &laquo;
                 </a>
             </li>
-            @if (Model.AdsAdForApprovalViewModels.TotalPages > 1)
+            @if (Model.TotalPages > 1)
             {
-                for (int i = 1; i <= Model.AdsAdForApprovalViewModels.TotalPages; i++)
+                for (int i = 1; i <= Model.TotalPages; i++)
                 {
-                    if (Model.AdsAdForApprovalViewModels.PageIndex == i)
+                    if (Model.PageIndex == i)
                     {
                         <li class="page-item active">
                             <a class="page-link" asp-action="ForApproval"
@@ -90,7 +90,7 @@
             }
             <li class="page-item">
                 <a asp-action="ForApproval"
-                   asp-route-pageNumber="@(Model.AdsAdForApprovalViewModels.PageIndex + 1)"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="btn page-link btn-default @nextDisabled">
                     &raquo;
