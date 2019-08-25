@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Castle.Core.Internal;
+﻿using Castle.Core.Internal;
 
 namespace SellMe.Services
 {
@@ -38,8 +37,11 @@ namespace SellMe.Services
         private readonly IUpdatesService updatesService;
         private readonly ISubCategoriesService subCategoriesService;
         private readonly IMapper mapper;
+        private readonly ICloudinaryService cloudinary;
 
-        public AdsService(SellMeDbContext context, IAddressesService addressesService, IUsersService usersService, ICategoriesService categoriesService, IUpdatesService updatesService, ISubCategoriesService subCategoriesService, IMapper mapper)
+        public AdsService(SellMeDbContext context, IAddressesService addressesService, IUsersService usersService,
+            ICategoriesService categoriesService, IUpdatesService updatesService,
+            ISubCategoriesService subCategoriesService, IMapper mapper, ICloudinaryService cloudinary)
         {
             this.context = context;
             this.addressesService = addressesService;
@@ -48,17 +50,20 @@ namespace SellMe.Services
             this.updatesService = updatesService;
             this.subCategoriesService = subCategoriesService;
             this.mapper = mapper;
+            this.cloudinary = cloudinary;
         }
 
         public async Task CreateAdAsync(CreateAdInputModel inputModel)
         {
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
-                .Select(x => this.UploadImages(x, inputModel.CreateAdDetailInputModel.Title))
+                .Select(async x =>
+                    await this.cloudinary.UploadPictureAsync(x, inputModel.CreateAdDetailInputModel.Title))
+                .Select(x => x.Result)
                 .ToList();
 
             var ad = this.mapper.Map<Ad>(inputModel);
             ad.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
-            ad.Images = imageUrls.Select(x => new Image { ImageUrl = x.Result })
+            ad.Images = imageUrls.Select(x => new Image {ImageUrl = x})
                 .ToList();
             ad.SellerId = this.usersService.GetCurrentUserId();
 
@@ -66,7 +71,8 @@ namespace SellMe.Services
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId, int pageNumber, int pageSize)
+        public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId, int pageNumber,
+            int pageSize)
         {
             if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
             {
@@ -78,10 +84,12 @@ namespace SellMe.Services
                 await PaginatedList<AdViewModel>.CreateAsync(adsViewModel, pageNumber, pageSize);
 
             var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelsAsync();
-            var subcategoryViewModels = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
+            var subcategoryViewModels =
+                await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
             string categoryName = await this.categoriesService.GetCategoryNameByIdAsync(categoryId);
 
-            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(paginatedAdsViewModel, allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
+            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(paginatedAdsViewModel,
+                allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
 
             return adsByCategoryViewModel;
         }
@@ -94,7 +102,7 @@ namespace SellMe.Services
             }
 
             var adFromDb = await this.GetAdByIdAsync(adId);
-            await CreateViewForAdAsync(adFromDb);                                             
+            await CreateViewForAdAsync(adFromDb);
             var addressForGivenAd = await this.addressesService.GetAddressByIdAsync(adFromDb.AddressId);
 
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
@@ -132,6 +140,7 @@ namespace SellMe.Services
             {
                 return false;
             }
+
             ad.IsDeleted = true;
 
             this.context.Update(ad);
@@ -148,6 +157,7 @@ namespace SellMe.Services
             {
                 return false;
             }
+
             ad.IsDeleted = false;
             ad.CreatedOn = DateTime.UtcNow;
             ad.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
@@ -184,12 +194,12 @@ namespace SellMe.Services
 
             var adFromDb = await this.GetAdByIdAsync(adId);
 
-            var adTitle = this.context.Ads.FirstOrDefault(x => x.Id == adId)? .Title;
+            var adTitle = this.context.Ads.FirstOrDefault(x => x.Id == adId)?.Title;
 
             return adTitle;
         }
 
-        public  async Task UpdateAdByIdAsync(int adId)
+        public async Task UpdateAdByIdAsync(int adId)
         {
             var adFromDb = await this.GetAdByIdAsync(adId);
 
@@ -246,7 +256,8 @@ namespace SellMe.Services
             return latestAddedAdViewModels;
         }
 
-        public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize)
+        public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId,
+            int categoryId, int pageNumber, int pageSize)
         {
             if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
             {
@@ -278,7 +289,8 @@ namespace SellMe.Services
             return adsBySubcategoryViewModel;
         }
 
-        public async Task<PaginatedList<MyActiveAdsViewModel>> GetMyActiveAdsViewModelsAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<MyActiveAdsViewModel>> GetMyActiveAdsViewModelsAsync(int pageNumber,
+            int pageSize)
         {
             var myActiveAdViewModel = this.GetMyAdsViewModels();
 
@@ -288,7 +300,8 @@ namespace SellMe.Services
             return paginatedActiveAdViewModels;
         }
 
-        public async Task<PaginatedList<FavoriteAdViewModel>> GetFavoriteAdsViewModelsAsync(string userId, int pageNumber, int pageSize)
+        public async Task<PaginatedList<FavoriteAdViewModel>> GetFavoriteAdsViewModelsAsync(string userId,
+            int pageNumber, int pageSize)
         {
             if (userId.IsNullOrEmpty())
             {
@@ -305,7 +318,8 @@ namespace SellMe.Services
             return paginatedFavoriteAds;
         }
 
-        public async Task<PaginatedList<MyArchivedAdsViewModel>> GetArchivedAdsViewModelsAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<MyArchivedAdsViewModel>> GetArchivedAdsViewModelsAsync(int pageNumber,
+            int pageSize)
         {
             var archivedAdViewModels = this.GetMyArchivedAdsViewModels();
 
@@ -315,7 +329,8 @@ namespace SellMe.Services
             return paginatedArchivedAdViewModels;
         }
 
-        public async Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber, int pageSize)
+        public async Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber,
+            int pageSize)
         {
             var adViewModels = this.context
                 .Ads
@@ -328,7 +343,8 @@ namespace SellMe.Services
             return paginatedAdsBySearchViewModels;
         }
 
-        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber, int pageSize)
+        public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber,
+            int pageSize)
         {
             var user = await this.usersService.GetUserByIdAsync(userId);
 
@@ -360,7 +376,9 @@ namespace SellMe.Services
             }
 
             var imageUrls = inputModel.EditAdDetailsInputModel.Images
-                .Select(x => this.UploadImages(x, inputModel.EditAdDetailsInputModel.Title))
+                .Select(async x =>
+                    await this.cloudinary.UploadPictureAsync(x, inputModel.EditAdDetailsInputModel.Title))
+                .Select(x => x.Result)
                 .ToList();
 
             adFromDb.Title = inputModel.EditAdDetailsInputModel.Title;
@@ -371,7 +389,7 @@ namespace SellMe.Services
 
             foreach (var image in imageUrls)
             {
-                adFromDb.Images.Add(new Image { ImageUrl = image.Result});
+                adFromDb.Images.Add(new Image {ImageUrl = image});
             }
 
             adFromDb.Address.Country = inputModel.EditAdAddressInputModel.Country;
@@ -394,7 +412,8 @@ namespace SellMe.Services
                 .OrderBy(x => x.CreatedOn)
                 .To<AdForApprovalViewModel>();
 
-            var paginatedListViewModels = await PaginatedList<AdForApprovalViewModel>.CreateAsync(adForApprovalViewModels, pageNumber, pageSize);
+            var paginatedListViewModels =
+                await PaginatedList<AdForApprovalViewModel>.CreateAsync(adForApprovalViewModels, pageNumber, pageSize);
 
             var adsForApprovalViewModel = new AdsForApprovalViewModel
             {
@@ -463,7 +482,8 @@ namespace SellMe.Services
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<PaginatedList<WaitingForApprovalByUserViewModel>> GetWaitingForApprovalByCurrentUserViewModels(int pageNumber, int pageSize)
+        public async Task<PaginatedList<WaitingForApprovalByUserViewModel>>
+            GetWaitingForApprovalByCurrentUserViewModels(int pageNumber, int pageSize)
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
@@ -479,7 +499,8 @@ namespace SellMe.Services
             return paginatedListViewModels;
         }
 
-        public async Task<PaginatedList<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync(int pageNumber,
+            int pageSize)
         {
             var currentUserId = this.usersService.GetCurrentUserId();
 
@@ -525,7 +546,8 @@ namespace SellMe.Services
             return true;
         }
 
-        public async Task<PaginatedList<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync(int pageNumber,
+            int pageSize)
         {
             var rejectedAdAllViewModels = this.context.Ads
                 .Where(x => x.IsDeclined)
@@ -538,7 +560,8 @@ namespace SellMe.Services
             return paginatedListViewModels;
         }
 
-        public async Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber,
+            int pageSize)
         {
             var activeAdAllViewModels = this.context
                 .Ads
@@ -555,7 +578,9 @@ namespace SellMe.Services
         {
             var adsCount = new List<int>();
 
-            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); i <= DateTime.UtcNow; i = i.AddDays(1))
+            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount);
+                i <= DateTime.UtcNow;
+                i = i.AddDays(1))
             {
                 var currentDaysAdsCount = await this.context.Ads
                     .CountAsync(x => x.CreatedOn.DayOfYear == i.DayOfYear);
@@ -618,6 +643,7 @@ namespace SellMe.Services
                 {
                     randomNumber = random.Next(0, toNumber);
                 } while (distinctRandomNumbers.Contains(randomNumber));
+
                 distinctRandomNumbers.Add(randomNumber);
             }
 
@@ -633,7 +659,8 @@ namespace SellMe.Services
             return editAdDetailsViewModel;
         }
 
-        private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel, EditAdAddressViewModel editAdAddressViewModel)
+        private EditAdViewModel GetEditAdViewModel(EditAdDetailsViewModel editAdDetailsViewModel,
+            EditAdAddressViewModel editAdAddressViewModel)
         {
             var editAdViewModel = new EditAdViewModel
             {
@@ -718,14 +745,6 @@ namespace SellMe.Services
                 .To<MyActiveAdsViewModel>();
 
             return adsForCurrentUserViewModels;
-        }
-
-        private async Task<string> UploadImages(IFormFile inputModelImage, string title)
-        {
-            var cloudinary = CloudinaryHelper.SetCloudinary();
-
-            var url = await CloudinaryHelper.UploadImage(cloudinary, inputModelImage, title);
-            return url;
         }
     }
 }

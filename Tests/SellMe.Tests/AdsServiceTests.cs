@@ -44,6 +44,7 @@ namespace SellMe.Tests
             var moqCategoriesService = new Mock<ICategoriesService>();
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var moqMapper = new Mock<IMapper>();
             moqMapper.Setup(x => x.Map<Ad>(It.IsAny<CreateAdInputModel>()))
                 .Returns(new Ad
@@ -84,7 +85,7 @@ namespace SellMe.Tests
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             await this.adsService.CreateAdAsync(createAdInputModel);
@@ -105,9 +106,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             var testingCategories = new List<Category>
             {
@@ -292,9 +294,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdByIdAsync(1));
@@ -335,6 +338,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -365,7 +369,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdByIdAsync(1);
@@ -391,9 +395,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdDetailsViewModelAsync(1));
@@ -410,6 +415,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             moqMapper.Setup(x => x.Map<AdDetailsViewModel>(It.IsAny<Ad>()))
                 .Returns(new AdDetailsViewModel
                 {
@@ -463,7 +469,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdDetailsViewModelAsync(1);
@@ -511,6 +517,7 @@ namespace SellMe.Tests
                     ConditionName = "Brand New",
                     Rating = 0
                 });
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -549,7 +556,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdDetailsViewModelAsync(1);
@@ -574,6 +581,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -587,7 +595,7 @@ namespace SellMe.Tests
 
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
-                moqMapper.Object);
+                moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.ArchiveAdByIdAsync(1);
@@ -606,6 +614,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -619,7 +628,7 @@ namespace SellMe.Tests
 
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
-                moqMapper.Object);
+                moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.ArchiveAdByIdAsync(1);
@@ -638,6 +647,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -651,7 +661,7 @@ namespace SellMe.Tests
 
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
-                moqMapper.Object);
+                moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.ArchiveAdByIdAsync(1);
@@ -670,6 +680,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -683,7 +694,7 @@ namespace SellMe.Tests
 
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
-                moqMapper.Object);
+                moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.ActivateAdByIdAsync(1);
@@ -702,6 +713,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -715,7 +727,7 @@ namespace SellMe.Tests
 
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
-                moqMapper.Object);
+                moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.ActivateAdByIdAsync(1);
@@ -734,6 +746,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -747,7 +760,7 @@ namespace SellMe.Tests
 
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
-                moqMapper.Object);
+                moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.ActivateAdByIdAsync(1);
@@ -768,9 +781,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetEditAdBindingModelById(1));
@@ -839,6 +853,7 @@ namespace SellMe.Tests
                     PhoneNumber = "0895335532",
                     EmailAddress = "Ivan@gmail.com",
                 });
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -871,7 +886,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetEditAdBindingModelById(1);
@@ -906,9 +921,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdTitleByIdAsync(1));
@@ -927,6 +943,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -939,7 +956,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdTitleByIdAsync(1);
@@ -959,9 +976,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.UpdateAdByIdAsync(1));
@@ -981,6 +999,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1014,7 +1033,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             await this.adsService.UpdateAdByIdAsync(1);
@@ -1036,6 +1055,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1069,7 +1089,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             await this.adsService.UpdateAdByIdAsync(1);
@@ -1091,6 +1111,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1124,7 +1145,7 @@ namespace SellMe.Tests
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             await this.adsService.UpdateAdByIdAsync(1);
@@ -1147,6 +1168,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1236,7 +1258,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetPromotedAdViewModels();
@@ -1257,10 +1279,11 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetPromotedAdViewModels();
@@ -1281,6 +1304,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1336,7 +1360,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetLatestAddedAdViewModels();
@@ -1357,10 +1381,11 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetLatestAddedAdViewModels();
@@ -1381,9 +1406,10 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdsBySubcategoryViewModelAsync(1, 2, 1, 10));
@@ -1402,6 +1428,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1414,7 +1441,7 @@ namespace SellMe.Tests
             await context.Categories.AddAsync(testingCategory);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10));
@@ -1454,8 +1481,8 @@ namespace SellMe.Tests
                         Name = "Tvs",
                     },
                 });
-
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
@@ -1554,7 +1581,7 @@ namespace SellMe.Tests
             await context.SaveChangesAsync();
 
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10);
@@ -1581,6 +1608,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAds = new List<Ad>
@@ -1647,7 +1675,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetMyActiveAdsViewModelsAsync(1, 10);
@@ -1670,10 +1698,11 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetFavoriteAdsViewModelsAsync(userId, 1, 10));
@@ -1699,6 +1728,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAds = new List<Ad>
@@ -1831,7 +1861,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetFavoriteAdsViewModelsAsync("SellMeUserId", 1, 10);
@@ -1855,6 +1885,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAds = new List<Ad>
@@ -1987,7 +2018,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetArchivedAdsViewModelsAsync(1, 10);
@@ -2008,6 +2039,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAds = new List<Ad>
@@ -2124,7 +2156,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdsBySearchViewModelsAsync("phone", 1, 10);
@@ -2154,6 +2186,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAds = new List<Ad>
@@ -2262,7 +2295,7 @@ namespace SellMe.Tests
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
             var actual = await this.adsService.GetAdsByUserBindingModelAsync("SellerId", 1, 10);
@@ -2285,10 +2318,11 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.EditAd(new EditAdInputModel()));
@@ -2318,6 +2352,7 @@ namespace SellMe.Tests
             var moqUpdatesService = new Mock<IUpdatesService>();
             var moqSubcategoriesService = new Mock<ISubCategoriesService>();
             var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
             var testingAd = new Ad
@@ -2350,7 +2385,7 @@ namespace SellMe.Tests
             await context.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             var editAdInputModel = new EditAdInputModel
             {
@@ -2388,6 +2423,7 @@ namespace SellMe.Tests
             Assert.Equal(expectedCity, testingAd.Address.City);
             Assert.Equal(expectedStreet, testingAd.Address.Street);
             Assert.Equal(expectedDistinct, testingAd.Address.District);
+            Assert.Equal(expectedZipCode, testingAd.Address.ZipCode);
             Assert.Equal(expectedPhoneNumber, testingAd.Address.PhoneNumber);
             Assert.Equal(expectedEmailAddress, testingAd.Address.EmailAddress);
 

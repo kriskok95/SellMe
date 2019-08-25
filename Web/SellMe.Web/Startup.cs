@@ -1,4 +1,6 @@
-﻿namespace SellMe.Web
+﻿using CloudinaryDotNet;
+
+namespace SellMe.Web
 {
     using Microsoft.AspNetCore.Builder;
     using SellMe.Web.Hubs;
@@ -54,6 +56,15 @@
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<SellMeDbContext>();
 
+            Account cloudinaryCredentials = new Account(
+                this.Configuration["Cloudinary:CloudName"],
+                this.Configuration["Cloudinary:ApiKey"],
+                this.Configuration["Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
+
+            services.AddSingleton(cloudinaryUtility);
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -88,6 +99,7 @@
             services.AddTransient<IUpdatesService, UpdatesService>();
             services.AddTransient<IReviewsService, ReviewsService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
