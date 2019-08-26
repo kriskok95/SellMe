@@ -1,6 +1,4 @@
-﻿
-
-namespace SellMe.Tests
+﻿namespace SellMe.Tests
 {
     using SellMe.Services;
     using SellMe.Web.ViewModels.ViewModels.Ads;

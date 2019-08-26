@@ -11,16 +11,19 @@
         data: form.serialize(),
         success: function (data) {
             var today = new Date();
+            var hours = today.getHours();
             var dd = String(today.getDate()).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             var yyyy = today.getFullYear();
             var ampm = today.getHours() >= 12 ? 'PM' : 'AM';
-            var time = today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            var time = hours + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 
             today = mm + '/' + dd + '/' + yyyy + ' ' + time + ' ' + ampm;
 
             $('#messages').append(
-                '<div class="row">' +
+                '<div class="row mb-3">' +
                 '<div class="offset-1 col-10">' +
                 '<p>' +
                 '<div class="row">' +

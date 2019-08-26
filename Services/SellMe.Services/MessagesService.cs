@@ -70,12 +70,12 @@
             }
 
             var message = new Message
-        {
-            SenderId = senderId,
-            RecipientId = recipientId,
-            AdId = adId,
-            Content = content
-        };
+            {
+                SenderId = senderId,
+                RecipientId = recipientId,
+                AdId = adId,
+                Content = content
+            };
 
             await this.context.Messages.AddAsync(message);
             await this.context.SaveChangesAsync();
@@ -89,7 +89,7 @@
             return messageViewModel;
         }
 
-        
+
 
         public async Task<ICollection<MessageDetailsViewModel>> GetMessageDetailsViewModelsAsync(int adId, string senderId, string recipientId)
         {

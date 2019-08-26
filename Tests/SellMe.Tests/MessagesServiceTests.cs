@@ -541,6 +541,7 @@
             //Act
             var actual = await this.messagesService.GetUnreadMessagesCountAsync("RecipientId");
 
+            //Assert
             Assert.Equal(expected, actual);
         }
 
@@ -572,5 +573,45 @@
 
             return testingAd;
         }
+
+        //[Fact]
+        //public async Task GetInboxMessagesViewModelsAsync_WithValidData_ShouldReturnCorrectCount()
+        //{
+        //    //Arrange
+        //    var expectedCount = 2;
+
+        //    var moqAdsService = new Mock<IAdsService>();
+        //    var moqUsersService = new Mock<IUsersService>();
+        //    moqUsersService.Setup(x => x.GetCurrentUserId())
+        //        .Returns("RecipientId");
+
+        //    var moqIMapper = new Mock<IMapper>();
+        //    var context = InitializeContext.CreateContextForInMemory();
+
+        //    var testingAds = new List<Ad>
+        //    {
+        //        new Ad
+        //        {
+        //            Id = 1,
+        //            Messages = new List<Message>
+        //            {
+        //                new Message{ Id = 1,CreatedOn = DateTime.UtcNow.AddDays(-5), SenderId = "SenderId", RecipientId = "RecipientId"},
+        //                new Message{ Id = 2,CreatedOn = DateTime.UtcNow.AddDays(-10), SenderId = "SenderId", RecipientId = "RecipientId"},
+        //                new Message{ Id = 3, CreatedOn = DateTime.UtcNow.AddDays(-10), SenderId = "SenderId2", RecipientId = "RecipientId"},
+        //            }
+        //        }
+        //    };
+
+        //    await context.Ads.AddRangeAsync(testingAds);
+        //    await context.SaveChangesAsync();
+
+        //    this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+
+        //    //Act
+        //    var actual = await this.messagesService.GetInboxMessagesViewModelsAsync();
+
+        //    //Assert
+        //    Assert.Equal(expectedCount, actual.Count());
+        //}
     }
 }
