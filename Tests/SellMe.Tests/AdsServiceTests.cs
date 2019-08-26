@@ -1,11 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using SellMe.Data;
-using SellMe.Web.ViewModels.ViewModels.Subcategories;
-
-namespace SellMe.Tests
+﻿namespace SellMe.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -21,6 +14,9 @@ namespace SellMe.Tests
     using SellMe.Web.ViewModels.InputModels.Ads;
     using SellMe.Web.ViewModels.ViewModels.Ads;
     using Xunit;
+    using Microsoft.AspNetCore.Http;
+    using SellMe.Web.ViewModels.ViewModels.Categories;
+    using SellMe.Web.ViewModels.ViewModels.Subcategories;
 
     public class AdsServiceTests
     {
@@ -148,148 +144,189 @@ namespace SellMe.Tests
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
-        //[Fact]
-        //public async Task GetAdsByCategoryViewModelAsync_WithValidData_ShouldReturnCorrectResult()
-        //{
+        [Fact]
+        public async Task GetAdsByCategoryViewModelAsync_WithValidData_ShouldReturnCorrectResult()
+        {
 
-        //    //Arrange
-        //    var expectedAdsCount = 2;
+            //Arrange 
+            var expectedAdsCount = 2;
+            var expectedCategoryName = "Electronics";
+            var expectedCategoryId = 1;
+            var expectedSubcategoriesCount = 2;
 
-        //    var moqAddressService = new Mock<IAddressesService>();
-        //    var moqUsersService = new Mock<IUsersService>();
-        //    var moqCategoriesService = new Mock<ICategoriesService>();
-        //    moqCategoriesService.Setup(x => x.GetAllCategoryViewModelsAsync())
-        //        .ReturnsAsync(new List<CategoryViewModel>
-        //        {
-        //            new CategoryViewModel
-        //            {
-        //                Id = 1,
-        //                Name = "Electronics"
-        //            },
-        //            new CategoryViewModel
-        //            {
-        //                Id = 2,
-        //                Name = "Animals"
-        //            },
-        //            new CategoryViewModel
-        //            {
-        //                Id = 3,
-        //                Name = "Services"
-        //            },
-        //        });
-        //    moqCategoriesService.Setup(x => x.GetCategoryNameByIdAsync(1))
-        //        .ReturnsAsync("Electronics");
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqCloudinary = new Mock<ICloudinaryService>();
+            moqCategoriesService.Setup(x => x.GetAllCategoryViewModelsAsync())
+                .ReturnsAsync(new List<CategoryViewModel>
+                {
+                    new CategoryViewModel
+                    {
+                        Id = 1,
+                        Name = "Electronics"
+                    },
+                    new CategoryViewModel
+                    {
+                        Id = 2,
+                        Name = "Animals"
+                    },
+                    new CategoryViewModel
+                    {
+                        Id = 3,
+                        Name = "Services"
+                    },
+                });
+            moqCategoriesService.Setup(x => x.GetCategoryNameByIdAsync(1))
+                .ReturnsAsync("Electronics");
 
-        //    var moqUpdatesService = new Mock<IUpdatesService>();
-        //    var moqSubcategoriesService = new Mock<ISubCategoriesService>();
-        //    moqSubcategoriesService.Setup(x => x.GetAdsByCategorySubcategoryViewModelsAsync(1))
-        //        .ReturnsAsync(new List<AdsByCategorySubcategoryViewModel>
-        //        {
-        //            new AdsByCategorySubcategoryViewModel
-        //            {
-        //                Id = 1,
-        //                Name = "Phones",
-        //            },
-        //            new AdsByCategorySubcategoryViewModel
-        //            {
-        //                Id = 2,
-        //                Name = "Monitors"
-        //            }
-        //        });
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            moqSubcategoriesService.Setup(x => x.GetAdsByCategorySubcategoryViewModelsAsync(1))
+                .ReturnsAsync(new List<AdsByCategorySubcategoryViewModel>
+                {
+                    new AdsByCategorySubcategoryViewModel
+                    {
+                        Id = 1,
+                        Name = "Phones",
+                    },
+                    new AdsByCategorySubcategoryViewModel
+                    {
+                        Id = 2,
+                        Name = "Monitors"
+                    }
+                });
 
-        //    var moqMapper = new Mock<IMapper>();
+            var moqMapper = new Mock<IMapper>();
 
-        //    var context = InitializeContext.CreateContextForInMemory();
-        //    this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object);
+            var context = InitializeContext.CreateContextForInMemory();
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinary.Object);
 
-        //    var testingAds = new List<Ad>
-        //    {
-        //        new Ad
-        //        {
-        //            Id = 1,
-        //            Title = "Iphone 6s",
-        //            Description = "PerfectCondition",
-        //            CategoryId = 1,
-        //            IsApproved = true,
-        //            ActiveFrom = DateTime.UtcNow,
-        //            ActiveTo = DateTime.UtcNow.AddDays(30),
-        //            AvailabilityCount = 1,
-        //            Price = 120,
-        //            Condition = new Condition { Name = "Brand New" },
-        //            Address = new Address
-        //            {
-        //                Country = "Bulgaria",
-        //                City = "Sofia",
-        //                Street = "Ivan Vazov",
-        //                District = "Student city",
-        //                ZipCode = 1000,
-        //                PhoneNumber = "0895335532",
-        //                EmailAddress = "Ivan@gmail.com"
-        //            }
-        //        },
-        //        new Ad
-        //        {
-        //            Id = 2,
-        //            CategoryId = 1,
-        //            Title = "Monitor LG",
-        //            IsDeleted = false,
-        //            IsApproved = true
-        //        },
-        //        new Ad
-        //        {
-        //            Id = 3,
-        //            CategoryId = 4,
-        //            Title = "German Shepherd",
-        //            IsDeleted = false,
-        //            IsApproved = true
-        //        }
-        //    };
+            var testingAds = new List<Ad>
+            {
+                new Ad
+                {
+                    Id = 1,
+                    Title = "Iphone 6s",
+                    Description = "Perfect condition",
+                    Price = 100,
+                    CategoryId = 1,
+                    CreatedOn = DateTime.UtcNow,
+                    SubCategoryId = 1,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl =  "https://www.webpagetest.org2"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+                new Ad
+                {
+                    Id = 2,
+                    Title = "Xiaomi mi 9",
+                    Description = "Perfect condition",
+                    Price = 800,
+                    CategoryId = 1,
+                    SubCategoryId = 1,
+                    CreatedOn = DateTime.UtcNow,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl =  "https://www.webpagetest.org3"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+                new Ad
+                {
+                    Id = 3,
+                    Title = "Samsung tv",
+                    Description = "Brand new",
+                    Price = 100,
+                    CategoryId = 2,
+                    CreatedOn = DateTime.UtcNow,
+                    Images = new List<Image>
+                    {
+                        new Image
+                        {
+                            ImageUrl =  "https://www.webpagetest.org2"
+                        }
+                    },
+                    Address = new Address
+                    {
+                        Country = "Bulgaria",
+                        City = "Sofia",
+                    },
+                    IsApproved = true,
+                    IsDeleted = false,
+                },
+            };
 
-        //    var testingCategories = new List<Category>
-        //    {
-        //        new Category
-        //        {
-        //            Id = 1,
-        //            Name = "Electronics"
-        //        },
-        //        new Category
-        //        {
-        //            Id = 2,
-        //            Name = "Animals"
-        //        },
-        //        new Category
-        //        {
-        //            Id = 3,
-        //            Name = "Services"
-        //        },
-        //    };
+            var testingCategories = new List<Category>
+            {
+                new Category
+                {
+                    Id = 1,
+                    Name = "Electronics"
+                },
+                new Category
+                {
+                    Id = 2,
+                    Name = "Animals"
+                },
+                new Category
+                {
+                    Id = 3,
+                    Name = "Services"
+                },
+            };
 
-        //    var testingSubcategories = new List<SubCategory>
-        //    {
-        //        new SubCategory
-        //        {
-        //            CategoryId = 1,
-        //            Name = "Phones"
-        //        },
-        //        new SubCategory
-        //        {
-        //            CategoryId = 1,
-        //            Name = "Monitors"
-        //        },
+            var testingSubcategories = new List<SubCategory>
+            {
+                new SubCategory
+                {
+                    Id = 1,
+                    CategoryId = 1,
+                    Name = "Phones"
+                },
+                new SubCategory
+                {
+                    Id = 2,
+                    CategoryId = 1,
+                    Name = "Monitors"
+                },
 
-        //    };
+            };
 
-        //    await context.Categories.AddRangeAsync(testingCategories);
-        //    await context.Ads.AddRangeAsync(testingAds);
-        //    await context.SubCategories.AddRangeAsync(testingSubcategories);
-        //    await context.SaveChangesAsync();
+            await context.Categories.AddRangeAsync(testingCategories);
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SubCategories.AddRangeAsync(testingSubcategories);
+            await context.SaveChangesAsync();
 
-        //    //Act
-        //    var actual = await this.adsService.GetAdsByCategoryViewModelAsync(1, 1, 10);
+            //Act
+            var actual = await this.adsService.GetAdsByCategoryViewModelAsync(1, 1, 10);
 
-        //    //Asert
-        //    Assert.Equal(expectedAdsCount, actual.AdsViewModels.Count);
-        //}
+            //Asert
+            Assert.Equal(expectedAdsCount, actual.AdsViewModels.Count);
+            Assert.Equal(expectedCategoryId, actual.CategoryId);
+            Assert.Equal(expectedCategoryName, actual.CategoryName);
+            Assert.Equal(expectedSubcategoriesCount, actual.AdsByCategorySubcategoryViewModels.Count);
+        }
 
         [Fact]
         public async Task GetAdByIdAsync_WithInvalidAdId_ShouldThrowAnArgumentException()
@@ -3353,6 +3390,82 @@ namespace SellMe.Tests
             Assert.Equal(expectedIds[0], actual[0].Id);
             Assert.Equal(expectedIds[1], actual[1].Id);
             Assert.Equal(expectedIds[2], actual[2].Id);
+        }
+
+        [Fact]
+        public async Task GetTheCountForTheCreatedAdsForTheLastTenDays_WithValidData_ShouldReturnCorrectCollectionLength()
+        {
+            //Arrange
+            var expectedLength = 10;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
+
+            //Assert
+            Assert.Equal(expectedLength, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetTheCountForTheCreatedAdsForTheLastTenDays_WithValidData_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expected = new List<int> { 1, 0, 1, 0, 2, 0, 0, 0, 1, 1};
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad {Id = 1, CreatedOn = DateTime.UtcNow.AddDays(-5)},
+                new Ad {Id = 2, CreatedOn = DateTime.UtcNow.AddDays(-5)},
+                new Ad {Id = 3, CreatedOn = DateTime.UtcNow.AddDays(-7)},
+                new Ad {Id = 4, CreatedOn = DateTime.UtcNow.AddDays(-9)},
+                new Ad {Id = 5, CreatedOn = DateTime.UtcNow.AddDays(-1)},
+                new Ad {Id = 6, CreatedOn = DateTime.UtcNow.AddDays(-10)},
+                new Ad {Id = 7, CreatedOn = DateTime.UtcNow.AddDays(-30)},
+                new Ad {Id = 8, CreatedOn = DateTime.UtcNow},
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
+
+            //Assert
+            Assert.Equal(expected[0], actual[0]);
+            Assert.Equal(expected[1], actual[1]);
+            Assert.Equal(expected[2], actual[2]);
+            Assert.Equal(expected[3], actual[3]);
+            Assert.Equal(expected[4], actual[4]);
+            Assert.Equal(expected[5], actual[5]);
+            Assert.Equal(expected[6], actual[6]);
+            Assert.Equal(expected[7], actual[7]);
+            Assert.Equal(expected[8], actual[8]);
+            Assert.Equal(expected[9], actual[9]);
         }
     }
 }

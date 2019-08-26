@@ -44,7 +44,7 @@
 
             var dataPoints = new List<DataPoint>();
 
-            for (int i = 1; i <= CreatedAdsStatisticDaysCount; i++)
+            for (int i = 0; i < CreatedAdsStatisticDaysCount; i++)
             {
                 var dataPoint = new DataPoint(countOfCreatedAds[i], lsatTenDates[i]);
                 dataPoints.Add(dataPoint);
@@ -57,7 +57,7 @@
         {
             var dates = new List<string>();
 
-            for (DateTime dt = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount); dt <= DateTime.UtcNow; dt = dt.AddDays(1))
+            for (DateTime dt = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount + 1); dt <= DateTime.UtcNow; dt = dt.AddDays(1))
             {
                 dates.Add(dt.ToString("dd MMM"));
             }

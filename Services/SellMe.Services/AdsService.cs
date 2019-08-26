@@ -1,16 +1,13 @@
-﻿using Castle.Core.Internal;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
     using AutoMapper;
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Http;
+    using Castle.Core.Internal;
     using SellMe.Data;
     using SellMe.Services.Interfaces;
     using SellMe.Data.Models;
-    using SellMe.Services.Utilities;
     using System.Threading.Tasks;
     using SellMe.Services.Paging;
     using SellMe.Services.Mapping;
@@ -587,7 +584,7 @@ namespace SellMe.Services
         {
             var adsCount = new List<int>();
 
-            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount);
+            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount + 1);
                 i <= DateTime.UtcNow;
                 i = i.AddDays(1))
             {
