@@ -5,6 +5,6 @@
 
     public interface IHomeService
     {
-        Task<IndexViewModel> GetIndexViewModel();
+        Task<IndexViewModel> GetIndexViewModelAsync();
     }
 }

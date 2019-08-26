@@ -214,7 +214,7 @@
             }
         }
 
-        public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels()
+        public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModelsAsync()
         {
             var promotedAds = await this.context
                 .Ads
@@ -241,7 +241,7 @@
             return promotedAdViewModels;
         }
 
-        public async Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels()
+        public async Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModelsAsync()
         {
             var latestAddedAdViewModels = await this.context
                 .Ads

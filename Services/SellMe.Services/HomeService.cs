@@ -1,7 +1,7 @@
-﻿using System.Linq;
-
-namespace SellMe.Services
+﻿namespace SellMe.Services
 {
+    using System.Linq;
+
     using SellMe.Services.Interfaces;
     using SellMe.Web.ViewModels.ViewModels.Home;
     using System.Threading.Tasks;
@@ -17,11 +17,11 @@ namespace SellMe.Services
             this.adsService = adsService;
         }
 
-        public async Task<IndexViewModel> GetIndexViewModel()
+        public async Task<IndexViewModel> GetIndexViewModelAsync()
         {
             var categoriesViewModel = await this.categoriesService.GetAllCategoryViewModelsAsync();
-            var promotedAdViewModel = await this.adsService.GetPromotedAdViewModels();
-            var latestAddedAdsViewModel = await this.adsService.GetLatestAddedAdViewModels();
+            var promotedAdViewModel = await this.adsService.GetPromotedAdViewModelsAsync();
+            var latestAddedAdsViewModel = await this.adsService.GetLatestAddedAdViewModelsAsync();
 
             var indexViewModel = new IndexViewModel()
             {

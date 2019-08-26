@@ -29,9 +29,9 @@ namespace SellMe.Services.Interfaces
 
         Task UpdateAdByIdAsync(int adId);
 
-        Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModels();
+        Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModelsAsync();
 
-        Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModels();
+        Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModelsAsync();
 
         Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId, int categoryId, int pageNumber, int pageSize);
 

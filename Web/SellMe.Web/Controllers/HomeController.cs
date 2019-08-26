@@ -17,7 +17,7 @@
 
         public async Task<IActionResult> Index()
         {
-            var indexViewModel = await this.homeService.GetIndexViewModel();
+            var indexViewModel = await this.homeService.GetIndexViewModelAsync();
 
             return View(indexViewModel);
         }

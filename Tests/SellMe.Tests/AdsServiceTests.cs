@@ -1307,7 +1307,7 @@
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetPromotedAdViewModels();
+            var actual = await this.adsService.GetPromotedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1332,7 +1332,7 @@
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetPromotedAdViewModels();
+            var actual = await this.adsService.GetPromotedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1409,7 +1409,7 @@
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetLatestAddedAdViewModels();
+            var actual = await this.adsService.GetLatestAddedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1434,7 +1434,7 @@
             this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetLatestAddedAdViewModels();
+            var actual = await this.adsService.GetLatestAddedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
