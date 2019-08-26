@@ -197,7 +197,7 @@
             return adTitle;
         }
 
-        public async Task UpdateAdByIdAsync(int adId)
+        public async Task<bool> UpdateAdByIdAsync(int adId)
         {
             var adFromDb = await this.GetAdByIdAsync(adId);
 
@@ -211,7 +211,10 @@
 
                 this.context.Update(adFromDb);
                 await this.context.SaveChangesAsync();
+                return true;
             }
+
+            return false;
         }
 
         public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModelsAsync()

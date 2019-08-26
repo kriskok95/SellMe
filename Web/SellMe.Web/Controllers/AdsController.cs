@@ -19,6 +19,8 @@
         private const string SuccessfullyUpdatedAdMessage =
             "You ad was successfully updated and moved at the top of the page!";
 
+        private const string UnSuccessfullyUpdatesAdMessage = "You can't update the given ad because it hasn't any available updates!";
+
         private readonly IAdsService adService;
         private readonly ISubCategoriesService subCategoriesService;
 
@@ -134,9 +136,15 @@
 
         public async Task<IActionResult> Update(UpdateAdInputModel inputModel)
         {
-            await this.adService.UpdateAdByIdAsync(inputModel.AdId);
-
-            TempData["SuccessfulUpdateMessage"] = SuccessfullyUpdatedAdMessage;
+            var isUpdated = await this.adService.UpdateAdByIdAsync(inputModel.AdId);
+            if (!isUpdated)
+            {
+                TempData["UpdateAdMessage"] = UnSuccessfullyUpdatesAdMessage;
+            }
+            else
+            {
+                TempData["UpdateAdMessage"] = SuccessfullyUpdatedAdMessage;
+            }
 
             return this.RedirectToAction("ActiveAds");
         }

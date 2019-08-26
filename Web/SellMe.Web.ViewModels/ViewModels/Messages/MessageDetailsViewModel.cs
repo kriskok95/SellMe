@@ -1,9 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-
-namespace SellMe.Web.ViewModels.ViewModels.Messages
+﻿namespace SellMe.Web.ViewModels.ViewModels.Messages
 {
-    using System;
     using AutoMapper;
     using SellMe.Data.Models;
     using SellMe.Services.Mapping;
