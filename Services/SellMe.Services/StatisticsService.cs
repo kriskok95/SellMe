@@ -1,7 +1,6 @@
 ﻿namespace SellMe.Services
 {
     using SellMe.Services.Interfaces;
-    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using SellMe.Data;
@@ -16,17 +15,19 @@
 
         private readonly SellMeDbContext context;
         private readonly IAdsService adsService;
+        private readonly IUsersService usersService;
 
-        public StatisticsService(SellMeDbContext context, IAdsService adsService)
+        public StatisticsService(SellMeDbContext context, IAdsService adsService, IUsersService usersService)
         {
             this.context = context;
             this.adsService = adsService;
+            this.usersService = usersService;
         }
 
         public async Task<AdministrationIndexStatisticViewModel> GetAdministrationIndexStatisticViewModel()
         {
-            var allUsersCount = await this.context.Users.CountAsync(x => !x.IsDeleted);
-            var allAdsCount = await this.context.Ads.CountAsync(x => !x.IsDeleted);
+            var allUsersCount = await this.usersService.GetCountOfAllUsersAsync();
+            var allAdsCount = await this.adsService.GetAllActiveAdsCountAsync();
 
             var administrationIndexStatisticViewModel = new AdministrationIndexStatisticViewModel
             {
@@ -40,7 +41,7 @@
         public async Task<IEnumerable<DataPoint>> GetPointsForCreatedAds()
         {
             var lsatTenDates = this.GetLastTenDaysAsString();
-            var countOfCreatedAds = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
+            var countOfCreatedAds = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             var dataPoints = new List<DataPoint>();
 

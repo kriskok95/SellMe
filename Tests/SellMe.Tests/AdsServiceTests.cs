@@ -3412,7 +3412,7 @@
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
+            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             //Assert
             Assert.Equal(expectedLength, actual.Count);
@@ -3453,7 +3453,7 @@
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDays();
+            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             //Assert
             Assert.Equal(expected[0], actual[0]);
@@ -3466,6 +3466,46 @@
             Assert.Equal(expected[7], actual[7]);
             Assert.Equal(expected[8], actual[8]);
             Assert.Equal(expected[9], actual[9]);
+        }
+
+        [Fact]
+        public async Task GetAllActiveAdsCountAsync_WithValidData_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            var expected = 5;
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAds = new List<Ad>
+            {
+                new Ad {Id = 1, IsDeleted = false, IsApproved = true },
+                new Ad {Id = 2, IsDeleted = false, IsApproved = true },
+                new Ad {Id = 3, IsDeleted = false, IsApproved = true },
+                new Ad {Id = 4, IsDeleted = false, IsApproved = true },
+                new Ad {Id = 5, IsDeleted = false, IsApproved = true },
+                new Ad {Id = 6, IsDeleted = true, IsApproved = true },
+                new Ad {Id = 7, IsDeleted = false, IsApproved = false },
+            };
+
+            await context.Ads.AddRangeAsync(testingAds);
+            await context.SaveChangesAsync();
+
+            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+                moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
+                moqCloudinaryService.Object);
+
+            //Act
+            var actual = await this.adsService.GetAllActiveAdsCountAsync();
+
+            //Assert
+            Assert.Equal(expected, actual);
         }
     }
 }

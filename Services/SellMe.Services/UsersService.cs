@@ -87,6 +87,13 @@
             return rating;
         }
 
+        public async Task<int> GetCountOfAllUsersAsync()
+        {
+            var allUsersCount = await this.context.Users.CountAsync(x => !x.IsDeleted);
+
+            return allUsersCount;
+        }
+
         private async Task DeleteAdsByUserId(string userId)
         {
             var ads = this.context

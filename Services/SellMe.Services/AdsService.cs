@@ -580,7 +580,7 @@
             return paginatedListViewModels;
         }
 
-        public async Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDays()
+        public async Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDaysAsync()
         {
             var adsCount = new List<int>();
 
@@ -595,6 +595,13 @@
             }
 
             return adsCount;
+        }
+
+        public async Task<int> GetAllActiveAdsCountAsync()
+        {
+            var allAdsCount = await this.context.Ads.CountAsync(x => !x.IsDeleted && x.IsApproved);
+
+            return allAdsCount;
         }
 
         private IQueryable<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels()

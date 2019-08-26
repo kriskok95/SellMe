@@ -65,6 +65,8 @@ namespace SellMe.Services.Interfaces
 
         Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber, int pageSize);
 
-        Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDays();
+        Task<List<int>> GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
+
+        Task<int> GetAllActiveAdsCountAsync();
     }
 }
