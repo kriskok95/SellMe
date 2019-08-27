@@ -838,6 +838,61 @@
         }
 
         [Fact]
+        public async Task GetEditAdBindingModelById_WithUserThatIsNotOwnerOfTheAd_ShouldThrowAnInvalidOperationException()
+        {
+            //Arrange
+            var expectedErrorMessage = "You are not the owner of this ad!";
+
+            var moqAddressService = new Mock<IAddressesService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("FakeSellerId");
+
+            var moqCategoriesService = new Mock<ICategoriesService>();
+            var moqUpdatesService = new Mock<IUpdatesService>();
+            var moqSubcategoriesService = new Mock<ISubCategoriesService>();
+            var moqMapper = new Mock<IMapper>();
+            var moqCloudinaryService = new Mock<ICloudinaryService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = new Ad
+            {
+                Id = 1,
+                SellerId = "SellerId",
+                Title = "Iphone 6s",
+                Description = "PerfectCondition",
+                Category = new Category { Id = 1, Name = "Electronics" },
+                SubCategory = new SubCategory { Id = 2, CategoryId = 1, Name = "Phones" },
+                CategoryId = 1,
+                IsApproved = true,
+                ActiveFrom = DateTime.UtcNow,
+                ActiveTo = DateTime.UtcNow.AddDays(30),
+                AvailabilityCount = 1,
+                Price = 120,
+                Condition = new Condition { Name = "Brand New" },
+                Address = new Address
+                {
+                    Country = "Bulgaria",
+                    City = "Sofia",
+                    Street = "Ivan Vazov",
+                    District = "Student city",
+                    ZipCode = 1000,
+                    PhoneNumber = "0895335532",
+                    EmailAddress = "Ivan@gmail.com"
+                }
+            };
+
+            await context.Ads.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => adsService.GetEditAdBindingModelById(1));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
         public async Task GetEditAdBindingModelById_WithValidData_ShouldReturnCorrectResult()
         {
             //Arrange

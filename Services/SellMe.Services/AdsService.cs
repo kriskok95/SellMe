@@ -26,6 +26,7 @@
         private const string InvalidRejectionIdMessage = "Ad Rejection with the given id doesn't exist!";
         private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
         private const string CommentNullOrEmptyErrorMessage = "The comment can't be null or empty string!";
+        private const string NotOwnerOfAnAdErrorMessage = "You are not the owner of this ad!";
 
         private readonly SellMeDbContext context;
         private readonly IAddressesService addressesService;
@@ -170,6 +171,14 @@
             if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
+            }
+
+            var adFromDb = await this.GetAdByIdAsync(adId);
+            var currentUserId = this.usersService.GetCurrentUserId();
+
+            if(adFromDb.SellerId != currentUserId)
+            {
+                throw new InvalidOperationException(NotOwnerOfAnAdErrorMessage);
             }
 
             var editAdDetailsViewModel = await GetEditAdViewModelByIdAsync(adId);
