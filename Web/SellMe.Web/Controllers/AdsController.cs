@@ -19,6 +19,8 @@
         private const string SuccessfullyUpdatedAdMessage =
             "You ad was successfully updated and moved at the top of the page!";
 
+        private const string SuccessfullyEditedAdsMessage = "You have successfully edited this ad!";
+
         private const string UnSuccessfullyUpdatesAdMessage = "You can't update the given ad because it hasn't any available updates!";
 
         private readonly IAdsService adService;
@@ -131,7 +133,9 @@
         public async Task<IActionResult> Edit(EditAdBindingModel bindingModel)
         {
             await this.adService.EditAd(bindingModel.EditAdInputModel);
-            return this.Redirect("/");
+            TempData["SuccessfullyEditedAdsMessage"] = SuccessfullyEditedAdsMessage;
+
+            return this.RedirectToAction("ActiveAds");
         }
 
         public async Task<IActionResult> Update(UpdateAdInputModel inputModel)

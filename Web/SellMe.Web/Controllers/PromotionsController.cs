@@ -8,6 +8,8 @@
 
     public class PromotionsController : Controller
     {
+        private const string SuccessfullyPromotedMessage = "You have successfully promoted this ad.";
+
         private readonly IPromotionsService promotionsService;
 
         public PromotionsController(IPromotionsService promotionsService)
@@ -30,7 +32,9 @@
             await this.promotionsService.CreatePromotionOrderAsync(bindingModel.PromotionInputModel.AdId,
                 bindingModel.PromotionInputModel.PromotionId);
 
-            return this.RedirectToAction("ActiveAds", "Ads");
+            TempData["SuccessfullyPromotedMessage"] = SuccessfullyPromotedMessage;
+
+            return this.RedirectToAction("Index", new{adId = bindingModel.PromotionInputModel.AdId});
         }
     }
 }

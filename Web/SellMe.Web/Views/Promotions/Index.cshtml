@@ -1,6 +1,7 @@
 ﻿@model PromotionBindingModel
 
 <h3 class="text-center">@Model.AdTitle</h3>
+<h5 class="text-center text-danger mb-3 mt-3">@TempData["SuccessfullyPromotedMessage"]</h5>
 <hr class="hr-sell-me" />
 <div class="row d-flex justify-content-around">
     @foreach (var promotion in @Model.PromotionViewModels)
@@ -10,9 +11,9 @@
                 <h4 class="text-center">@promotion.Type</h4>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-handshake"></i> @promotion.ActiveDays Days TOP Ad</h5></li>
-                <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-sync-alt"></i> @promotion.Updates Updates</h5></li>
-                <li class="list-group-item"><h5 class="text-success text-center"><i class="fas fa-dollar-sign"></i> @promotion.Price$</h5></li>
+                <li class="list-group-item"><h5 class="text-info text-center"><i class="fas fa-handshake"></i> @promotion.ActiveDays Days TOP Ad</h5></li>
+                <li class="list-group-item"><h5 class="text-info text-center"><i class="fas fa-sync-alt"></i> @promotion.Updates Updates</h5></li>
+                <li class="list-group-item"><h5 class="text-info text-center"><i class="fas fa-dollar-sign"></i> @promotion.Price$</h5></li>
             </ul>
             <div class="row">
                 <div class="offset-3 col-6">
