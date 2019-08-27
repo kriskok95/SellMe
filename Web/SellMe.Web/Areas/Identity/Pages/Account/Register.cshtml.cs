@@ -67,6 +67,11 @@
 
         public void OnGet(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                this.Response.Redirect(Request.Headers["Referer"].ToString());
+            }
+
             ReturnUrl = returnUrl;
         }
 
