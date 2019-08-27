@@ -27,10 +27,13 @@
 </nav>
 
 <div class="row">
-    <div class="offset-1 col-10" style="height: 500px;">
-        <div id="chartContainer">
-
-        </div>
+    <div class="offset-1 col-10" style="height: 450px;">
+        <div id="chartContainer1"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="offset-1 col-10" style="height: 450px;">
+        <div id="chartContainer2"></div>
     </div>
 </div>
 
@@ -39,7 +42,7 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script type="text/javascript">
         window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
+            var chart1 = new CanvasJS.Chart("chartContainer1", {
                 theme: "light2",
                 animationEnabled: true,
                 title: {
@@ -54,11 +57,33 @@
                 data: [
                     {
                         type: "splineArea", //change type to bar, line, area, pie, etc
-                        dataPoints: @Html.Raw(ViewBag.DataPoints)
+                        dataPoints: @Html.Raw(ViewBag.DataPointsAds)
                     }
                 ]
             });
-            chart.render();
+
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Promotions bought for the last 10 days"
+                },
+                axisX: {
+                    title: "Days"
+                },
+                axisY: {
+                    title: "Promotions count"
+                },
+                data: [
+                    {
+                        type: "splineArea", //change type to bar, line, area, pie, etc
+                        dataPoints: @Html.Raw(ViewBag.DataPointsPromotions)
+                    }
+                ]
+            });
+
+            chart1.render();
+            chart2.render();
         };
     </script>
 }

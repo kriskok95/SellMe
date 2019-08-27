@@ -9,6 +9,8 @@
     {
         Task<AdministrationIndexStatisticViewModel> GetAdministrationIndexStatisticViewModel();
 
-        Task<IEnumerable<DataPoint>> GetPointsForCreatedAds();
+        Task<IEnumerable<DataPoint>> GetPointsForCreatedAdsAsync();
+
+        Task<IEnumerable<DataPoint>> GetPointsForPromotionsAsync();
     }
 }

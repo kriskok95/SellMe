@@ -41,7 +41,6 @@
         public int SubCategoryId { get; set; }
 
         [Range(AvailabilityMinValue, AvailabilityMaxValue, ErrorMessage = AvailabilityErrorMessage)]
-        [Required]
         public int Availability { get; set; }
 
         [Required]

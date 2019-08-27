@@ -31,9 +31,10 @@
             var moqUsersService = new Mock<IUsersService>();
             moqUsersService.Setup(x => x.GetCountOfAllUsersAsync())
                 .ReturnsAsync(5);
+            var moqPromotionsService = new Mock<IPromotionsService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object);
+            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object, moqPromotionsService.Object);
 
             //Act
             var actual = await statisticsService.GetAdministrationIndexStatisticViewModel();
@@ -54,12 +55,13 @@
                 .ReturnsAsync(new List<int> { 1, 0, 1, 0, 2, 0, 0, 0, 1, 1 });
 
             var moqUsersService = new Mock<IUsersService>();
+            var moqPromotionsService = new Mock<IPromotionsService>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object);
+            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object, moqPromotionsService.Object);
 
             //Act
-            var actual = await statisticsService.GetPointsForCreatedAds();
+            var actual = await statisticsService.GetPointsForCreatedAdsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count());

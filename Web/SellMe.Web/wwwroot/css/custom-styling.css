@@ -191,7 +191,14 @@ nav.sell-me-nav {
     padding-left: 8px;*/
     padding: 18px;
 }
-/*Eror page 404*/
+
+/*Star after content*/
+.required:after {
+    content: " *";
+    color: red;
+}
+
+
 
 
 

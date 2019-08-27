@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Common;
     using Data;
     using Interfaces;
     using Web.Infrastructure.Models;
@@ -10,17 +12,17 @@
 
     public class StatisticsService : IStatisticsService
     {
-        private const int CreatedAdsStatisticDaysCount = 10;
-
         private readonly SellMeDbContext context;
         private readonly IAdsService adsService;
         private readonly IUsersService usersService;
+        private readonly IPromotionsService promotionsService;
 
-        public StatisticsService(SellMeDbContext context, IAdsService adsService, IUsersService usersService)
+        public StatisticsService(SellMeDbContext context, IAdsService adsService, IUsersService usersService, IPromotionsService promotionsService)
         {
             this.context = context;
             this.adsService = adsService;
             this.usersService = usersService;
+            this.promotionsService = promotionsService;
         }
 
         public async Task<AdministrationIndexStatisticViewModel> GetAdministrationIndexStatisticViewModel()
@@ -37,16 +39,33 @@
             return administrationIndexStatisticViewModel;
         }
 
-        public async Task<IEnumerable<DataPoint>> GetPointsForCreatedAds()
+        public async Task<IEnumerable<DataPoint>> GetPointsForCreatedAdsAsync()
         {
-            var lsatTenDates = GetLastTenDaysAsString();
+            var lsatTenDates = this.GetLastTenDaysAsString();
             var countOfCreatedAds = await adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             var dataPoints = new List<DataPoint>();
 
-            for (int i = 0; i < CreatedAdsStatisticDaysCount; i++)
+            for (int i = 0; i < GlobalConstants.CreatedAdsStatisticDaysCount; i++)
             {
                 var dataPoint = new DataPoint(countOfCreatedAds[i], lsatTenDates[i]);
+                dataPoints.Add(dataPoint);
+            }
+
+            return dataPoints;
+        }
+
+        public async Task<IEnumerable<DataPoint>> GetPointsForPromotionsAsync()
+        {
+            var lastTenDates = this.GetLastTenDaysAsString();
+            var countOfPromotions = await this.promotionsService.GetTheCountOfPromotionsForTheLastTenDaysAsync();
+
+
+            var dataPoints = new List<DataPoint>();
+
+            for (int i = 0; i < GlobalConstants.PromotionsBoughtStatisticDaysCount; i++)
+            {
+                var dataPoint = new DataPoint(countOfPromotions[i], lastTenDates[i]);
                 dataPoints.Add(dataPoint);
             }
 
@@ -57,7 +76,7 @@
         {
             var dates = new List<string>();
 
-            for (DateTime dt = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount + 1); dt <= DateTime.UtcNow; dt = dt.AddDays(1))
+            for (DateTime dt = DateTime.UtcNow.AddDays(-GlobalConstants.CreatedAdsStatisticDaysCount + 1); dt <= DateTime.UtcNow; dt = dt.AddDays(1))
             {
                 dates.Add(dt.ToString("dd MMM"));
             }

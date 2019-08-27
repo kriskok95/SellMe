@@ -41,7 +41,7 @@
 
 
         [Fact]
-        public async Task GetPromotionBindingModelByAdIdAsync_WithValidData_ShouldReturnCorectPromotionBindingModel()
+        public async Task GetPromotionBindingModelByAdIdAsync_WithValidData_ShouldReturnCorrectPromotionBindingModel()
         {
             //Arrange
             var expected = new PromotionBindingModel
@@ -54,14 +54,14 @@
                     {
                         ActiveDays = 10,
                         Price = 3.50M,
-                        Type = "silver",
+                        Type = "Silver",
                         Updates = 3
                     },
                     new PromotionViewModel
                     {
                         ActiveDays = 30,
                         Price = 8.00M,
-                        Type = "gold",
+                        Type = "Gold",
                         Updates = 10
                     }
                 }
@@ -294,6 +294,66 @@
 
             //Assert
             Assert.True(context.PromotionOrders.Count() == 1);
+        }
+
+        [Fact]
+        public async Task GetTheCountOfPromotionsForTheLastTenDaysAsync_WithValidData_ShouldReturnCorrectCollectionLength()
+        {
+            //Arrange
+            var expectedLength = 10;
+
+            var moqAdsService = new Mock<IAdsService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
+
+            //Act
+            var actual = await promotionsService.GetTheCountOfPromotionsForTheLastTenDaysAsync();
+
+            //Assert
+            Assert.Equal(expectedLength, actual.Count);
+        }
+
+        [Fact]
+        public async Task GetTheCountOfPromotionsForTheLastTenDaysAsync_WithValidData_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expected = new List<int> { 1, 0, 1, 0, 2, 0, 0, 0, 1, 1 };
+
+            var moqAdsService = new Mock<IAdsService>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
+
+            var testingPromotions = new List<PromotionOrder>
+            {
+                new PromotionOrder {Id = 1, CreatedOn = DateTime.UtcNow.AddDays(-5)},
+                new PromotionOrder {Id = 2, CreatedOn = DateTime.UtcNow.AddDays(-5)},
+                new PromotionOrder {Id = 3, CreatedOn = DateTime.UtcNow.AddDays(-7)},
+                new PromotionOrder {Id = 4, CreatedOn = DateTime.UtcNow.AddDays(-9)},
+                new PromotionOrder {Id = 5, CreatedOn = DateTime.UtcNow.AddDays(-1)},
+                new PromotionOrder {Id = 6, CreatedOn = DateTime.UtcNow.AddDays(-10)},
+                new PromotionOrder {Id = 7, CreatedOn = DateTime.UtcNow.AddDays(-30)},
+                new PromotionOrder {Id = 8, CreatedOn = DateTime.UtcNow}
+            };
+
+            await context.PromotionOrders.AddRangeAsync(testingPromotions);
+            await context.SaveChangesAsync();
+
+            //Act
+            var actual = await promotionsService.GetTheCountOfPromotionsForTheLastTenDaysAsync();
+
+            //Assert
+            Assert.Equal(expected[0], actual[0]);
+            Assert.Equal(expected[1], actual[1]);
+            Assert.Equal(expected[2], actual[2]);
+            Assert.Equal(expected[3], actual[3]);
+            Assert.Equal(expected[4], actual[4]);
+            Assert.Equal(expected[5], actual[5]);
+            Assert.Equal(expected[6], actual[6]);
+            Assert.Equal(expected[7], actual[7]);
+            Assert.Equal(expected[8], actual[8]);
+            Assert.Equal(expected[9], actual[9]);
         }
     }
 }

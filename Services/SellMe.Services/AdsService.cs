@@ -26,7 +26,6 @@
         private const string InvalidRejectionIdMessage = "Ad Rejection with the given id doesn't exist!";
         private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
         private const string CommentNullOrEmptyErrorMessage = "The comment can't be null or empty string!";
-        private const int CreatedAdsStatisticDaysCount = 10;
 
         private readonly SellMeDbContext context;
         private readonly IAddressesService addressesService;
@@ -587,7 +586,7 @@
         {
             var adsCount = new List<int>();
 
-            for (DateTime i = DateTime.UtcNow.AddDays(-CreatedAdsStatisticDaysCount + 1);
+            for (DateTime i = DateTime.UtcNow.AddDays(-GlobalConstants.CreatedAdsStatisticDaysCount + 1);
                 i <= DateTime.UtcNow;
                 i = i.AddDays(1))
             {

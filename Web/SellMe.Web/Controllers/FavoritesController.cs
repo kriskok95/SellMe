@@ -16,7 +16,6 @@
         private readonly UserManager<SellMeUser> userManager;
         private readonly IFavoritesService favoritesService;
 
-
         public FavoritesController(IAdsService adsService, UserManager<SellMeUser> userManager, IFavoritesService favoritesService)
         {
             this.adsService = adsService;

@@ -13,6 +13,9 @@
         public const string ConditionBrandNewName = "Brand New";
         public const string ConditionUsedName = "Used";
 
+        public  const int CreatedAdsStatisticDaysCount = 10;
+        public  const int PromotionsBoughtStatisticDaysCount = 10;
+
         public const int PromotedAdsCountAtIndexPage = 16;
         public const int LatestAddedAdsCountAtIndexPage = 16;
 

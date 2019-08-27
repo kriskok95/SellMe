@@ -12,13 +12,13 @@
                 <h2 class="text-center">Ad Details</h2>
                 <hr class="hr-sell-me" />
                 <div class="form-group">
-                    <label asp-for="CreateAdDetailInputModel.Title">Title</label>
+                    <label asp-for="CreateAdDetailInputModel.Title" class="required">Title</label>
                     <input asp-for="CreateAdDetailInputModel.Title" class="form-control">
                     <span asp-validation-for="CreateAdDetailInputModel.Title" class="text-danger"></span>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label asp-for="CreateAdDetailInputModel.CategoryId">Choose Category</label>
+                        <label asp-for="CreateAdDetailInputModel.CategoryId" class="required">Choose Category</label>
                         <select asp-for="CreateAdDetailInputModel.CategoryId" class="form-control">
                             <option selected="true" disabled="disabled">--Select--</option>"
                             <vc:categories-dropdown>
@@ -27,14 +27,14 @@
                         <span asp-validation-for="CreateAdDetailInputModel.CategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label asp-for="CreateAdDetailInputModel.SubCategoryId">Choose Subcategory</label>
+                        <label class="required" asp-for="CreateAdDetailInputModel.SubCategoryId">Choose Subcategory</label>
                         <select asp-for="CreateAdDetailInputModel.SubCategoryId" class="form-control"></select>
                         <span asp-validation-for="CreateAdDetailInputModel.SubCategoryId" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label asp-for="CreateAdDetailInputModel.Price">Price</label>
+                        <label class="required" asp-for="CreateAdDetailInputModel.Price">Price</label>
                         <input asp-for="CreateAdDetailInputModel.Price" type="number" class="form-control" placeholder="Enter price">
                         <span asp-validation-for="CreateAdDetailInputModel.Price" class="text-danger"></span>
                     </div>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="CreateAdDetailInputModel.ConditionId">Condition</label>
+                    <label class="required" asp-for="CreateAdDetailInputModel.ConditionId">Condition</label>
                     <select asp-for="CreateAdDetailInputModel.ConditionId" class="form-control">
                         <vc:conditions-dropdown>
                         </vc:conditions-dropdown>
@@ -82,7 +82,7 @@
                 <h2 class="text-center">Contact Details</h2>
                 <hr class="hr-sell-me" />
                 <div class="form-group">
-                    <label asp-for="CreateAdAddressInputModel.Country">Country</label>
+                    <label class="required" asp-for="CreateAdAddressInputModel.Country">Country</label>
                     <select asp-for="CreateAdAddressInputModel.Country" class="form-control">
                         <vc:countries-dropdown>
                         </vc:countries-dropdown>
@@ -92,14 +92,14 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label asp-for="CreateAdAddressInputModel.City">City</label>
+                            <label class="required" asp-for="CreateAdAddressInputModel.City">City</label>
                             <input asp-for="CreateAdAddressInputModel.City" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.City" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label asp-for="CreateAdAddressInputModel.Street">Street Address</label>
+                            <label class="required" asp-for="CreateAdAddressInputModel.Street">Street Address</label>
                             <input asp-for="CreateAdAddressInputModel.Street" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.Street" class="text-danger"></span>
                         </div>
@@ -108,14 +108,14 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label asp-for="CreateAdAddressInputModel.District">District</label>
+                            <label class="required" asp-for="CreateAdAddressInputModel.District">District</label>
                             <input asp-for="CreateAdAddressInputModel.District" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.District" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label asp-for="CreateAdAddressInputModel.ZipCode">Zip/Postal Code</label>
+                            <label class="required" asp-for="CreateAdAddressInputModel.ZipCode">Zip/Postal Code</label>
                             <input asp-for="CreateAdAddressInputModel.ZipCode" class="form-control">
                             <span asp-validation-for="CreateAdAddressInputModel.ZipCode" class="text-danger"></span>
                         </div>

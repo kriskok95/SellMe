@@ -6,5 +6,6 @@
 
         public int AllAdsCount { get; set; }
 
+
     }
 }

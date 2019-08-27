@@ -154,7 +154,6 @@
 
         public async Task<IActionResult> AdsBySubcategory(AdsBySubcategoryInputModel inputModel)
         {
-            //TODO: Create input model
             var adsBySubcategoryViewModel = await adService.GetAdsBySubcategoryViewModelAsync(inputModel.SubcategoryId, inputModel.CategoryId, inputModel.PageNumber?? DefaultPageNumber, DefaultPageSize);
 
             return View(adsBySubcategoryViewModel);

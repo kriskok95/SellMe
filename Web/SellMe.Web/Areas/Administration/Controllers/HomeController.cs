@@ -25,9 +25,11 @@
         {
             var administrationIndexStatisticViewModel = await statisticsService.GetAdministrationIndexStatisticViewModel();
 
-            var adsByDaysStatisticPoints = await statisticsService.GetPointsForCreatedAds();
+            var adsByDaysStatisticPoints = await this.statisticsService.GetPointsForCreatedAdsAsync();
+            var promotionsByDaysStatisticPoints = await this.statisticsService.GetPointsForPromotionsAsync();
 
-            ViewBag.DataPoints = JsonConvert.SerializeObject(adsByDaysStatisticPoints, jsonSetting);
+            ViewBag.DataPointsAds = JsonConvert.SerializeObject(adsByDaysStatisticPoints, jsonSetting);
+            ViewBag.DataPointsPromotions = JsonConvert.SerializeObject(promotionsByDaysStatisticPoints, jsonSetting);
 
             return View(administrationIndexStatisticViewModel);
         }

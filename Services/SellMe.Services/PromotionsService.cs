@@ -1,6 +1,8 @@
 ﻿namespace SellMe.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Common;
     using Data;
@@ -13,6 +15,8 @@
 
     public class PromotionsService : IPromotionsService
     {
+        private const int PromotionsBoughtCount = 10;
+
         private readonly IAdsService adsService;
         private readonly SellMeDbContext context;
 
@@ -74,6 +78,21 @@
 
             await context.PromotionOrders.AddAsync(promotionOrder);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<List<int>> GetTheCountOfPromotionsForTheLastTenDaysAsync()
+        {
+            var promotionsCount = new List<int>();
+
+            for (DateTime i = DateTime.UtcNow.AddDays(-GlobalConstants.PromotionsBoughtStatisticDaysCount + 1); i < DateTime.UtcNow; i = i.AddDays(1))
+            {
+                var currentDayPromotionsCount = await this.context
+                    .PromotionOrders
+                    .CountAsync(x => x.CreatedOn.DayOfYear == i.DayOfYear);
+                promotionsCount.Add(currentDayPromotionsCount);
+            }
+
+            return promotionsCount;
         }
 
         private async Task<Promotion> GetPromotionByIdAsync(int promotionId)
