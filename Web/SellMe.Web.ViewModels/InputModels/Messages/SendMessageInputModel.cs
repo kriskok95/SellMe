@@ -6,7 +6,7 @@
 
     public class SendMessageInputModel
     {
-        private const int MessageMinLength = 10;
+        private const int MessageMinLength = 2;
         private const string MessageMinLengthErrorMessage = "The message should be with a minimum length of {1} characters.";
 
         [Required]
