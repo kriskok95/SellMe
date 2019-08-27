@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ConditionViewModel>
 
 <option selected="true" disabled="disabled">--Select--</option>"
-@foreach (var condition in @Model)
+@foreach (var condition in Model)
 {
     <option value="@condition.Id">@condition.Name</option>
 }

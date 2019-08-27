@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.BindingModels.Messages
 {
-    using SellMe.Web.ViewModels.InputModels.Messages;
-    using SellMe.Web.ViewModels.ViewModels.Messages;
-    using SellMe.Web.ViewModels.ViewModels;
+    using InputModels.Messages;
+    using ViewModels;
+    using ViewModels.Messages;
 
     public class SendMessageBindingModel : BaseViewModel
     {

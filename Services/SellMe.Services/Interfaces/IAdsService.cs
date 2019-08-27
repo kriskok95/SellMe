@@ -1,13 +1,12 @@
-﻿using SellMe.Services.Paging;
-
-namespace SellMe.Services.Interfaces
+﻿namespace SellMe.Services.Interfaces
 {
-    using System.Threading.Tasks;
     using System.Collections.Generic;
-    using SellMe.Web.ViewModels.InputModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
-    using SellMe.Data.Models;
-    using SellMe.Web.ViewModels.BindingModels.Ads;
+    using System.Threading.Tasks;
+    using Data.Models;
+    using Paging;
+    using Web.ViewModels.BindingModels.Ads;
+    using Web.ViewModels.InputModels.Ads;
+    using Web.ViewModels.ViewModels.Ads;
 
     public interface IAdsService
     {

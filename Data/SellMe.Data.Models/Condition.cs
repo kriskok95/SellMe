@@ -1,13 +1,13 @@
 ﻿namespace SellMe.Data.Models
 {
-    using SellMe.Data.Common;
     using System.Collections.Generic;
+    using Common;
 
     public class Condition : BaseDeletableModel<int>
     {
         public Condition()
         {
-            this.Ads = new HashSet<Ad>();
+            Ads = new HashSet<Ad>();
         }
 
         public string Name { get; set; }

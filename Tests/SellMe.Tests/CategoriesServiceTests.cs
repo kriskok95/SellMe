@@ -1,15 +1,16 @@
 ﻿namespace SellMe.Tests
 {
     using System;
-    using Xunit;
-    using SellMe.Tests.Common;
-    using System.Threading.Tasks;
-    using SellMe.Data.Models;
-    using SellMe.Services.Interfaces;
-    using SellMe.Services;
     using System.Collections.Generic;
-    using SellMe.Data;
-    using SellMe.Web.ViewModels.ViewModels.Categories;
+    using System.Threading.Tasks;
+    using Common;
+    using Data;
+    using Data.Models;
+    using Services;
+    using Services.Interfaces;
+    using Web.ViewModels.ViewModels.Categories;
+    using Xunit;
+
     public class CategoriesServiceTests
     {
         private ICategoriesService categoriesService;
@@ -20,11 +21,11 @@
             //Arrange
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
             var testCategory = new Category
             {
                 Id = 1,
-                Name = "Auto",
+                Name = "Auto"
             };
             await context.Categories.AddAsync(testCategory);
             await context.SaveChangesAsync();
@@ -32,7 +33,7 @@
             var expectedResult = "Auto";
 
             //Act
-            var actualResult = await this.categoriesService.GetCategoryNameByIdAsync(1);
+            var actualResult = await categoriesService.GetCategoryNameByIdAsync(1);
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
@@ -52,17 +53,17 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
             var testCategory = new Category
             {
                 Id = 1,
-                Name = "Auto",
+                Name = "Auto"
             };
             await context.Categories.AddAsync(testCategory);
             await context.SaveChangesAsync();
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.categoriesService.GetCategoryNameByIdAsync(categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => categoriesService.GetCategoryNameByIdAsync(categoryId));
             Assert.Equal(ex.Message, expectedErrorMessage);
 
         }
@@ -75,17 +76,17 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
             var testCategory = new Category
             {
                 Id = 1,
-                Name = "Auto",
+                Name = "Auto"
             };
             await context.Categories.AddAsync(testCategory);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.categoriesService.GetCategoryByIdAsync(1);
+            var actual = await categoriesService.GetCategoryByIdAsync(1);
             var expected = testCategory;
 
             Assert.True(expected.Name == actual.Name, errorMessagePrefix);
@@ -105,18 +106,18 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
             var testCategory = new Category
             {
                 Id = 1,
-                Name = "Auto",
+                Name = "Auto"
             };
             await context.Categories.AddAsync(testCategory);
             await context.SaveChangesAsync();
 
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.categoriesService.GetCategoryByIdAsync(categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => categoriesService.GetCategoryByIdAsync(categoryId));
             Assert.Equal(expectedErrorMessage, ex.Message);
 
         }
@@ -136,18 +137,18 @@
                 {
                     Id = 2,
                     Name = "Electronics"
-                },
+                }
             };
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
 
-            var categories = this.CreateTestingCategories();
+            var categories = CreateTestingCategories();
             await context.Categories.AddRangeAsync(categories);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.categoriesService.GetCategoryViewModelsAsync();
+            var actual = await categoriesService.GetCategoryViewModelsAsync();
 
             //Assert
             Assert.Collection(actual,
@@ -173,9 +174,9 @@
             var expected = 0;
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
 
-            var actual = await this.categoriesService.GetCategoryViewModelsAsync();
+            var actual = await categoriesService.GetCategoryViewModelsAsync();
 
             //Act and assert
             Assert.Equal(expected, actual.Count);
@@ -196,18 +197,18 @@
                 {
                     Id = 2,
                     Name = "Electronics"
-                },
+                }
             };
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
 
-            var categories = this.CreateTestingCategories();
+            var categories = CreateTestingCategories();
             await context.Categories.AddRangeAsync(categories);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.categoriesService.GetAllCategoryViewModelsAsync();
+            var actual = await categoriesService.GetAllCategoryViewModelsAsync();
 
             //Assert
             Assert.Collection(actual,
@@ -232,9 +233,9 @@
             var expected = 0;
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.categoriesService = InitializeCategoriesService(context);
+            categoriesService = InitializeCategoriesService(context);
 
-            var actual = await this.categoriesService.GetAllCategoryViewModelsAsync();
+            var actual = await categoriesService.GetAllCategoryViewModelsAsync();
 
             //Act and assert
             Assert.Equal(expected, actual.Count);

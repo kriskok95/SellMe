@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Data.Models
 {
-    using SellMe.Data.Common;
     using System.Collections.Generic;
+    using Common;
 
     public class Address : BaseDeletableModel<int>
     {

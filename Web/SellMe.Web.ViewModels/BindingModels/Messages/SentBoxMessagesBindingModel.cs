@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.BindingModels.Messages
 {
     using System.Collections.Generic;
-    using SellMe.Web.ViewModels.ViewModels.Messages;
-    using SellMe.Web.ViewModels.ViewModels;
+    using ViewModels;
+    using ViewModels.Messages;
 
     public class SentBoxMessagesBindingModel : BaseViewModel
     {

@@ -2,9 +2,8 @@
 {
     using System.Linq;
     using AutoMapper;
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
-
+    using Data.Models;
+    using Services.Mapping;
 
     public class MyArchivedAdsViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {

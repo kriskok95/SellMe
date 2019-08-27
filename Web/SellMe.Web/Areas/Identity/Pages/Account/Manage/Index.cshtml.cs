@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SellMe.Data.Models;
-
-namespace SellMe.Web.Areas.Identity.Pages.Account.Manage
+﻿namespace SellMe.Web.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
+    using Data.Models;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    public class IndexModel : PageModel
     {
         private readonly UserManager<SellMeUser> _userManager;
         private readonly SignInManager<SellMeUser> _signInManager;
@@ -134,7 +132,7 @@ namespace SellMe.Web.Areas.Identity.Pages.Account.Manage
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { userId = userId, code = code },
+                values: new {userId, code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,

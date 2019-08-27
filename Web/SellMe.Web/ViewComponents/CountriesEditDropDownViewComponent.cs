@@ -1,9 +1,8 @@
-﻿using SellMe.Services.Interfaces;
-using SellMe.Web.ViewModels.ViewModels.Ads;
-
-namespace SellMe.Web.ViewComponents
+﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
+    using Services.Interfaces;
+    using ViewModels.ViewModels.Ads;
 
     public class CountriesEditDropdownViewComponent : ViewComponent
     {
@@ -11,12 +10,12 @@ namespace SellMe.Web.ViewComponents
 
         public CountriesEditDropdownViewComponent(IAddressesService addressesService)
         {
-            this._addressesService = addressesService;
+            _addressesService = addressesService;
         }
 
         public IViewComponentResult Invoke(string adCountry)
         {
-            var countries = this._addressesService.GetAllCountries();
+            var countries = _addressesService.GetAllCountries();
 
             var countriesDropDownViewModel = new CountriesDropDownEditViewModel
             {
@@ -24,7 +23,7 @@ namespace SellMe.Web.ViewComponents
                 AdCountry = adCountry
             };
 
-            return this.View(countriesDropDownViewModel);
+            return View(countriesDropDownViewModel);
         }
     }
 }

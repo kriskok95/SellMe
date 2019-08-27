@@ -4,8 +4,8 @@
     using System.Threading.Tasks;
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using Interfaces;
     using Microsoft.AspNetCore.Http;
-    using SellMe.Services.Interfaces;
 
     public class CloudinaryService : ICloudinaryService
     {
@@ -33,10 +33,10 @@
                 ImageUploadParams uploadParams = new ImageUploadParams
                 {
                     Folder = "images",
-                    File = new FileDescription(fileName, ms),
+                    File = new FileDescription(fileName, ms)
                 };
 
-                uploadResult = this.cloudinaryUtility.Upload(uploadParams);
+                uploadResult = cloudinaryUtility.Upload(uploadParams);
             }
 
             return uploadResult?.SecureUri.AbsoluteUri;

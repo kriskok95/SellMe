@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace SellMe.Data.Migrations
+﻿namespace SellMe.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class IntroducedAdRejectionModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,14 +12,14 @@ namespace SellMe.Data.Migrations
                 name: "AdRejections",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
-                    AdId = table.Column<int>(nullable: false)
+                    AdId = table.Column<int>()
                 },
                 constraints: table =>
                 {

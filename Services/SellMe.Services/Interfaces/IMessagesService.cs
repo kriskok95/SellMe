@@ -1,10 +1,9 @@
 ﻿namespace SellMe.Services.Interfaces
 {
-    using System.Threading.Tasks;
-    using SellMe.Web.ViewModels.ViewModels.Messages;
-    using SellMe.Web.ViewModels.InputModels.Messages;
     using System.Collections.Generic;
-    using SellMe.Web.ViewModels.BindingModels.Messages;
+    using System.Threading.Tasks;
+    using Web.ViewModels.BindingModels.Messages;
+    using Web.ViewModels.ViewModels.Messages;
 
     public interface IMessagesService
     {

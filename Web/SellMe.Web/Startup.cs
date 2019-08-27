@@ -1,30 +1,28 @@
-﻿using CloudinaryDotNet;
-
-namespace SellMe.Web
+﻿namespace SellMe.Web
 {
+    using System.Reflection;
+    using AutoMapper;
+    using CloudinaryDotNet;
+    using Data;
+    using Data.Models;
+    using Data.Seeding;
+    using Hubs;
     using Microsoft.AspNetCore.Builder;
-    using SellMe.Web.Hubs;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity.UI.Services;
-    using SellMe.Services.Messaging;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Data;
-    using SellMe.Data.Models;
-    using System.Reflection;
-    using SellMe.Services.Mapping;
-    using SellMe.Web.ViewModels;
-    using AutoMapper;
-    using SellMe.Services.Utilities;
-    using SellMe.Data.Seeding;
-
+    using Services;
+    using Services.Interfaces;
+    using Services.Mapping;
+    using Services.Messaging;
+    using Services.Utilities;
+    using ViewModels;
 
     public class Startup
     {
@@ -57,9 +55,9 @@ namespace SellMe.Web
                 .AddEntityFrameworkStores<SellMeDbContext>();
 
             Account cloudinaryCredentials = new Account(
-                this.Configuration["Cloudinary:CloudName"],
-                this.Configuration["Cloudinary:ApiKey"],
-                this.Configuration["Cloudinary:ApiSecret"]);
+                Configuration["Cloudinary:CloudName"],
+                Configuration["Cloudinary:ApiKey"],
+                Configuration["Cloudinary:ApiSecret"]);
 
             Cloudinary cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
 

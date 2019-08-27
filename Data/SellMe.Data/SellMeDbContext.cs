@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Data.Models;
+    using Models;
 
     public class SellMeDbContext : IdentityDbContext<SellMeUser>
     {

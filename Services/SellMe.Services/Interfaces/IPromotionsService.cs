@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Services.Interfaces
 {
     using System.Threading.Tasks;
-    using SellMe.Web.ViewModels.BindingModels.Promotions;
+    using Web.ViewModels.BindingModels.Promotions;
 
     public interface IPromotionsService
     {

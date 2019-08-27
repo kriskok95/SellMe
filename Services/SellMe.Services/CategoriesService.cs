@@ -1,15 +1,14 @@
 ﻿namespace SellMe.Services
 {
     using System;
-    using System.Threading.Tasks;
-    using SellMe.Data;
-    using SellMe.Services.Interfaces;
-    using System.Linq;
-    using SellMe.Data.Models;
     using System.Collections.Generic;
-    using SellMe.Services.Mapping;
+    using System.Threading.Tasks;
+    using Data;
+    using Data.Models;
+    using Interfaces;
+    using Mapping;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Web.ViewModels.ViewModels.Categories;
+    using Web.ViewModels.ViewModels.Categories;
 
     public class CategoriesService : ICategoriesService
     {
@@ -25,7 +24,7 @@
 
         public async Task<ICollection<CreateAdCategoryViewModel>> GetCategoryViewModelsAsync()
         {
-            var categoryViewModels = await this.context
+            var categoryViewModels = await context
                 .Categories
                 .To<CreateAdCategoryViewModel>()
                 .ToListAsync();
@@ -35,12 +34,12 @@
 
         public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
-            if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            if (!await context.Categories.AnyAsync(x => x.Id == categoryId))
             {
                 throw new ArgumentException(GetCategoryByIdInvalidErrorMessage);
             }
 
-            Category category = await this.context
+            Category category = await context
                 .Categories
                 .FirstOrDefaultAsync(x => x.Id == categoryId);
 
@@ -49,7 +48,7 @@
 
         public async Task<ICollection<CategoryViewModel>> GetAllCategoryViewModelsAsync()
         {
-            var allCategories = await this.context
+            var allCategories = await context
                 .Categories
                 .To<CategoryViewModel>()
                 .ToListAsync();
@@ -59,12 +58,12 @@
 
         public async Task<string> GetCategoryNameByIdAsync(int categoryId)
         {
-            if (! await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            if (! await context.Categories.AnyAsync(x => x.Id == categoryId))
             {
                 throw new ArgumentException(GetCategoryNameByIdInvalidIdErrorMessage);
             }
 
-            var categoryName = this.context
+            var categoryName = context
                 .Categories
                 .FirstOrDefaultAsync(x => x.Id == categoryId)?.Result.Name;
             return categoryName;

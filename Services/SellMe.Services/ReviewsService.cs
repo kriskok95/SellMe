@@ -1,18 +1,18 @@
 ﻿namespace SellMe.Services
 {
-    using Castle.Core.Internal;
-    using SellMe.Common;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using SellMe.Web.ViewModels.BindingModels.Reviews;
-    using SellMe.Services.Interfaces;
-    using SellMe.Data;
-    using SellMe.Data.Models;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using SellMe.Services.Mapping;
-    using SellMe.Services.Paging;
-    using SellMe.Web.ViewModels.ViewModels.Reviews;
+    using System.Threading.Tasks;
+    using Castle.Core.Internal;
+    using Common;
+    using Data;
+    using Data.Models;
+    using Interfaces;
+    using Mapping;
+    using Paging;
+    using Web.ViewModels.BindingModels.Reviews;
+    using Web.ViewModels.ViewModels.Reviews;
 
     public class ReviewsService : IReviewsService
     {
@@ -39,24 +39,24 @@
                 throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
             }
 
-            var owner = await this.usersService.GetUserByIdAsync(userId);
+            var owner = await usersService.GetUserByIdAsync(userId);
 
-            var reviewViewModel = this.GetReviewViewModelsByUserId(userId);
+            var reviewViewModel = GetReviewViewModelsByUserId(userId);
             var paginatedReviewViewModels =
                 await PaginatedList<ReviewViewModel>.CreateAsync(reviewViewModel, pageNumber, pageSize);
 
-            var averageRating = this.context.Reviews.Count(x => x.OwnerId == userId) > 0
-                ? this.context.Reviews.Where(x => x.OwnerId == userId).Average(x => x.Rating)
+            var averageRating = context.Reviews.Count(x => x.OwnerId == userId) > 0
+                ? context.Reviews.Where(x => x.OwnerId == userId).Average(x => x.Rating)
                 : 0;
 
             var reviewsBindingModel = new ReviewsBindingModel
             {
                 OwnerId = userId,
                 OwnerUsername = owner.UserName,
-                SenderId = this.usersService.GetCurrentUserId(),
-                Votes = this.GetVotesByStars(userId),
+                SenderId = usersService.GetCurrentUserId(),
+                Votes = GetVotesByStars(userId),
                 AverageVote = averageRating,
-                ViewModels = paginatedReviewViewModels,
+                ViewModels = paginatedReviewViewModels
             };
 
             return reviewsBindingModel;
@@ -84,11 +84,11 @@
                 OwnerId = ownerId,
                 CreatorId = creatorId,
                 Comment = content,
-                Rating = rating,
+                Rating = rating
             };
 
-            await this.context.Reviews.AddAsync(review);
-            await this.context.SaveChangesAsync();
+            await context.Reviews.AddAsync(review);
+            await context.SaveChangesAsync();
         }
 
         public bool CheckOwnerIdAndSellerId(string creatorId, string ownerId)
@@ -98,7 +98,7 @@
 
         private IQueryable<ReviewViewModel> GetReviewViewModelsByUserId(string userId)
         {
-            var reviewViewModels = this.context.Reviews
+            var reviewViewModels = context.Reviews
                 .Where(x => x.OwnerId == userId)
                 .To<ReviewViewModel>();
 
@@ -109,7 +109,7 @@
             List<int> result = new List<int>();
             for (int i = 1; i <= 5; i++)
             {
-                result.Add(this.context.Reviews.Count(x => x.OwnerId == userId && x.Rating == i));
+                result.Add(context.Reviews.Count(x => x.OwnerId == userId && x.Rating == i));
             }
 
             return result;

@@ -1,14 +1,13 @@
 ﻿namespace SellMe.Services.Utilities
 {
-    using SellMe.Web.ViewModels.ViewModels.Messages;
-    using SellMe.Web.ViewModels.InputModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels.Addresses;
-    using SellMe.Web.ViewModels.ViewModels.Promotions;
-    using SellMe.Web.ViewModels.InputModels.Messages;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
-    using AutoMapper;
-    using SellMe.Data.Models;
     using System.Linq;
+    using AutoMapper;
+    using Data.Models;
+    using Web.ViewModels.InputModels.Ads;
+    using Web.ViewModels.InputModels.Messages;
+    using Web.ViewModels.ViewModels.Addresses;
+    using Web.ViewModels.ViewModels.Ads;
+    using Web.ViewModels.ViewModels.Messages;
 
     public class SellMeProfile : Profile
     {

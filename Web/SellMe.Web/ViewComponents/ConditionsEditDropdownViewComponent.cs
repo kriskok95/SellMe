@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
+    using Services.Interfaces;
 
-    using SellMe.Services.Interfaces;
     public class ConditionsEditDropdownViewComponent : ViewComponent
     {
         private readonly IConditionsService conditionsService;
@@ -14,9 +14,9 @@
 
         public IViewComponentResult Invoke(string adCondition)
         {
-            var conditionsViewModels = this.conditionsService.GetConditionViewModels();
+            var conditionsViewModels = conditionsService.GetConditionViewModels();
             ViewData["adCondition"] = adCondition;
-            return this.View(conditionsViewModels);
+            return View(conditionsViewModels);
         }
     }
 }

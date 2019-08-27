@@ -1,6 +1,6 @@
 ﻿@model PaginatedList<AdViewModel>
 
-@foreach (var ad in @Model)
+@foreach (var ad in Model)
 {
     <vc:listed-ad view-model="@ad"></vc:listed-ad>
 }

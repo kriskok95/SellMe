@@ -2,16 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-    using SellMe.Data.Common;
+    using Common;
 
     public class Ad : BaseDeletableModel<int>
     {
         public Ad()
         {
-            this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
-            this.Reviews = new HashSet<Review>();
-            this.Images = new HashSet<Image>();
-            this.Messages = new HashSet<Message>();
+            SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
+            Reviews = new HashSet<Review>();
+            Images = new HashSet<Image>();
+            Messages = new HashSet<Message>();
         }
 
         public string Title { get; set; }

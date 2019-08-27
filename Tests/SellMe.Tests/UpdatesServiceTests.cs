@@ -1,14 +1,12 @@
-﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using SellMe.Data.Models;
-
-namespace SellMe.Tests
+﻿namespace SellMe.Tests
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Tests.Common;
+    using Common;
+    using Data.Models;
+    using Services;
+    using Services.Interfaces;
     using Xunit;
 
     public class UpdatesServiceTests
@@ -22,10 +20,10 @@ namespace SellMe.Tests
             var expectedErrorMessage = "Ad with the given id doesn't exist!";
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.updatesService = new UpdatesService(context);
+            updatesService = new UpdatesService(context);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.updatesService.CreateUpdateAdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => updatesService.CreateUpdateAdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -36,7 +34,7 @@ namespace SellMe.Tests
             var expectedUpdateAdCount = 1;
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.updatesService = new UpdatesService(context);
+            updatesService = new UpdatesService(context);
 
             var testingAd = new Ad
             {
@@ -56,15 +54,15 @@ namespace SellMe.Tests
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
             //Act
-            await this.updatesService.CreateUpdateAdAsync(1);
+            await updatesService.CreateUpdateAdAsync(1);
 
             //Assert
             Assert.Equal(expectedUpdateAdCount, context.UpdateAds.Count());

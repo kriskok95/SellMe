@@ -1,9 +1,8 @@
-﻿@using Microsoft.AspNetCore.Internal
-@model AdViewModel
+﻿@model AdViewModel
 @inject IUsersService UsersService
 
 @{
-    var currentUser = await this.UsersService.GetCurrentUserAsync();
+    var currentUser = await UsersService.GetCurrentUserAsync();
 }
 
 <div class="row">
@@ -33,7 +32,7 @@
                                         <div class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.Country/@Model.City</small></div>
                                     </div>
                                     <div class="col-1 mt-3">
-                                        @if (currentUser == null || !currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == @Model.Id && x.SellMeUserId == currentUser.Id))
+                                        @if (currentUser == null || !currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == Model.Id && x.SellMeUserId == currentUser.Id))
                                         {
                                             <button value="@Model.Id" id="@Model.Id" class="btn addToFavorites"><img src="~/img/not-favorite.png" alt="not-favorite"/></button>
                                         }

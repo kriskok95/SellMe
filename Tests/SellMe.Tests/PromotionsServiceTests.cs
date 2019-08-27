@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Common;
+    using Data.Models;
     using Moq;
-    using SellMe.Data.Models;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Web.ViewModels.BindingModels.Promotions;
-    using SellMe.Web.ViewModels.ViewModels.Promotions;
+    using Services;
+    using Services.Interfaces;
+    using Web.ViewModels.BindingModels.Promotions;
+    using Web.ViewModels.ViewModels.Promotions;
     using Xunit;
-    using SellMe.Tests.Common;
 
     public class PromotionsServiceTests
     {
@@ -31,11 +31,11 @@
             var moqAdsService = new Mock<IAdsService>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.promotionsService = new PromotionsService(context, moqAdsService.Object);
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.promotionsService.GetPromotionBindingModelByAdIdAsync(1));
+                promotionsService.GetPromotionBindingModelByAdIdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -93,7 +93,7 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.promotionsService = new PromotionsService(context, moqAdsService.Object);
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
             var testingAd = new Ad
             {
                 Id = 1,
@@ -113,8 +113,8 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
 
             var testingPromotions = new List<Promotion>
@@ -140,7 +140,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.promotionsService.GetPromotionBindingModelByAdIdAsync(1);
+            var actual = await promotionsService.GetPromotionBindingModelByAdIdAsync(1);
 
             Assert.Equal(expected.AdId, actual.AdId);
             Assert.Equal(expected.AdTitle, actual.AdTitle);
@@ -172,11 +172,11 @@
             var moqAdsService = new Mock<IAdsService>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.promotionsService = new PromotionsService(context, moqAdsService.Object);
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.promotionsService.CreatePromotionOrderAsync(1, 1));
+                promotionsService.CreatePromotionOrderAsync(1, 1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -189,7 +189,7 @@
             var moqAdsService = new Mock<IAdsService>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.promotionsService = new PromotionsService(context, moqAdsService.Object);
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
 
             var testingAd = new Ad
             {
@@ -210,15 +210,15 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.promotionsService.CreatePromotionOrderAsync(1, 1));
+                promotionsService.CreatePromotionOrderAsync(1, 1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -251,7 +251,7 @@
                 });
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.promotionsService = new PromotionsService(context, moqAdsService.Object);
+            promotionsService = new PromotionsService(context, moqAdsService.Object);
 
             var testingAd = new Ad
             {
@@ -272,8 +272,8 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
 
             var testingPromotion = new Promotion
@@ -290,7 +290,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            await this.promotionsService.CreatePromotionOrderAsync(1, 1);
+            await promotionsService.CreatePromotionOrderAsync(1, 1);
 
             //Assert
             Assert.True(context.PromotionOrders.Count() == 1);

@@ -1,8 +1,7 @@
 ﻿namespace SellMe.Web.ViewModels.InputModels.Messages
 {
     using System.ComponentModel.DataAnnotations;
-
-    using SellMe.Web.Infrastructure.Attributes;
+    using Infrastructure.Attributes;
 
     public class SendMessageInputModel
     {

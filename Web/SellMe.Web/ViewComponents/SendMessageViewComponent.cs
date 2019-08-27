@@ -1,9 +1,9 @@
 ﻿
 namespace SellMe.Web.ViewComponents
 {
-    using SellMe.Web.ViewModels.InputModels.Messages;
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
+    using Services.Interfaces;
+    using ViewModels.InputModels.Messages;
 
     public class SendMessageViewComponent : ViewComponent
     {
@@ -15,7 +15,7 @@ namespace SellMe.Web.ViewComponents
         }
         public IViewComponentResult Invoke(string user1Id, string user2Id, int adId)
         {
-            var currentUserId = this.usersService.GetCurrentUserId();
+            var currentUserId = usersService.GetCurrentUserId();
 
             var senderId = string.Empty;
             var recipientId = string.Empty;
@@ -31,14 +31,14 @@ namespace SellMe.Web.ViewComponents
                 recipientId = user2Id;
             }
 
-            var inputModel = new SendMessageInputModel()
+            var inputModel = new SendMessageInputModel
             {
                 SenderId = senderId,
                 RecipientId = recipientId,
-                AdId = adId,
+                AdId = adId
             };
 
-            return this.View(inputModel);
+            return View(inputModel);
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using SellMe.Web.ViewModels.InputModels.Ads;
-
-namespace SellMe.Web.Areas.Administration.Controllers
+﻿namespace SellMe.Web.Areas.Administration.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using SellMe.Common;
-    using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
     using System.Threading.Tasks;
-    using System.Diagnostics.CodeAnalysis;
+    using Common;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Services.Interfaces;
+    using ViewModels.InputModels.Ads;
 
     public class AdsController : Controller
     {
@@ -25,16 +23,16 @@ namespace SellMe.Web.Areas.Administration.Controllers
         [Area("Administration")]
         public async Task<IActionResult> ForApproval(int? pageNumber)
         {
-            var adsForApprovalViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
+            var adsForApprovalViewModels = await adsService.GetAdsForApprovalViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
-            return this.View(adsForApprovalViewModels);
+            return View(adsForApprovalViewModels);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
         public async Task<IActionResult> Approve(int adId)
         {
-            var result = await this.adsService.ApproveAdAsync(adId);
+            var result = await adsService.ApproveAdAsync(adId);
 
             return Json(result);
         }
@@ -43,9 +41,9 @@ namespace SellMe.Web.Areas.Administration.Controllers
         [Area("Administration")]
         public async Task<IActionResult> RejectAd(int adId)
         {
-            var rejectAdViewModel = await this.adsService.GetRejectAdBindingModelAsync(adId);
+            var rejectAdViewModel = await adsService.GetRejectAdBindingModelAsync(adId);
 
-            return this.View(rejectAdViewModel);
+            return View(rejectAdViewModel);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
@@ -53,35 +51,35 @@ namespace SellMe.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> RejectAd(RejectAdInputModel inputModel)
         {
-            await this.adsService.CreateAdRejectionAsync(inputModel.AdId, inputModel.Comment);
-            var adsForApprovalViewModels = await this.adsService.GetAdsForApprovalViewModelsAsync(DefaultPageNumber, DefaultPageSize);
+            await adsService.CreateAdRejectionAsync(inputModel.AdId, inputModel.Comment);
+            var adsForApprovalViewModels = await adsService.GetAdsForApprovalViewModelsAsync(DefaultPageNumber, DefaultPageSize);
 
-            return this.RedirectToAction("ForApproval", adsForApprovalViewModels);
+            return RedirectToAction("ForApproval", adsForApprovalViewModels);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
         public async Task<IActionResult> RejectedAds(int? pageNumber)
         {
-            var rejectedAdsViewModels = await this.adsService.GetRejectedAdAllViewModelsAsync(pageNumber?? DefaultPageNumber, DefaultPageSize);
+            var rejectedAdsViewModels = await adsService.GetRejectedAdAllViewModelsAsync(pageNumber?? DefaultPageNumber, DefaultPageSize);
 
-            return this.View(rejectedAdsViewModels);
+            return View(rejectedAdsViewModels);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
         public async Task<IActionResult> AllActiveAds(int? pageNumber)
         {
-            var allActiveAdViewModel = await this.adsService.GetAllActiveAdViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
+            var allActiveAdViewModel = await adsService.GetAllActiveAdViewModelsAsync(pageNumber ?? DefaultPageNumber, DefaultPageSize);
 
-            return this.View(allActiveAdViewModel);
+            return View(allActiveAdViewModel);
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
         public async Task<IActionResult> ArchiveAd(int adId)
         {
-            bool isArchived = await this.adsService.ArchiveAdByIdAsync(adId);
+            bool isArchived = await adsService.ArchiveAdByIdAsync(adId);
 
             var result = new
             {

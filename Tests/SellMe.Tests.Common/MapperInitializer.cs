@@ -1,10 +1,9 @@
 ﻿namespace SellMe.Tests.Common
 {
     using System.Reflection;
-
-    using SellMe.Services;
-    using SellMe.Services.Mapping;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
+    using Services;
+    using Services.Mapping;
+    using Web.ViewModels.ViewModels.Ads;
 
     public static class MapperInitializer 
     {

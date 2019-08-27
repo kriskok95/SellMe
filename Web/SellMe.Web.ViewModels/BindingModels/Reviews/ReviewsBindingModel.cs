@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace SellMe.Web.ViewModels.BindingModels.Reviews
+﻿namespace SellMe.Web.ViewModels.BindingModels.Reviews
 {
-    using SellMe.Web.ViewModels.InputModels.Reviews;
-    using SellMe.Web.ViewModels.ViewModels;
-    using SellMe.Services.Paging;
-    using SellMe.Web.ViewModels.ViewModels.Reviews;
+    using System.Collections.Generic;
+    using InputModels.Reviews;
+    using Services.Paging;
+    using ViewModels;
+    using ViewModels.Reviews;
 
     public class ReviewsBindingModel : BaseViewModel
     {

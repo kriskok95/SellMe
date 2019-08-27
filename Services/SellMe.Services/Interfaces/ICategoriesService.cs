@@ -1,9 +1,9 @@
 ﻿namespace SellMe.Services.Interfaces
 {
     using System.Collections.Generic;
-    using SellMe.Data.Models;
     using System.Threading.Tasks;
-    using SellMe.Web.ViewModels.ViewModels.Categories;
+    using Data.Models;
+    using Web.ViewModels.ViewModels.Categories;
 
     public interface ICategoriesService
     {

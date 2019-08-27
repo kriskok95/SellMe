@@ -1,8 +1,7 @@
 ﻿namespace SellMe.Data.Models
 {
-    using System;
-    using SellMe.Data.Common;
     using System.Collections.Generic;
+    using Common;
 
     public class Promotion : BaseModel<int>
     {

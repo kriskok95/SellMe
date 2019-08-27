@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using SellMe.Data;
-    using SellMe.Data.Models;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Tests.Common;
-    using SellMe.Web.ViewModels.ViewModels.Conditions;
+    using Common;
+    using Data;
+    using Data.Models;
+    using Services;
+    using Services.Interfaces;
+    using Web.ViewModels.ViewModels.Conditions;
     using Xunit;
 
     public class ConditionsServiceTests
@@ -29,18 +29,18 @@
                 {
                     Id = 2,
                     Name = "Used"
-                },
+                }
             };
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.conditionsService = InitializeConditionsService(context);
+            conditionsService = InitializeConditionsService(context);
 
-            var conditions = this.CreateTestingConditions();
+            var conditions = CreateTestingConditions();
             await context.Conditions.AddRangeAsync(conditions);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = this.conditionsService.GetConditionViewModels();
+            var actual = conditionsService.GetConditionViewModels();
 
             //Assert
             Assert.Collection(actual,
@@ -65,9 +65,9 @@
             var expected = 0;
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.conditionsService = InitializeConditionsService(context);
+            conditionsService = InitializeConditionsService(context);
 
-            var actual = this.conditionsService.GetConditionViewModels();
+            var actual = conditionsService.GetConditionViewModels();
 
             //Act and assert
             Assert.Equal(expected, actual.Count);

@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace SellMe.Data.Migrations
+﻿namespace SellMe.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddedPromotionModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,12 +17,12 @@ namespace SellMe.Data.Migrations
                 name: "Promotion",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Type = table.Column<string>(nullable: true),
-                    ActiveTo = table.Column<DateTime>(nullable: false)
+                    ActiveTo = table.Column<DateTime>()
                 },
                 constraints: table =>
                 {

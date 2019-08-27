@@ -1,14 +1,13 @@
 ﻿namespace SellMe.Web.Controllers
 {
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.SignalR;
-    using SellMe.Web.Hubs;
-    using System.Linq;
-    using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
-    using SellMe.Web.ViewModels.InputModels.Messages;
+    using Hubs;
     using Microsoft.AspNetCore.Authorization;
-    using SellMe.Web.ViewModels.BindingModels.Messages;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
+    using Services.Interfaces;
+    using ViewModels.BindingModels.Messages;
+    using ViewModels.InputModels.Messages;
 
     public class MessagesController : Controller
     {
@@ -26,9 +25,9 @@
         [Authorize]
         public async Task<IActionResult> Send(int id)
         {
-            var sendMessageBindingModel = await this.messagesService.GetMessageBindingModelByAdIdAsync(id);
+            var sendMessageBindingModel = await messagesService.GetMessageBindingModelByAdIdAsync(id);
 
-            return this.View(sendMessageBindingModel);
+            return View(sendMessageBindingModel);
         }
 
         [HttpPost]
@@ -39,45 +38,45 @@
             if (!ModelState.IsValid)
             {
                 var sendMessageBindingModel =
-                    await this.messagesService.GetMessageBindingModelByAdIdAsync(inputModel.AdId);
+                    await messagesService.GetMessageBindingModelByAdIdAsync(inputModel.AdId);
                 sendMessageBindingModel.InputModel = inputModel;
 
-                return this.View(sendMessageBindingModel);
+                return View(sendMessageBindingModel);
             }
 
-            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId,
+            var messageViewModel = await messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId,
                 inputModel.AdId, inputModel.Content);
 
-            var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
+            var unreadMessagesCount = await messagesService.GetUnreadMessagesCountAsync(inputModel.RecipientId);
 
-            await this.hubContext.Clients.User(inputModel.RecipientId).SendAsync("MessageCount", unreadMessagesCount);
+            await hubContext.Clients.User(inputModel.RecipientId).SendAsync("MessageCount", unreadMessagesCount);
 
-            await this.hubContext.Clients.User(inputModel.RecipientId)
+            await hubContext.Clients.User(inputModel.RecipientId)
                 .SendAsync("SendMessage", messageViewModel);
 
-            return this.RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, recipientId = inputModel.RecipientId});
+            return RedirectToAction("Details", new{ adId = inputModel.AdId, senderId = inputModel.SenderId, recipientId = inputModel.RecipientId});
         }
 
         public async Task<IActionResult> Inbox()
         {
-            var inboxMessagesViewModels = await this.messagesService.GetInboxMessagesViewModelsAsync();
+            var inboxMessagesViewModels = await messagesService.GetInboxMessagesViewModelsAsync();
 
-            return this.View(inboxMessagesViewModels);
+            return View(inboxMessagesViewModels);
         }
 
         public async Task<IActionResult> SentBox()
         {
-            var sentBoxMessagesBindingModel = await this.messagesService.GetSentBoxMessagesBindingModelAsync();
+            var sentBoxMessagesBindingModel = await messagesService.GetSentBoxMessagesBindingModelAsync();
 
-            return this.View(sentBoxMessagesBindingModel);
+            return View(sentBoxMessagesBindingModel);
         }
 
         public async Task<IActionResult> Details(MessageDetailsBindingModel bindingModel)
         {
-            bindingModel.ViewModels = await this.messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);
-            bindingModel.AdTitle = await this.adsService.GetAdTitleByIdAsync(bindingModel.AdId);
+            bindingModel.ViewModels = await messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);
+            bindingModel.AdTitle = await adsService.GetAdTitleByIdAsync(bindingModel.AdId);
 
-            return this.View(bindingModel);
+            return View(bindingModel);
         }
     }
 }

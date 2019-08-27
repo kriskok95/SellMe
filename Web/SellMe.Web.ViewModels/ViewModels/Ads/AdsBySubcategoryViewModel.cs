@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
     using System.Collections.Generic;
-    using SellMe.Services.Paging;
-    using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using Services.Paging;
+    using Subcategories;
 
     public class AdsBySubcategoryViewModel : BaseViewModel
     {

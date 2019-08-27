@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
+    using Services.Interfaces;
 
     public class ConditionsDropdownViewComponent : ViewComponent
     {
@@ -14,8 +14,8 @@
 
         public IViewComponentResult Invoke()
         {
-            var conditionsViewModels = this.conditionsService.GetConditionViewModels();
-            return this.View(conditionsViewModels);
+            var conditionsViewModels = conditionsService.GetConditionViewModels();
+            return View(conditionsViewModels);
         }
     }
 }

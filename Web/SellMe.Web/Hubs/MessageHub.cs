@@ -1,11 +1,10 @@
-﻿using SellMe.Web.ViewModels.InputModels.Messages;
-
-namespace SellMe.Web.Hubs
+﻿namespace SellMe.Web.Hubs
 {
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.SignalR;
-    using SellMe.Services.Interfaces;
-    using System.Threading.Tasks;
+    using Services.Interfaces;
+    using ViewModels.InputModels.Messages;
 
     [Authorize]
     public class MessageHub : Hub
@@ -19,16 +18,16 @@ namespace SellMe.Web.Hubs
 
         public async Task UserMessagesCount(string userId)
         {
-            var messagesCount = await this.messagesService.GetUnreadMessagesCountAsync(userId);
+            var messagesCount = await messagesService.GetUnreadMessagesCountAsync(userId);
 
-            await this.Clients.User(userId).SendAsync("MessageCount", messagesCount);
+            await Clients.User(userId).SendAsync("MessageCount", messagesCount);
         }
 
         public async Task SendMessage(SendMessageInputModel inputModel)
         {
-            var messageViewModel = await this.messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId, inputModel.AdId, inputModel.Content);
+            var messageViewModel = await messagesService.CreateMessageAsync(inputModel.SenderId, inputModel.RecipientId, inputModel.AdId, inputModel.Content);
 
-            await this.Clients.Users(inputModel.RecipientId)
+            await Clients.Users(inputModel.RecipientId)
                 .SendAsync("SendMessage", messageViewModel);
         }
     }

@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Moq;
-using SellMe.Common;
-using SellMe.Data.Models;
-using SellMe.Services;
-using SellMe.Services.Interfaces;
-using SellMe.Services.Paging;
-using SellMe.Web.ViewModels.BindingModels.Reviews;
-using SellMe.Web.ViewModels.ViewModels.Reviews;
-using Xunit;
-
-namespace SellMe.Tests
+﻿namespace SellMe.Tests
 {
-    using SellMe.Tests.Common;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Common;
+    using Data.Models;
+    using Moq;
+    using SellMe.Common;
+    using Services;
+    using Services.Interfaces;
+    using Services.Paging;
+    using Web.ViewModels.BindingModels.Reviews;
+    using Web.ViewModels.ViewModels.Reviews;
+    using Xunit;
 
     public class ReviewsServiceTests
     {
@@ -33,14 +31,14 @@ namespace SellMe.Tests
             var expectedErrorMessage = "User id can't be null or empty!";
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
 
             //Assert and act
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.reviewsService.GetReviewsBindingModelByUserId(string.Empty, GlobalConstants.DefaultPageNumber, GlobalConstants.DefaultPageSize));
+                reviewsService.GetReviewsBindingModelByUserId(string.Empty, GlobalConstants.DefaultPageNumber, GlobalConstants.DefaultPageSize));
             var ex2 = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.reviewsService.GetReviewsBindingModelByUserId(null, GlobalConstants.DefaultPageNumber, GlobalConstants.DefaultPageSize));
+                reviewsService.GetReviewsBindingModelByUserId(null, GlobalConstants.DefaultPageNumber, GlobalConstants.DefaultPageSize));
             Assert.Equal(expectedErrorMessage, ex.Message);
             Assert.Equal(expectedErrorMessage, ex2.Message);
         }
@@ -69,7 +67,7 @@ namespace SellMe.Tests
                     Content = "Comment for the third review.",
                     Rating = 5,
                     Sender = "Creator"
-                },
+                }
             };
 
             var expected = new ReviewsBindingModel
@@ -79,7 +77,7 @@ namespace SellMe.Tests
                 SenderId = "CreatorId",
                 Votes = new List<int> {0, 0, 1, 1, 0, 1},
                 AverageVote = new List<int>{2, 3, 5}.Average(),
-                ViewModels = new PaginatedList<ReviewViewModel>(listOfReviewViewModels, 3, 1, 10),
+                ViewModels = new PaginatedList<ReviewViewModel>(listOfReviewViewModels, 3, 1, 10)
             };
 
             var moqUsersService = new Mock<IUsersService>();
@@ -93,7 +91,7 @@ namespace SellMe.Tests
                 .Returns("CreatorId");
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
             var testingReviews = new List<Review>
             {
@@ -102,22 +100,22 @@ namespace SellMe.Tests
                     OwnerId = "OwnerId",
                     CreatorId = "CreatorId",
                     Comment = "Comment for the first review.",
-                    Rating = 2,
+                    Rating = 2
                 },
                 new Review
                 {
                     OwnerId = "OwnerId",
                     CreatorId = "CreatorId",
                     Comment = "Comment for the second review.",
-                    Rating = 3,
+                    Rating = 3
                 },
                 new Review
                 {
                     OwnerId = "OwnerId",
                     CreatorId = "CreatorId",
                     Comment = "Comment for the third review.",
-                    Rating = 5,
-                },
+                    Rating = 5
+                }
             };
 
             var testingUsers = new List<SellMeUser>
@@ -139,7 +137,7 @@ namespace SellMe.Tests
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.reviewsService.GetReviewsBindingModelByUserId("OwnerId", 1, 10);
+            var actual = await reviewsService.GetReviewsBindingModelByUserId("OwnerId", 1, 10);
 
             Assert.Equal(expected.OwnerId, actual.OwnerId);
             Assert.Equal(expected.OwnerUsername, actual.OwnerUsername);
@@ -166,12 +164,12 @@ namespace SellMe.Tests
             var expectedErrorMessage = "Some of the arguments are null or empty!";
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
 
             //Assert and act
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.reviewsService.CreateReview(ownerId, creatorId, content, 1));
+                reviewsService.CreateReview(ownerId, creatorId, content, 1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -188,12 +186,12 @@ namespace SellMe.Tests
 
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
 
             //Assert and act
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.reviewsService.CreateReview("OwnerId", "CreatorId", "Content", rating));
+                reviewsService.CreateReview("OwnerId", "CreatorId", "Content", rating));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -205,12 +203,12 @@ namespace SellMe.Tests
 
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
 
             //Assert and act
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                this.reviewsService.CreateReview("CreatorId", "CreatorId", "Content", 3));
+                reviewsService.CreateReview("CreatorId", "CreatorId", "Content", 3));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -222,10 +220,10 @@ namespace SellMe.Tests
 
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
             //Act
-            await this.reviewsService.CreateReview("OwnerId", "CreatorId", "Content", 3);
+            await reviewsService.CreateReview("OwnerId", "CreatorId", "Content", 3);
 
             //Assert
             Assert.Equal(expectedReviewsCount, context.Reviews.Count());
@@ -237,10 +235,10 @@ namespace SellMe.Tests
             //Arrange
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
             //Act
-            var actual =  this.reviewsService.CheckOwnerIdAndSellerId("CreatorId", "CreatorId");
+            var actual =  reviewsService.CheckOwnerIdAndSellerId("CreatorId", "CreatorId");
 
             //Assert
             Assert.True(actual);
@@ -252,10 +250,10 @@ namespace SellMe.Tests
             //Arrange
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
-            this.reviewsService = new ReviewsService(context, moqUsersService.Object);
+            reviewsService = new ReviewsService(context, moqUsersService.Object);
 
             //Act
-            var actual = this.reviewsService.CheckOwnerIdAndSellerId("CreatorId", "AnotherUserId");
+            var actual = reviewsService.CheckOwnerIdAndSellerId("CreatorId", "AnotherUserId");
 
             //Assert
             Assert.False(actual);

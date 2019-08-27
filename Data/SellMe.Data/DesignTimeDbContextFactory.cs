@@ -6,13 +6,12 @@
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;
 
-
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<SellMeDbContext>
     {
         public SellMeDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), $"../../Web/SellMe.Web"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../Web/SellMe.Web"))
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 

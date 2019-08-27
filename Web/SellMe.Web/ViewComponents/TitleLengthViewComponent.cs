@@ -12,7 +12,7 @@
             var result = adTitle.Length > 25 ? adTitle.Substring(StartIndex, StringLength) + "..." : adTitle;
 
             //TODO: Check why looking for view  different from "Default".
-            return this.View("Default",result);
+            return View("Default",result);
         }
     }
 }

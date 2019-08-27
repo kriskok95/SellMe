@@ -1,20 +1,18 @@
 ﻿namespace SellMe.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-
-    using SellMe.Services.Interfaces;
-    using Microsoft.AspNetCore.Http;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Data;
+    using Data.Models;
+    using Interfaces;
+    using Mapping;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using SellMe.Data.Models;
-    using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Data;
-    using SellMe.Services.Mapping;
-    using SellMe.Web.ViewModels.ViewModels.Users;
-
+    using Web.ViewModels.ViewModels.Users;
 
     public class UsersService : IUsersService
     {
@@ -31,7 +29,7 @@
 
         public string GetCurrentUserId()
         {
-            var currentUserId = this.contextAccessor
+            var currentUserId = contextAccessor
                 .HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier)
                 .Value;
@@ -41,21 +39,21 @@
 
         public async Task<SellMeUser> GetCurrentUserAsync()
         {
-            var currentUser = await this.userManager.GetUserAsync(this.contextAccessor.HttpContext.User);
+            var currentUser = await userManager.GetUserAsync(contextAccessor.HttpContext.User);
 
             return currentUser;
         }
 
         public async Task<SellMeUser> GetUserByIdAsync(string userId)
         {
-            var user = await this.userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByIdAsync(userId);
 
             return user;
         }
 
         public async Task<IEnumerable<UserAllViewModel>> GetAllUserViewModelsAsync()
         {
-            var userAllViewModels = await this.context.SellMeUsers
+            var userAllViewModels = await context.SellMeUsers
                 .Where(x => !x.IsDeleted)
                 .To<UserAllViewModel>()
                 .ToListAsync();
@@ -65,13 +63,13 @@
 
         public async Task<bool> BlockUserByIdAsync(string userId)
         {
-            var userFromDb = await this.context.SellMeUsers.FirstOrDefaultAsync(x => x.Id == userId);
+            var userFromDb = await context.SellMeUsers.FirstOrDefaultAsync(x => x.Id == userId);
 
             userFromDb.IsDeleted = true;
             userFromDb.DeletedOn = DateTime.UtcNow;
 
-            this.context.SellMeUsers.Update(userFromDb);
-            await this.context.SaveChangesAsync();
+            context.SellMeUsers.Update(userFromDb);
+            await context.SaveChangesAsync();
 
             await DeleteAdsByUserId(userId);
             
@@ -80,7 +78,7 @@
 
         public async Task<double> GetRatingByUser(string sellerId)
         {
-            var user = await this.GetUserByIdAsync(sellerId);
+            var user = await GetUserByIdAsync(sellerId);
 
             var rating = user.OwnedReviews.Any() ? user.OwnedReviews.Average(x => x.Rating) : 0;
 
@@ -89,14 +87,14 @@
 
         public async Task<int> GetCountOfAllUsersAsync()
         {
-            var allUsersCount = await this.context.Users.CountAsync(x => !x.IsDeleted);
+            var allUsersCount = await context.Users.CountAsync(x => !x.IsDeleted);
 
             return allUsersCount;
         }
 
         private async Task DeleteAdsByUserId(string userId)
         {
-            var ads = this.context
+            var ads = context
                 .Ads
                 .Where(x => x.SellerId == userId);
 
@@ -106,7 +104,7 @@
                 ad.DeletedOn = DateTime.UtcNow;
             }
 
-            await this.context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 }

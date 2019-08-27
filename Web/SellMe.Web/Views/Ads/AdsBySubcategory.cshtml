@@ -3,12 +3,12 @@
 <div class="row">
     <div class="col">
         <div class="jumbotron jumbotron-fluid jumbotron-sell-me">
-            @for (int i = 0; i < @Model.AdsByCategorySubcategoryViewModels.Count; i += 4)
+            @for (int i = 0; i < Model.AdsByCategorySubcategoryViewModels.Count; i += 4)
             {
                 <div class="row justify-content-start my-4">
                     @for (int j = i; j < i + 4; j++)
                     {
-                        if (j < @Model.AdsByCategorySubcategoryViewModels.Count)
+                        if (j < Model.AdsByCategorySubcategoryViewModels.Count)
                         {
                             if (Model.AdsByCategorySubcategoryViewModels[j].Id == Model.SubcategoryId)
                             {
@@ -34,7 +34,7 @@
     </div>
 </div>
 
-@foreach (var ad in @Model.AdsBySubcategoryViewModels)
+@foreach (var ad in Model.AdsBySubcategoryViewModels)
 {
     <vc:listed-ad view-model="@ad"></vc:listed-ad>
 }

@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.BindingModels.Ads
 {
-    using SellMe.Services.Paging;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels;
+    using Services.Paging;
+    using ViewModels;
+    using ViewModels.Ads;
 
     public class AdsByUserBindingModel : BaseViewModel
     {

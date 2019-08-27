@@ -1,10 +1,9 @@
-﻿ using System.Threading.Tasks;
-
- namespace SellMe.Web.ViewComponents
+﻿  namespace SellMe.Web.ViewComponents
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
+    using Services.Interfaces;
 
     public class AddToFavoritesButtonViewComponent : ViewComponent
     {
@@ -17,16 +16,14 @@
 
         public async Task<IViewComponentResult> InvokeAsync(int adId)
         {
-            var currentUser = await this.usersService.GetCurrentUserAsync();
+            var currentUser = await usersService.GetCurrentUserAsync();
 
             if (currentUser.SellMeUserFavoriteProducts.Any(x => x.AdId == adId))
             {
-                return this.View("Remove", adId);
+                return View("Remove", adId);
             }
-            else
-            {
-                return this.View("Add", adId);  
-            }
+
+            return View("Add", adId);
         }
     }
 }

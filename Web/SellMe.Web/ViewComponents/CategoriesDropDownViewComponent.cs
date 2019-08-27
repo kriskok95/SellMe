@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace SellMe.Web.ViewComponents
+﻿namespace SellMe.Web.ViewComponents
 {
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
+    using Services.Interfaces;
 
     public class CategoriesDropdownViewComponent : ViewComponent
     {
@@ -16,8 +15,8 @@ namespace SellMe.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var categories = await this.categoriesService.GetCategoryViewModelsAsync();
-            return this.View(categories);
+            var categories = await categoriesService.GetCategoryViewModelsAsync();
+            return View(categories);
         }
     }
 }

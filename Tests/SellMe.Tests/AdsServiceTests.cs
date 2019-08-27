@@ -5,18 +5,18 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
-    using Moq;
-    using SellMe.Data.Models;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Tests.Common;
-    using SellMe.Web.ViewModels.BindingModels.Ads;
-    using SellMe.Web.ViewModels.InputModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
-    using Xunit;
+    using Common;
+    using Data.Models;
     using Microsoft.AspNetCore.Http;
-    using SellMe.Web.ViewModels.ViewModels.Categories;
-    using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using Moq;
+    using Services;
+    using Services.Interfaces;
+    using Web.ViewModels.BindingModels.Ads;
+    using Web.ViewModels.InputModels.Ads;
+    using Web.ViewModels.ViewModels.Ads;
+    using Web.ViewModels.ViewModels.Categories;
+    using Web.ViewModels.ViewModels.Subcategories;
+    using Xunit;
 
     public class AdsServiceTests
     {
@@ -90,10 +90,10 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            await this.adsService.CreateAdAsync(createAdInputModel);
+            await adsService.CreateAdAsync(createAdInputModel);
 
             //Assert
             Assert.Equal(expectedAdsCount, context.Ads.Count());
@@ -114,7 +114,7 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             var testingCategories = new List<Category>
             {
@@ -132,7 +132,7 @@
                 {
                     Id = 3,
                     Name = "Services"
-                },
+                }
             };
 
             await context.Categories.AddRangeAsync(testingCategories);
@@ -140,7 +140,7 @@
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.adsService.GetAdsByCategoryViewModelAsync(15, 1, 10));
+                adsService.GetAdsByCategoryViewModelAsync(15, 1, 10));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -175,7 +175,7 @@
                     {
                         Id = 3,
                         Name = "Services"
-                    },
+                    }
                 });
             moqCategoriesService.Setup(x => x.GetCategoryNameByIdAsync(1))
                 .ReturnsAsync("Electronics");
@@ -188,7 +188,7 @@
                     new AdsByCategorySubcategoryViewModel
                     {
                         Id = 1,
-                        Name = "Phones",
+                        Name = "Phones"
                     },
                     new AdsByCategorySubcategoryViewModel
                     {
@@ -200,7 +200,7 @@
             var moqMapper = new Mock<IMapper>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinary.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinary.Object);
 
             var testingAds = new List<Ad>
             {
@@ -223,10 +223,10 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     IsApproved = true,
-                    IsDeleted = false,
+                    IsDeleted = false
                 },
                 new Ad
                 {
@@ -247,10 +247,10 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     IsApproved = true,
-                    IsDeleted = false,
+                    IsDeleted = false
                 },
                 new Ad
                 {
@@ -270,11 +270,11 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     IsApproved = true,
-                    IsDeleted = false,
-                },
+                    IsDeleted = false
+                }
             };
 
             var testingCategories = new List<Category>
@@ -293,7 +293,7 @@
                 {
                     Id = 3,
                     Name = "Services"
-                },
+                }
             };
 
             var testingSubcategories = new List<SubCategory>
@@ -309,7 +309,7 @@
                     Id = 2,
                     CategoryId = 1,
                     Name = "Monitors"
-                },
+                }
 
             };
 
@@ -319,7 +319,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.adsService.GetAdsByCategoryViewModelAsync(1, 1, 10);
+            var actual = await adsService.GetAdsByCategoryViewModelAsync(1, 1, 10);
 
             //Asert
             Assert.Equal(expectedAdsCount, actual.AdsViewModels.Count);
@@ -343,10 +343,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdByIdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetAdByIdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -415,10 +415,10 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdByIdAsync(1);
+            var actual = await adsService.GetAdByIdAsync(1);
 
             //Assert
             Assert.Equal(expected.Title, actual.Title);
@@ -444,10 +444,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdDetailsViewModelAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetAdDetailsViewModelAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -515,10 +515,10 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdDetailsViewModelAsync(1);
+            var actual = await adsService.GetAdDetailsViewModelAsync(1);
 
             Assert.True(context.AdViews.Count() == 1);
         }
@@ -602,10 +602,10 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdDetailsViewModelAsync(1);
+            var actual = await adsService.GetAdDetailsViewModelAsync(1);
 
             //Assert
             Assert.Equal(expectedResult.Id, actual.Id);
@@ -639,12 +639,12 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
                 moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ArchiveAdByIdAsync(1);
+            var actual = await adsService.ArchiveAdByIdAsync(1);
 
             //Assert
             Assert.True(testingAd.IsDeleted);
@@ -672,12 +672,12 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
                 moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ArchiveAdByIdAsync(1);
+            var actual = await adsService.ArchiveAdByIdAsync(1);
 
             //Assert
             Assert.False(actual);
@@ -705,12 +705,12 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
                 moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ArchiveAdByIdAsync(1);
+            var actual = await adsService.ArchiveAdByIdAsync(1);
 
             //Assert
             Assert.True(actual);
@@ -738,12 +738,12 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
                 moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ActivateAdByIdAsync(1);
+            var actual = await adsService.ActivateAdByIdAsync(1);
 
             //Assert
             Assert.False(actual);
@@ -771,12 +771,12 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
                 moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ActivateAdByIdAsync(1);
+            var actual = await adsService.ActivateAdByIdAsync(1);
 
             //Assert
             Assert.False(testingAd.IsDeleted);
@@ -804,12 +804,12 @@
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object,
                 moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ActivateAdByIdAsync(1);
+            var actual = await adsService.ActivateAdByIdAsync(1);
 
             //Assert
             Assert.True(actual);
@@ -830,10 +830,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetEditAdBindingModelById(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetEditAdBindingModelById(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -864,7 +864,7 @@
                         District = "Student city",
                         ZipCode = 1000,
                         PhoneNumber = "0895335532",
-                        EmailAddress = "Ivan@gmail.com",
+                        EmailAddress = "Ivan@gmail.com"
                     }
                 }
             };
@@ -897,7 +897,7 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
+                    EmailAddress = "Ivan@gmail.com"
                 });
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
@@ -926,16 +926,16 @@
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
                     EmailAddress = "Ivan@gmail.com"
-                },
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetEditAdBindingModelById(1);
+            var actual = await adsService.GetEditAdBindingModelById(1);
 
             //Assert
             Assert.Equal(expectedResult.EditAdViewModel.EditAdDetailsViewModel.Id, actual.EditAdViewModel.EditAdDetailsViewModel.Id);
@@ -970,10 +970,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdTitleByIdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetAdTitleByIdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -996,16 +996,16 @@
             var testingAd = new Ad
             {
                 Id = 1,
-                Title = "Iphone 6s",
+                Title = "Iphone 6s"
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdTitleByIdAsync(1);
+            var actual = await adsService.GetAdTitleByIdAsync(1);
 
             Assert.Equal(expectedResult, actual);
         }
@@ -1025,10 +1025,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.UpdateAdByIdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.UpdateAdByIdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -1073,16 +1073,16 @@
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
                     EmailAddress = "Ivan@gmail.com"
-                },
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            await this.adsService.UpdateAdByIdAsync(1);
+            await adsService.UpdateAdByIdAsync(1);
 
             //Assert
             Assert.Equal(expectedActiveFrom, testingAd.ActiveFrom.Day);
@@ -1129,16 +1129,16 @@
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
                     EmailAddress = "Ivan@gmail.com"
-                },
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            await this.adsService.UpdateAdByIdAsync(1);
+            await adsService.UpdateAdByIdAsync(1);
 
             //Assert
             Assert.Equal(expected, testingAd.Updates);
@@ -1185,16 +1185,16 @@
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
                     EmailAddress = "Ivan@gmail.com"
-                },
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            await this.adsService.UpdateAdByIdAsync(1);
+            await adsService.UpdateAdByIdAsync(1);
 
             //Assert
             Assert.Equal(expectedActiveFrom, testingAd.ActiveFrom.Day);
@@ -1297,17 +1297,17 @@
                             ActiveTo = DateTime.UtcNow.AddDays(-20)
                         }
                     }
-                },
+                }
 
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetPromotedAdViewModelsAsync();
+            var actual = await adsService.GetPromotedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1329,10 +1329,10 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetPromotedAdViewModelsAsync();
+            var actual = await adsService.GetPromotedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1384,7 +1384,7 @@
                         {
                             ImageUrl = "https://www.webpagetest.org2"
                         }
-                    },
+                    }
                 },
                 new Ad
                 {
@@ -1399,17 +1399,17 @@
                         {
                             ImageUrl = "https://www.webpagetest.org3"
                         }
-                    },
-                },
+                    }
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetLatestAddedAdViewModelsAsync();
+            var actual = await adsService.GetLatestAddedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1431,10 +1431,10 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetLatestAddedAdViewModelsAsync();
+            var actual = await adsService.GetLatestAddedAdViewModelsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -1455,10 +1455,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdsBySubcategoryViewModelAsync(1, 2, 1, 10));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetAdsBySubcategoryViewModelAsync(1, 2, 1, 10));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -1487,10 +1487,10 @@
             await context.Categories.AddAsync(testingCategory);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -1514,18 +1514,18 @@
                     new AdsByCategorySubcategoryViewModel
                     {
                         Id = 1,
-                        Name = "Phones",
+                        Name = "Phones"
                     },
                     new AdsByCategorySubcategoryViewModel
                     {
                         Id = 2,
-                        Name = "Monitors",
+                        Name = "Monitors"
                     },
                     new AdsByCategorySubcategoryViewModel
                     {
                         Id = 3,
-                        Name = "Tvs",
-                    },
+                        Name = "Tvs"
+                    }
                 });
             var moqMapper = new Mock<IMapper>();
             var moqCloudinaryService = new Mock<ICloudinaryService>();
@@ -1553,10 +1553,10 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     IsApproved = true,
-                    IsDeleted = false,
+                    IsDeleted = false
                 },
                 new Ad
                 {
@@ -1577,10 +1577,10 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     IsApproved = true,
-                    IsDeleted = false,
+                    IsDeleted = false
                 },
                 new Ad
                 {
@@ -1601,11 +1601,11 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     IsApproved = true,
-                    IsDeleted = false,
-                },
+                    IsDeleted = false
+                }
             };
 
             var testingCategory = new Category
@@ -1627,10 +1627,10 @@
             await context.SaveChangesAsync();
 
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10);
+            var actual = await adsService.GetAdsBySubcategoryViewModelAsync(1, 1, 1, 10);
 
             //Assert
             Assert.Equal(expectedSubcategoriesCount, actual.AdsByCategorySubcategoryViewModels.Count);
@@ -1695,7 +1695,7 @@
                         {
                             ImageUrl = "https://www.webpagetest.org2"
                         }
-                    },
+                    }
                 },
                 new Ad
                 {
@@ -1714,17 +1714,17 @@
                         {
                             ImageUrl = "https://www.webpagetest.org3"
                         }
-                    },
-                },
+                    }
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetMyActiveAdsViewModelsAsync(1, 10);
+            var actual = await adsService.GetMyActiveAdsViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -1748,10 +1748,10 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetFavoriteAdsViewModelsAsync(userId, 1, 10));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetFavoriteAdsViewModelsAsync(userId, 1, 10));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -1793,11 +1793,11 @@
                     ActiveTo = DateTime.UtcNow.AddDays(30),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Phones",
+                        Name = "Phones"
                     },
                     SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
                     {
@@ -1810,7 +1810,7 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -1842,16 +1842,16 @@
                     },
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -1859,7 +1859,7 @@
                         {
                             ImageUrl = "https://www.webpagetest.org2"
                         }
-                    },
+                    }
                 },
                 new Ad
                 {
@@ -1883,16 +1883,16 @@
                     },
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -1900,17 +1900,17 @@
                         {
                             ImageUrl = "https://www.webpagetest.org3"
                         }
-                    },
-                },
+                    }
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetFavoriteAdsViewModelsAsync("SellMeUserId", 1, 10);
+            var actual = await adsService.GetFavoriteAdsViewModelsAsync("SellMeUserId", 1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -1950,11 +1950,11 @@
                     ActiveTo = DateTime.UtcNow.AddDays(30),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Phones",
+                        Name = "Phones"
                     },
                     SellMeUserFavoriteProducts = new List<SellMeUserFavoriteProduct>
                     {
@@ -1967,7 +1967,7 @@
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -1999,16 +1999,16 @@
                     },
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2016,7 +2016,7 @@
                         {
                             ImageUrl = "https://www.webpagetest.org2"
                         }
-                    },
+                    }
                 },
                 new Ad
                 {
@@ -2040,16 +2040,16 @@
                     },
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2057,17 +2057,17 @@
                         {
                             ImageUrl = "https://www.webpagetest.org3"
                         }
-                    },
-                },
+                    }
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetArchivedAdsViewModelsAsync(1, 10);
+            var actual = await adsService.GetArchivedAdsViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -2104,16 +2104,16 @@
                     ActiveTo = DateTime.UtcNow.AddDays(30),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Phones",
+                        Name = "Phones"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2137,16 +2137,16 @@
                     ActiveTo = DateTime.UtcNow.AddDays(25),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2154,7 +2154,7 @@
                         {
                             ImageUrl = "https://www.webpagetest.org2"
                         }
-                    },
+                    }
                 },
                 new Ad
                 {
@@ -2178,16 +2178,16 @@
                     },
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2195,17 +2195,17 @@
                         {
                             ImageUrl = "https://www.webpagetest.org3"
                         }
-                    },
-                },
+                    }
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdsBySearchViewModelsAsync("phone", 1, 10);
+            var actual = await adsService.GetAdsBySearchViewModelsAsync("phone", 1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -2251,16 +2251,16 @@
                     ActiveTo = DateTime.UtcNow.AddDays(30),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Phones",
+                        Name = "Phones"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2284,16 +2284,16 @@
                     ActiveTo = DateTime.UtcNow.AddDays(25),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2301,7 +2301,7 @@
                         {
                             ImageUrl = "https://www.webpagetest.org2"
                         }
-                    },
+                    }
                 },
                 new Ad
                 {
@@ -2317,16 +2317,16 @@
                     ActiveTo = DateTime.UtcNow.AddDays(10),
                     Category = new Category
                     {
-                        Name = "Electronics",
+                        Name = "Electronics"
                     },
                     SubCategory = new SubCategory
                     {
-                        Name = "Tvs",
+                        Name = "Tvs"
                     },
                     Address = new Address
                     {
                         Country = "Bulgaria",
-                        City = "Sofia",
+                        City = "Sofia"
                     },
                     Images = new List<Image>
                     {
@@ -2334,17 +2334,17 @@
                         {
                             ImageUrl = "https://www.webpagetest.org3"
                         }
-                    },
-                },
+                    }
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdsByUserBindingModelAsync("SellerId", 1, 10);
+            var actual = await adsService.GetAdsByUserBindingModelAsync("SellerId", 1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.AdViewModels.Count);
@@ -2368,10 +2368,10 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.EditAd(new EditAdInputModel()));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.EditAd(new EditAdInputModel()));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -2430,13 +2430,13 @@
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
                     EmailAddress = "Ivan@gmail.com"
-                },
+                }
             };
 
             await context.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             var editAdInputModel = new EditAdInputModel
             {
@@ -2466,7 +2466,7 @@
 
 
             //Act
-            await this.adsService.EditAd(editAdInputModel);
+            await adsService.EditAd(editAdInputModel);
 
             //Assert
             Assert.Equal(expectedAdId, testingAd.Id);
@@ -2507,7 +2507,7 @@
                     Title = "Iphone 6s",
                     Description = "PerfectCondition",
                     Price = 200,
-                    IsApproved = false,
+                    IsApproved = false
                 },
                 new Ad
                 {
@@ -2515,7 +2515,7 @@
                     Title = "Motorola phone",
                     Description = "PerfectCondition",
                     Price = 500,
-                    IsApproved = false,
+                    IsApproved = false
                 },
                 new Ad
                 {
@@ -2523,17 +2523,17 @@
                     Title = "Samsung TVs",
                     Description = "brand new",
                     Price = 2000,
-                    IsApproved = true,
+                    IsApproved = true
                 }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdsForApprovalViewModelsAsync(1, 10);
+            var actual = await adsService.GetAdsForApprovalViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -2563,7 +2563,7 @@
                     Description = "PerfectCondition",
                     Price = 200,
                     IsApproved = false,
-                    CreatedOn = DateTime.UtcNow.AddDays(-10),
+                    CreatedOn = DateTime.UtcNow.AddDays(-10)
                 },
                 new Ad
                 {
@@ -2572,7 +2572,7 @@
                     Description = "PerfectCondition",
                     Price = 500,
                     IsApproved = false,
-                    CreatedOn = DateTime.UtcNow.AddDays(-1),
+                    CreatedOn = DateTime.UtcNow.AddDays(-1)
                 },
                 new Ad
                 {
@@ -2580,17 +2580,17 @@
                     Title = "Samsung TVs",
                     Description = "brand new",
                     Price = 2000,
-                    IsApproved = true,
+                    IsApproved = true
                 }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAdsForApprovalViewModelsAsync(1, 10);
+            var actual = await adsService.GetAdsForApprovalViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedAdsIds[0], actual[0].Id);
@@ -2612,10 +2612,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.ApproveAdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.ApproveAdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -2641,16 +2641,16 @@
                 Title = "Iphone 6s",
                 Description = "PerfectCondition",
                 Price = 200,
-                IsApproved = true,
+                IsApproved = true
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => this.adsService.ApproveAdAsync(1));
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => adsService.ApproveAdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -2674,16 +2674,16 @@
                 Title = "Iphone 6s",
                 Description = "PerfectCondition",
                 Price = 200,
-                IsApproved = false,
+                IsApproved = false
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.ApproveAdAsync(1);
+            var actual = await adsService.ApproveAdAsync(1);
 
             //Assert
             Assert.True(actual);
@@ -2705,10 +2705,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.GetRejectAdBindingModelAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.GetRejectAdBindingModelAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -2740,16 +2740,16 @@
                 Title = "Iphone 6s",
                 Description = "PerfectCondition",
                 Price = 200,
-                IsApproved = false,
+                IsApproved = false
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetRejectAdBindingModelAsync(1);
+            var actual = await adsService.GetRejectAdBindingModelAsync(1);
 
             //Assert
             Assert.Equal(expected.AdId, actual.ViewModel.AdId);
@@ -2771,10 +2771,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.CreateAdRejectionAsync(1, "Comment"));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.CreateAdRejectionAsync(1, "Comment"));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -2801,16 +2801,16 @@
                 Id = 1,
                 Title = "Iphone 6s",
                 Description = "PerfectCondition",
-                Price = 200,
+                Price = 200
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.CreateAdRejectionAsync(1, comment));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.CreateAdRejectionAsync(1, comment));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -2834,16 +2834,16 @@
                 Title = "Iphone 6s",
                 Description = "PerfectCondition",
                 Price = 200,
-                IsDeclined = false,
+                IsDeclined = false
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            await this.adsService.CreateAdRejectionAsync(1, "Comment");
+            await adsService.CreateAdRejectionAsync(1, "Comment");
 
             //Assert
             Assert.Single(context.AdRejections);
@@ -2877,7 +2877,7 @@
                     Title = "Iphone 6s",
                     Description = "PerfectCondition",
                     Price = 200,
-                    IsApproved = false,
+                    IsApproved = false
                 },
                 new Ad
                 {
@@ -2886,7 +2886,7 @@
                     Title = "Motorola phone",
                     Description = "PerfectCondition",
                     Price = 500,
-                    IsApproved = false,
+                    IsApproved = false
                 },
                 new Ad
                 {
@@ -2895,7 +2895,7 @@
                     SellerId = "CurrentUserId",
                     Description = "brand new",
                     Price = 2000,
-                    IsApproved = true,
+                    IsApproved = true
                 },
                 new Ad
                 {
@@ -2905,17 +2905,17 @@
                     Description = "brand new",
                     Price = 5435,
                     IsApproved = false,
-                    IsDeclined = true,
+                    IsDeclined = true
                 }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetWaitingForApprovalByCurrentUserViewModels(1, 10);
+            var actual = await adsService.GetWaitingForApprovalByCurrentUserViewModels(1, 10);
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -2956,7 +2956,7 @@
                         {
                             Id = 1,
                             AdId = 1,
-                            Comment = "Comment",
+                            Comment = "Comment"
                         }
                     }
                 },
@@ -2975,7 +2975,7 @@
                         {
                             Id = 2,
                             AdId = 2,
-                            Comment = "Comment",
+                            Comment = "Comment"
                         }
                     }
                 },
@@ -2995,7 +2995,7 @@
                         {
                             Id = 3,
                             AdId = 3,
-                            Comment = "Comment",
+                            Comment = "Comment"
                         }
                     }
                 },
@@ -3014,7 +3014,7 @@
                         {
                             Id = 4,
                             AdId = 4,
-                            Comment = "Comment",
+                            Comment = "Comment"
                         }
                     }
                 }
@@ -3023,10 +3023,10 @@
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetRejectedAdByUserViewModelsAsync(1, 10);
+            var actual = await adsService.GetRejectedAdByUserViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expected, actual.Count);
@@ -3047,10 +3047,10 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.SubmitRejectedAdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.SubmitRejectedAdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -3074,15 +3074,15 @@
             {
                 Id = 1,
                 AdId = 1,
-                Comment = "Comment",
+                Comment = "Comment"
             };
             await context.AdRejections.AddAsync(testingAdRejection);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.adsService.SubmitRejectedAdAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => adsService.SubmitRejectedAdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -3106,22 +3106,22 @@
                 Title = "Iphone 6s",
                 Description = "PerfectCondition",
                 Price = 200,
-                IsDeclined = true,
+                IsDeclined = true
             };
 
             var testingAdRejection = new AdRejection
             {
                 AdId = 1,
-                Comment = "Comment",
+                Comment = "Comment"
             };
             await context.Ads.AddAsync(testingAd);
             await context.AdRejections.AddAsync(testingAdRejection);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.SubmitRejectedAdAsync(1);
+            var actual = await adsService.SubmitRejectedAdAsync(1);
 
             Assert.True(actual);
             Assert.False(testingAd.IsDeclined);
@@ -3153,7 +3153,7 @@
                     Description = "PerfectCondition",
                     Price = 200,
                     IsApproved = false,
-                    IsDeclined = true,
+                    IsDeclined = true
                 },
                 new Ad
                 {
@@ -3163,7 +3163,7 @@
                     Description = "PerfectCondition",
                     Price = 500,
                     IsApproved = false,
-                    IsDeclined = true,
+                    IsDeclined = true
                 },
                 new Ad
                 {
@@ -3173,19 +3173,19 @@
                     Description = "brand new",
                     Price = 2000,
                     IsApproved = false,
-                    IsDeclined = false,
-                },
+                    IsDeclined = false
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetRejectedAdAllViewModelsAsync(1, 10);
+            var actual = await adsService.GetRejectedAdAllViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -3218,7 +3218,7 @@
                     Price = 200,
                     IsApproved = false,
                     IsDeclined = true,
-                    CreatedOn = DateTime.UtcNow.AddDays(-24),
+                    CreatedOn = DateTime.UtcNow.AddDays(-24)
                 },
                 new Ad
                 {
@@ -3229,7 +3229,7 @@
                     Price = 500,
                     IsApproved = false,
                     IsDeclined = true,
-                    CreatedOn = DateTime.UtcNow.AddDays(-1),
+                    CreatedOn = DateTime.UtcNow.AddDays(-1)
                 },
                 new Ad
                 {
@@ -3240,19 +3240,19 @@
                     Price = 2000,
                     IsApproved = false,
                     IsDeclined = true,
-                    CreatedOn = DateTime.UtcNow.AddDays(-10),
-                },
+                    CreatedOn = DateTime.UtcNow.AddDays(-10)
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetRejectedAdAllViewModelsAsync(1, 10);
+            var actual = await adsService.GetRejectedAdAllViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedIds[0], actual[0].Id);
@@ -3286,7 +3286,7 @@
                     Description = "PerfectCondition",
                     Price = 200,
                     IsApproved = true,
-                    IsDeleted = false,
+                    IsDeleted = false
                 },
                 new Ad
                 {
@@ -3296,7 +3296,7 @@
                     Description = "PerfectCondition",
                     Price = 500,
                     IsApproved = true,
-                    IsDeleted = false,
+                    IsDeleted = false
                 },
                 new Ad
                 {
@@ -3306,19 +3306,19 @@
                     Description = "brand new",
                     Price = 2000,
                     IsApproved = true,
-                    IsDeleted = true,
-                },
+                    IsDeleted = true
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAllActiveAdViewModelsAsync(1, 10);
+            var actual = await adsService.GetAllActiveAdViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedCount, actual.Count);
@@ -3350,7 +3350,7 @@
                     Price = 200,
                     IsApproved = true,
                     IsDeleted = false,
-                    CreatedOn = DateTime.UtcNow.AddDays(-24),
+                    CreatedOn = DateTime.UtcNow.AddDays(-24)
                 },
                 new Ad
                 {
@@ -3361,7 +3361,7 @@
                     Price = 500,
                     IsApproved = true,
                     IsDeleted = false,
-                    CreatedOn = DateTime.UtcNow.AddDays(-1),
+                    CreatedOn = DateTime.UtcNow.AddDays(-1)
                 },
                 new Ad
                 {
@@ -3372,19 +3372,19 @@
                     Price = 2000,
                     IsApproved = true,
                     IsDeleted = false,
-                    CreatedOn = DateTime.UtcNow.AddDays(-10),
-                },
+                    CreatedOn = DateTime.UtcNow.AddDays(-10)
+                }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAllActiveAdViewModelsAsync(1, 10);
+            var actual = await adsService.GetAllActiveAdViewModelsAsync(1, 10);
 
             //Assert
             Assert.Equal(expectedIds[0], actual[0].Id);
@@ -3407,12 +3407,12 @@
             var moqCloudinaryService = new Mock<ICloudinaryService>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
+            var actual = await adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             //Assert
             Assert.Equal(expectedLength, actual.Count);
@@ -3442,18 +3442,18 @@
                 new Ad {Id = 5, CreatedOn = DateTime.UtcNow.AddDays(-1)},
                 new Ad {Id = 6, CreatedOn = DateTime.UtcNow.AddDays(-10)},
                 new Ad {Id = 7, CreatedOn = DateTime.UtcNow.AddDays(-30)},
-                new Ad {Id = 8, CreatedOn = DateTime.UtcNow},
+                new Ad {Id = 8, CreatedOn = DateTime.UtcNow}
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
+            var actual = await adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             //Assert
             Assert.Equal(expected[0], actual[0]);
@@ -3491,18 +3491,18 @@
                 new Ad {Id = 4, IsDeleted = false, IsApproved = true },
                 new Ad {Id = 5, IsDeleted = false, IsApproved = true },
                 new Ad {Id = 6, IsDeleted = true, IsApproved = true },
-                new Ad {Id = 7, IsDeleted = false, IsApproved = false },
+                new Ad {Id = 7, IsDeleted = false, IsApproved = false }
             };
 
             await context.Ads.AddRangeAsync(testingAds);
             await context.SaveChangesAsync();
 
-            this.adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
+            adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object,
                 moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object,
                 moqCloudinaryService.Object);
 
             //Act
-            var actual = await this.adsService.GetAllActiveAdsCountAsync();
+            var actual = await adsService.GetAllActiveAdsCountAsync();
 
             //Assert
             Assert.Equal(expected, actual);

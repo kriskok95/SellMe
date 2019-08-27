@@ -64,7 +64,7 @@
                     @if (Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count <= 4)
                     {
                         <div class="row justify-content-between">
-                            @for (int i = 0; i < @Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count; i++)
+                            @for (int i = 0; i < Model.EditAdViewModel.EditAdDetailsViewModel.Images.Count; i++)
                             {
                                 <img src="@Model.EditAdViewModel.EditAdDetailsViewModel.Images[i]" class="image" />
                             }

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SellMe.Data.Models;
-
-namespace SellMe.Data.Configurations
+﻿namespace SellMe.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Models;
+
     public class ConditionConfiguration : IEntityTypeConfiguration<Condition>
     {
         public void Configure(EntityTypeBuilder<Condition> builder)

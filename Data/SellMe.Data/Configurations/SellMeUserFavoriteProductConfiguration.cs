@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SellMe.Data.Models;
-
-namespace SellMe.Data.Configurations
+﻿namespace SellMe.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Models;
+
     public class SellMeUserFavoriteProductConfiguration : IEntityTypeConfiguration<SellMeUserFavoriteProduct>
     {
         public void Configure(EntityTypeBuilder<SellMeUserFavoriteProduct> builder)

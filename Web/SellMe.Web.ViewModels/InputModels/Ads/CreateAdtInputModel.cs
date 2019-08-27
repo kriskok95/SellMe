@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Web.ViewModels.InputModels.Ads
 {
-    using SellMe.Web.ViewModels.ViewModels;
+    using ViewModels;
 
     public class CreateAdInputModel : BaseViewModel
     {

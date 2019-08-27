@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
 
-
     public class EditAdDetailsInputModel
     {
         private const string PriceErrorMessage = "{0} can't be a negative number!";
@@ -20,7 +19,7 @@
 
         public EditAdDetailsInputModel()
         {
-            this.Images = new List<IFormFile>();
+            Images = new List<IFormFile>();
         }
 
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength, ErrorMessage = TitleLengthErrorMessage)]

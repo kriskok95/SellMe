@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SellMe.Data.Models;
-
-namespace SellMe.Data.Configurations
+﻿namespace SellMe.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Models;
+
     class SellMeUserAddressConfiguration : IEntityTypeConfiguration<SellMeUserAddress>
     {
         public void Configure(EntityTypeBuilder<SellMeUserAddress> builder)

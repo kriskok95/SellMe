@@ -1,10 +1,10 @@
 ﻿namespace SellMe.Web.Areas.Administration.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
-    using SellMe.Services.Interfaces;
+    using Common;
     using Microsoft.AspNetCore.Authorization;
-    using SellMe.Common;
+    using Microsoft.AspNetCore.Mvc;
+    using Services.Interfaces;
 
     public class UsersController : Controller
     {
@@ -19,9 +19,9 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> All()
         {
-            var allUserViewModels = await this.usersService.GetAllUserViewModelsAsync();
+            var allUserViewModels = await usersService.GetAllUserViewModelsAsync();
 
-            return this.View(allUserViewModels);
+            return View(allUserViewModels);
         }
 
         [HttpPost]
@@ -29,7 +29,7 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> Block(string userId)
         {
-            var isBlocked = await this.usersService.BlockUserByIdAsync(userId);
+            var isBlocked = await usersService.BlockUserByIdAsync(userId);
 
             return Json(isBlocked);
         }

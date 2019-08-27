@@ -4,10 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
-    using SellMe.Common;
-    using Microsoft.Extensions.DependencyInjection;
-    using SellMe.Data.Models;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+    using Models;
+    using SellMe.Common;
 
     internal class RolesSeeder : ISeeder
     {
@@ -38,7 +38,7 @@
                 {
                     UserName = "admin",
                     Email = "admin@gmail.com",
-                    EmailConfirmed = true,
+                    EmailConfirmed = true
                 };
 
                 var password = "123456";

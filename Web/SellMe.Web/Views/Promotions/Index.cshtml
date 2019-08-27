@@ -4,7 +4,7 @@
 <h5 class="text-center text-danger mb-3 mt-3">@TempData["SuccessfullyPromotedMessage"]</h5>
 <hr class="hr-sell-me" />
 <div class="row d-flex justify-content-around">
-    @foreach (var promotion in @Model.PromotionViewModels)
+    @foreach (var promotion in Model.PromotionViewModels)
     {
         <div class="card mb-3" style="width: 18rem;">
             <div class="card-header">

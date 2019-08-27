@@ -2,7 +2,6 @@
 {
     using System;
 
-
     public interface IAuditInfo
     {
         DateTime CreatedOn { get; set; }

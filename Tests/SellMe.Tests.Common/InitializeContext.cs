@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Tests.Common
 {
     using System;
+    using Data;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Data;
 
     public static class InitializeContext
     {

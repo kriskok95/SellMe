@@ -1,14 +1,14 @@
 ﻿namespace SellMe.Data.Models
 {
     using System.Collections.Generic;
-    using SellMe.Data.Common;
+    using Common;
 
     public class Category : BaseDeletableModel<int>
     {
         public Category()
         {
-            this.SubCategories = new HashSet<SubCategory>();
-            this.Ads = new HashSet<Ad>();
+            SubCategories = new HashSet<SubCategory>();
+            Ads = new HashSet<Ad>();
         }
 
         public string Name { get; set; }

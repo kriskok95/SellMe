@@ -1,10 +1,9 @@
 ﻿namespace SellMe.Services
 {
     using System.Linq;
-
-    using SellMe.Services.Interfaces;
-    using SellMe.Web.ViewModels.ViewModels.Home;
     using System.Threading.Tasks;
+    using Interfaces;
+    using Web.ViewModels.ViewModels.Home;
 
     public class HomeService : IHomeService
     {
@@ -19,15 +18,15 @@
 
         public async Task<IndexViewModel> GetIndexViewModelAsync()
         {
-            var categoriesViewModel = await this.categoriesService.GetAllCategoryViewModelsAsync();
-            var promotedAdViewModel = await this.adsService.GetPromotedAdViewModelsAsync();
-            var latestAddedAdsViewModel = await this.adsService.GetLatestAddedAdViewModelsAsync();
+            var categoriesViewModel = await categoriesService.GetAllCategoryViewModelsAsync();
+            var promotedAdViewModel = await adsService.GetPromotedAdViewModelsAsync();
+            var latestAddedAdsViewModel = await adsService.GetLatestAddedAdViewModelsAsync();
 
-            var indexViewModel = new IndexViewModel()
+            var indexViewModel = new IndexViewModel
             {
                 CategoryViewModels = categoriesViewModel.ToList(),
                 PromotedAdViewModels = promotedAdViewModel.ToList(),
-                LatestAddedAdViewModels = latestAddedAdsViewModel.ToList(),
+                LatestAddedAdViewModels = latestAddedAdsViewModel.ToList()
             };
 
             return indexViewModel;

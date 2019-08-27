@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using SellMe.Web.Infrastructure.Models;
-
-namespace SellMe.Services.Interfaces
+﻿namespace SellMe.Services.Interfaces
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using SellMe.Web.ViewModels.ViewModels.Statistics;
+    using Web.Infrastructure.Models;
+    using Web.ViewModels.ViewModels.Statistics;
 
     public interface IStatisticsService
     {

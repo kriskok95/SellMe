@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace SellMe.Data.Migrations
+﻿namespace SellMe.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddedPromotionOrderModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,17 +37,17 @@ namespace SellMe.Data.Migrations
                 name: "PromotionOrders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    AdId = table.Column<int>(nullable: false),
-                    PromotionId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    ActiveTo = table.Column<DateTime>(nullable: false)
+                    AdId = table.Column<int>(),
+                    PromotionId = table.Column<int>(),
+                    Quantity = table.Column<int>(),
+                    Price = table.Column<decimal>(),
+                    ActiveTo = table.Column<DateTime>()
                 },
                 constraints: table =>
                 {
@@ -102,15 +102,15 @@ namespace SellMe.Data.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AdId = table.Column<int>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    AdId = table.Column<int>(),
+                    CreatedOn = table.Column<DateTime>(),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)"),
+                    Quantity = table.Column<int>(),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

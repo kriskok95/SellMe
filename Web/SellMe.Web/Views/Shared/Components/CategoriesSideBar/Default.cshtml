@@ -6,7 +6,7 @@
             All Categories
         </div>
         <ul class="list-group list-group-flush">
-            @foreach (var category in @Model)
+            @foreach (var category in Model)
             {
                 <li class="list-group-item"><a asp-controller="Ads" asp-action="AdsByCategory" asp-route-id="@category.Id"><i class="@category.FontAwesomeIcon"></i> @category.Name</a></li>
             }

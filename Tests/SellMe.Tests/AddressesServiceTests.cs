@@ -1,12 +1,11 @@
 namespace SellMe.Tests
 {
-
-    using SellMe.Tests.Common;
     using System;
     using System.Threading.Tasks;
-    using SellMe.Data.Models;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
+    using Common;
+    using Data.Models;
+    using Services;
+    using Services.Interfaces;
     using Xunit;
 
     public class AddressesServiceTests
@@ -19,7 +18,7 @@ namespace SellMe.Tests
             //Arrange
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.addressesService = new AddressesService(context);
+            addressesService = new AddressesService(context);
 
             var addressId = 1;
 
@@ -33,7 +32,7 @@ namespace SellMe.Tests
                 District = "Student City",
                 ZipCode = 1000,
                 PhoneNumber = "08552332",
-                Street = "Ivan Vazov",
+                Street = "Ivan Vazov"
             };
 
             await context.Addresses.AddAsync(testAddress);
@@ -58,7 +57,7 @@ namespace SellMe.Tests
             //Arrange
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.addressesService = new AddressesService(context);
+            addressesService = new AddressesService(context);
             var testAddress = new Address
             {
                 Id = 1,
@@ -69,7 +68,7 @@ namespace SellMe.Tests
                 District = "Student City",
                 ZipCode = 1000,
                 PhoneNumber = "08552332",
-                Street = "Ivan Vazov",
+                Street = "Ivan Vazov"
             };
 
             await context.Addresses.AddAsync(testAddress);
@@ -88,11 +87,11 @@ namespace SellMe.Tests
         {
             //Arrange
             var context = InitializeContext.CreateContextForInMemory();
-            this.addressesService = new AddressesService(context);
+            addressesService = new AddressesService(context);
             var expectedCount = 142;
 
             //Act
-            var countriesCount = this.addressesService.GetAllCountries().Count;
+            var countriesCount = addressesService.GetAllCountries().Count;
 
             //Assert
             Assert.Equal(expectedCount, countriesCount);

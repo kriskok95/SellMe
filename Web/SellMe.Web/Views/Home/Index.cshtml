@@ -5,12 +5,12 @@
 }
 
 <div class="jumbotron jumbotron-fluid jumbotron-sell-me">
-    @for (int i = 0; i < @Model.CategoryViewModels.Count; i += 4)
+    @for (int i = 0; i < Model.CategoryViewModels.Count; i += 4)
     {
         <div class="row justify-content-around my-4">
             @for (int j = i; j < i + 4; j++)
             {
-                if (j < @Model.CategoryViewModels.Count)
+                if (j < Model.CategoryViewModels.Count)
                 {
                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <a asp-controller="Ads" asp-action="AdsByCategory" asp-route-id="@Model.CategoryViewModels[j].Id">
@@ -27,12 +27,12 @@
 <h3>Promoted Ads:</h3>
 <hr class="hr-sell-me" />
 <div>
-    @for (int i = 0; i < @Model.PromotedAdViewModels.Count; i += 4)
+    @for (int i = 0; i < Model.PromotedAdViewModels.Count; i += 4)
     {
         <div class="row justify-content-start my-3 mx-0">
             @for (int j = i; j < i + 4; j++)
             {
-                if (j < @Model.PromotedAdViewModels.Count)
+                if (j < Model.PromotedAdViewModels.Count)
                 {
                     <vc:promoted-ad-index-page view-model="@Model.PromotedAdViewModels[j]"></vc:promoted-ad-index-page>
                 }
@@ -43,12 +43,12 @@
 <h3 class="mt-5">Latest Added:</h3>
 <hr class="hr-sell-me" />
 <div>
-    @for (int i = 0; i < @Model.LatestAddedAdViewModels.Count; i += 4)
+    @for (int i = 0; i < Model.LatestAddedAdViewModels.Count; i += 4)
     {
         <div class="row justify-content-start my-3 mx-0">
             @for (int j = i; j < i + 4; j++)
             {
-                if (j < @Model.LatestAddedAdViewModels.Count)
+                if (j < Model.LatestAddedAdViewModels.Count)
                 {
                     <vc:latest-added-ad-index-page view-model="@Model.LatestAddedAdViewModels[j]"></vc:latest-added-ad-index-page>
                 }

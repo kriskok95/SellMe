@@ -1,24 +1,24 @@
 ﻿namespace SellMe.Services
 {
-    using AutoMapper;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.EntityFrameworkCore;
-    using Castle.Core.Internal;
-    using SellMe.Data;
-    using SellMe.Services.Interfaces;
-    using SellMe.Data.Models;
     using System.Threading.Tasks;
-    using SellMe.Services.Paging;
-    using SellMe.Services.Mapping;
-    using SellMe.Web.ViewModels.InputModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels.Categories;
-    using SellMe.Web.ViewModels.ViewModels.Addresses;
-    using SellMe.Web.ViewModels.BindingModels.Ads;
-    using SellMe.Web.ViewModels.ViewModels.Subcategories;
-    using System;
-    using SellMe.Common;
+    using AutoMapper;
+    using Castle.Core.Internal;
+    using Common;
+    using Data;
+    using Data.Models;
+    using Interfaces;
+    using Mapping;
+    using Microsoft.EntityFrameworkCore;
+    using Paging;
+    using Web.ViewModels.BindingModels.Ads;
+    using Web.ViewModels.InputModels.Ads;
+    using Web.ViewModels.ViewModels.Addresses;
+    using Web.ViewModels.ViewModels.Ads;
+    using Web.ViewModels.ViewModels.Categories;
+    using Web.ViewModels.ViewModels.Subcategories;
 
     public class AdsService : IAdsService
     {
@@ -55,38 +55,38 @@
         {
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(async x =>
-                    await this.cloudinaryService.UploadPictureAsync(x, inputModel.CreateAdDetailInputModel.Title))
+                    await cloudinaryService.UploadPictureAsync(x, inputModel.CreateAdDetailInputModel.Title))
                 .Select(x => x.Result)
                 .ToList();
 
-            var ad = this.mapper.Map<Ad>(inputModel);
+            var ad = mapper.Map<Ad>(inputModel);
             ad.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
             ad.Images = imageUrls.Select(x => new Image {ImageUrl = x})
                 .ToList();
-            ad.SellerId = this.usersService.GetCurrentUserId();
+            ad.SellerId = usersService.GetCurrentUserId();
 
-            await this.context.Ads.AddAsync(ad);
-            await this.context.SaveChangesAsync();
+            await context.Ads.AddAsync(ad);
+            await context.SaveChangesAsync();
         }
 
         public async Task<AdsByCategoryViewModel> GetAdsByCategoryViewModelAsync(int categoryId, int pageNumber,
             int pageSize)
         {
-            if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            if (!await context.Categories.AnyAsync(x => x.Id == categoryId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidCategoryIdErrorMessage);
             }
 
-            var adsViewModel = this.GetAllAdsByCategory(categoryId);
+            var adsViewModel = GetAllAdsByCategory(categoryId);
             var paginatedAdsViewModel =
                 await PaginatedList<AdViewModel>.CreateAsync(adsViewModel, pageNumber, pageSize);
 
-            var allCategoriesViewModel = await this.categoriesService.GetAllCategoryViewModelsAsync();
+            var allCategoriesViewModel = await categoriesService.GetAllCategoryViewModelsAsync();
             var subcategoryViewModels =
-                await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
-            string categoryName = await this.categoriesService.GetCategoryNameByIdAsync(categoryId);
+                await subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
+            string categoryName = await categoriesService.GetCategoryNameByIdAsync(categoryId);
 
-            var adsByCategoryViewModel = this.CreateAdsByCategoryViewModel(paginatedAdsViewModel,
+            var adsByCategoryViewModel = CreateAdsByCategoryViewModel(paginatedAdsViewModel,
                 allCategoriesViewModel, categoryName, subcategoryViewModels, categoryId);
 
             return adsByCategoryViewModel;
@@ -94,23 +94,23 @@
 
         public async Task<AdDetailsViewModel> GetAdDetailsViewModelAsync(int adId)
         {
-            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
-            var adFromDb = await this.GetAdByIdAsync(adId);
+            var adFromDb = await GetAdByIdAsync(adId);
             await CreateViewForAdAsync(adFromDb);
-            var addressForGivenAd = await this.addressesService.GetAddressByIdAsync(adFromDb.AddressId);
+            var addressForGivenAd = await addressesService.GetAddressByIdAsync(adFromDb.AddressId);
 
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
 
-            var rating = await this.usersService.GetRatingByUser(adFromDb.SellerId);
+            var rating = await usersService.GetRatingByUser(adFromDb.SellerId);
 
             adDetailsViewModel.Rating = rating;
 
             var addressViewModel = mapper.Map<AddressViewModel>(addressForGivenAd);
-            adDetailsViewModel.Observed = await this.GetObservedAdsByAdIdAsync(adId);
+            adDetailsViewModel.Observed = await GetObservedAdsByAdIdAsync(adId);
 
             adDetailsViewModel.AddressViewModel = addressViewModel;
 
@@ -119,12 +119,12 @@
 
         public async Task<Ad> GetAdByIdAsync(int adId)
         {
-            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
-            var ad = await this.context.Ads
+            var ad = await context.Ads
                 .FirstOrDefaultAsync(x => x.Id == adId);
 
             return ad;
@@ -132,24 +132,24 @@
 
         public async Task<bool> ArchiveAdByIdAsync(int adId)
         {
-            var ad = await this.GetAdByIdAsync(adId);
+            var ad = await GetAdByIdAsync(adId);
 
-            if (ad.IsDeleted == true)
+            if (ad.IsDeleted)
             {
                 return false;
             }
 
             ad.IsDeleted = true;
 
-            this.context.Update(ad);
-            await this.context.SaveChangesAsync();
+            context.Update(ad);
+            await context.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<bool> ActivateAdByIdAsync(int adId)
         {
-            var ad = await this.GetAdByIdAsync(adId);
+            var ad = await GetAdByIdAsync(adId);
 
             if (!ad.IsDeleted)
             {
@@ -160,24 +160,24 @@
             ad.CreatedOn = DateTime.UtcNow;
             ad.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
 
-            this.context.Update(ad);
-            await this.context.SaveChangesAsync();
+            context.Update(ad);
+            await context.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<EditAdBindingModel> GetEditAdBindingModelById(int adId)
         {
-            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
-            var editAdDetailsViewModel = await this.GetEditAdViewModelByIdAsync(adId);
+            var editAdDetailsViewModel = await GetEditAdViewModelByIdAsync(adId);
 
-            var editAdAddressViewModel = await this.GetEditAdAddressViewModelByIdAsync(adId);
+            var editAdAddressViewModel = await GetEditAdAddressViewModelByIdAsync(adId);
 
-            var editAdViewModel = this.GetEditAdViewModel(editAdDetailsViewModel, editAdAddressViewModel);
+            var editAdViewModel = GetEditAdViewModel(editAdDetailsViewModel, editAdAddressViewModel);
 
             var editAdBindingModel = new EditAdBindingModel
             {
@@ -190,16 +190,16 @@
         public async Task<string> GetAdTitleByIdAsync(int adId)
         {
 
-            var adFromDb = await this.GetAdByIdAsync(adId);
+            var adFromDb = await GetAdByIdAsync(adId);
 
-            var adTitle = this.context.Ads.FirstOrDefault(x => x.Id == adId)?.Title;
+            var adTitle = context.Ads.FirstOrDefault(x => x.Id == adId)?.Title;
 
             return adTitle;
         }
 
         public async Task<bool> UpdateAdByIdAsync(int adId)
         {
-            var adFromDb = await this.GetAdByIdAsync(adId);
+            var adFromDb = await GetAdByIdAsync(adId);
 
             if (adFromDb.Updates > 0)
             {
@@ -207,10 +207,10 @@
                 adFromDb.ActiveTo = DateTime.UtcNow.AddDays(GlobalConstants.AdDuration);
                 adFromDb.Updates--;
 
-                await this.updatesService.CreateUpdateAdAsync(adId);
+                await updatesService.CreateUpdateAdAsync(adId);
 
-                this.context.Update(adFromDb);
-                await this.context.SaveChangesAsync();
+                context.Update(adFromDb);
+                await context.SaveChangesAsync();
                 return true;
             }
 
@@ -219,7 +219,7 @@
 
         public async Task<ICollection<PromotedAdViewModel>> GetPromotedAdViewModelsAsync()
         {
-            var promotedAds = await this.context
+            var promotedAds = await context
                 .Ads
                 .Where(x => x.PromotionOrders.Any(y => y.IsActive) && x.IsApproved && !x.IsDeleted)
                 .ToListAsync();
@@ -246,7 +246,7 @@
 
         public async Task<ICollection<LatestAddedAdViewModel>> GetLatestAddedAdViewModelsAsync()
         {
-            var latestAddedAdViewModels = await this.context
+            var latestAddedAdViewModels = await context
                 .Ads
                 .OrderByDescending(x => x.CreatedOn)
                 .Where(x => !x.IsDeleted && x.IsApproved)
@@ -260,18 +260,18 @@
         public async Task<AdsBySubcategoryViewModel> GetAdsBySubcategoryViewModelAsync(int subcategoryId,
             int categoryId, int pageNumber, int pageSize)
         {
-            if (!await this.context.Categories.AnyAsync(x => x.Id == categoryId))
+            if (!await context.Categories.AnyAsync(x => x.Id == categoryId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidCategoryIdErrorMessage);
             }
 
-            if (!await this.context.SubCategories.AnyAsync(x => x.CategoryId == categoryId && x.Id == subcategoryId))
+            if (!await context.SubCategories.AnyAsync(x => x.CategoryId == categoryId && x.Id == subcategoryId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidSubcategoryIdErrorMessage);
             }
 
-            var subcategories = await this.subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
-            var adsBySubcategory = this.GetAdsBySubcategory(subcategoryId);
+            var subcategories = await subCategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(categoryId);
+            var adsBySubcategory = GetAdsBySubcategory(subcategoryId);
 
             var adsBySubcategoryViewModels = adsBySubcategory
                 .To<AdViewModel>();
@@ -284,7 +284,7 @@
                 AdsByCategorySubcategoryViewModels = subcategories.ToList(),
                 AdsBySubcategoryViewModels = pagedSubcategoryViewModels,
                 CategoryId = categoryId,
-                SubcategoryId = subcategoryId,
+                SubcategoryId = subcategoryId
             };
 
             return adsBySubcategoryViewModel;
@@ -293,7 +293,7 @@
         public async Task<PaginatedList<MyActiveAdsViewModel>> GetMyActiveAdsViewModelsAsync(int pageNumber,
             int pageSize)
         {
-            var myActiveAdViewModel = this.GetMyAdsViewModels();
+            var myActiveAdViewModel = GetMyAdsViewModels();
 
             var paginatedActiveAdViewModels =
                 await PaginatedList<MyActiveAdsViewModel>.CreateAsync(myActiveAdViewModel, pageNumber, pageSize);
@@ -309,9 +309,9 @@
                 throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
             }
 
-            var user = await this.usersService.GetCurrentUserAsync();
+            var user = await usersService.GetCurrentUserAsync();
 
-            var favoriteAdViewModels = this.GetFavoriteAdViewModelsByUser(user);
+            var favoriteAdViewModels = GetFavoriteAdViewModelsByUser(user);
 
             var paginatedFavoriteAds =
                 await PaginatedList<FavoriteAdViewModel>.CreateAsync(favoriteAdViewModels, pageNumber, pageSize);
@@ -322,7 +322,7 @@
         public async Task<PaginatedList<MyArchivedAdsViewModel>> GetArchivedAdsViewModelsAsync(int pageNumber,
             int pageSize)
         {
-            var archivedAdViewModels = this.GetMyArchivedAdsViewModels();
+            var archivedAdViewModels = GetMyArchivedAdsViewModels();
 
             var paginatedArchivedAdViewModels =
                 await PaginatedList<MyArchivedAdsViewModel>.CreateAsync(archivedAdViewModels, pageNumber, pageSize);
@@ -333,7 +333,7 @@
         public async Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber,
             int pageSize)
         {
-            var adViewModels = this.context
+            var adViewModels = context
                 .Ads
                 .Where(x => x.Title.Contains(searchText) && x.IsApproved)
                 .To<AdViewModel>();
@@ -347,9 +347,9 @@
         public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber,
             int pageSize)
         {
-            var user = await this.usersService.GetUserByIdAsync(userId);
+            var user = await usersService.GetUserByIdAsync(userId);
 
-            var adByUserViewModels = this.context
+            var adByUserViewModels = context
                 .Ads
                 .Where(x => x.SellerId == userId && !x.IsDeleted && x.ActiveTo >= DateTime.UtcNow && x.IsApproved)
                 .To<AdViewModel>();
@@ -369,7 +369,7 @@
 
         public async Task EditAd(EditAdInputModel inputModel)
         {
-            var adFromDb = await this.context.Ads.FirstOrDefaultAsync(x => x.Id == inputModel.AdId);
+            var adFromDb = await context.Ads.FirstOrDefaultAsync(x => x.Id == inputModel.AdId);
 
             if (adFromDb == null)
             {
@@ -378,7 +378,7 @@
 
             var imageUrls = inputModel.EditAdDetailsInputModel.Images
                 .Select(async x =>
-                    await this.cloudinaryService.UploadPictureAsync(x, inputModel.EditAdDetailsInputModel.Title))
+                    await cloudinaryService.UploadPictureAsync(x, inputModel.EditAdDetailsInputModel.Title))
                 .Select(x => x.Result)
                 .ToList();
 
@@ -407,7 +407,7 @@
 
         public async Task<PaginatedList<AdForApprovalViewModel>> GetAdsForApprovalViewModelsAsync(int pageNumber, int pageSize)
         {
-            var adForApprovalViewModels = this.context
+            var adForApprovalViewModels = context
                 .Ads
                 .Where(x => !x.IsApproved && !x.IsDeclined)
                 .OrderByDescending(x => x.CreatedOn)
@@ -421,7 +421,7 @@
 
         public async Task<bool> ApproveAdAsync(int adId)
         {
-            var adFromDb = await this.context
+            var adFromDb = await context
                 .Ads
                 .FirstOrDefaultAsync(x => x.Id == adId);
 
@@ -436,14 +436,14 @@
             }
 
             adFromDb.IsApproved = true;
-            await this.context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<RejectAdBindingModel> GetRejectAdBindingModelAsync(int adId)
         {
-            var adFromDb = await this.context
+            var adFromDb = await context
                 .Ads
                 .FirstOrDefaultAsync(x => x.Id == adId && !x.IsDeleted);
 
@@ -452,7 +452,7 @@
                 throw new ArgumentException(InvalidAdIdErrorMessage);
             }
 
-            var rejectAdViewModel = this.mapper.Map<RejectAdViewModel>(adFromDb);
+            var rejectAdViewModel = mapper.Map<RejectAdViewModel>(adFromDb);
 
             var rejectAdBindingModel = new RejectAdBindingModel
             {
@@ -464,7 +464,7 @@
 
         public async Task CreateAdRejectionAsync(int adId, string comment)
         {
-            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(InvalidAdIdErrorMessage);
             }
@@ -474,9 +474,9 @@
                 throw new ArgumentException(CommentNullOrEmptyErrorMessage);
             }
 
-            var adFromDb = await this.context.Ads.FirstOrDefaultAsync(x => x.Id == adId);
+            var adFromDb = await context.Ads.FirstOrDefaultAsync(x => x.Id == adId);
             adFromDb.IsDeclined = true;
-            this.context.Update(adFromDb);
+            context.Update(adFromDb);
 
             var adRejection = new AdRejection
             {
@@ -484,16 +484,16 @@
                 Comment = comment
             };
 
-            await this.context.AdRejections.AddAsync(adRejection);
-            await this.context.SaveChangesAsync();
+            await context.AdRejections.AddAsync(adRejection);
+            await context.SaveChangesAsync();
         }
 
         public async Task<PaginatedList<WaitingForApprovalByUserViewModel>>
             GetWaitingForApprovalByCurrentUserViewModels(int pageNumber, int pageSize)
         {
-            var currentUserId = this.usersService.GetCurrentUserId();
+            var currentUserId = usersService.GetCurrentUserId();
 
-            var waitingForApprovalViewModels = this.context
+            var waitingForApprovalViewModels = context
                 .Ads
                 .Where(x => x.SellerId == currentUserId && !x.IsApproved && !x.IsDeclined)
                 .To<WaitingForApprovalByUserViewModel>();
@@ -508,9 +508,9 @@
         public async Task<PaginatedList<RejectedByUserAdViewModel>> GetRejectedAdByUserViewModelsAsync(int pageNumber,
             int pageSize)
         {
-            var currentUserId = this.usersService.GetCurrentUserId();
+            var currentUserId = usersService.GetCurrentUserId();
 
-            var rejectedAdByUserViewModels = this.context
+            var rejectedAdByUserViewModels = context
                 .AdRejections
                 .Where(x => x.Ad.SellerId == currentUserId && x.Ad.IsDeclined && !x.Ad.IsDeleted)
                 .OrderByDescending(x => x.CreatedOn)
@@ -525,30 +525,30 @@
 
         public async Task<bool> SubmitRejectedAdAsync(int rejectionId)
         {
-            if (!await this.context.AdRejections.AnyAsync(x => x.Id == rejectionId))
+            if (!await context.AdRejections.AnyAsync(x => x.Id == rejectionId))
             {
                 throw new ArgumentException(InvalidRejectionIdMessage);
             }
 
-            var rejectionFromDb = await this.context
+            var rejectionFromDb = await context
                 .AdRejections
                 .FirstOrDefaultAsync(x => x.Id == rejectionId);
 
-            if (!await this.context.Ads.AnyAsync(x => x.Id == rejectionFromDb.AdId))
+            if (!await context.Ads.AnyAsync(x => x.Id == rejectionFromDb.AdId))
             {
                 throw new ArgumentException(InvalidAdIdErrorMessage);
             }
 
-            var adFromDb = await this.context
+            var adFromDb = await context
                 .Ads
                 .FirstOrDefaultAsync(x => x.Id == rejectionFromDb.AdId);
 
             adFromDb.IsDeclined = false;
 
             rejectionFromDb.IsDeleted = true;
-            this.context.Update(rejectionFromDb);
-            this.context.Update(adFromDb);
-            await this.context.SaveChangesAsync();
+            context.Update(rejectionFromDb);
+            context.Update(adFromDb);
+            await context.SaveChangesAsync();
 
             return true;
         }
@@ -556,7 +556,7 @@
         public async Task<PaginatedList<RejectedAdAllViewModel>> GetRejectedAdAllViewModelsAsync(int pageNumber,
             int pageSize)
         {
-            var rejectedAdAllViewModels = this.context
+            var rejectedAdAllViewModels = context
                 .Ads
                 .Where(x => x.IsDeclined)
                 .OrderByDescending(x => x.CreatedOn)
@@ -571,7 +571,7 @@
         public async Task<PaginatedList<ActiveAdAllViewModel>> GetAllActiveAdViewModelsAsync(int pageNumber,
             int pageSize)
         {
-            var activeAdAllViewModels = this.context
+            var activeAdAllViewModels = context
                 .Ads
                 .Where(x => !x.IsDeleted && x.IsApproved)
                 .OrderByDescending(x => x.CreatedOn)
@@ -591,7 +591,7 @@
                 i <= DateTime.UtcNow;
                 i = i.AddDays(1))
             {
-                var currentDaysAdsCount = await this.context.Ads
+                var currentDaysAdsCount = await context.Ads
                     .CountAsync(x => x.CreatedOn.DayOfYear == i.DayOfYear);
 
                 adsCount.Add(currentDaysAdsCount);
@@ -602,16 +602,16 @@
 
         public async Task<int> GetAllActiveAdsCountAsync()
         {
-            var allAdsCount = await this.context.Ads.CountAsync(x => !x.IsDeleted && x.IsApproved);
+            var allAdsCount = await context.Ads.CountAsync(x => !x.IsDeleted && x.IsApproved);
 
             return allAdsCount;
         }
 
         private IQueryable<MyArchivedAdsViewModel> GetMyArchivedAdsViewModels()
         {
-            string currentUserId = this.usersService.GetCurrentUserId();
+            string currentUserId = usersService.GetCurrentUserId();
 
-            var archivedAds = this.GetArchivedAdsByUserId(currentUserId);
+            var archivedAds = GetArchivedAdsByUserId(currentUserId);
 
             var archivedAdsForCurrentUserViewModels = archivedAds
                 .To<MyArchivedAdsViewModel>();
@@ -621,7 +621,7 @@
 
         private Task<int> GetObservedAdsByAdIdAsync(int adId)
         {
-            var observed = this.context
+            var observed = context
                 .SellMeUserFavoriteProducts
                 .CountAsync(x => x.AdId == adId);
 
@@ -630,17 +630,17 @@
 
         private async Task CreateViewForAdAsync(Ad ad)
         {
-            var adView = new AdView()
+            var adView = new AdView
             {
                 AdId = ad.Id
             };
-            await this.context.AdViews.AddAsync(adView);
-            await this.context.SaveChangesAsync();
+            await context.AdViews.AddAsync(adView);
+            await context.SaveChangesAsync();
         }
 
         private IQueryable<Ad> GetAdsBySubcategory(int subcategoryId)
         {
-            var adsBySubcategory = this.context
+            var adsBySubcategory = context
                 .Ads
                 .Where(x => x.SubCategoryId == subcategoryId && x.IsApproved && !x.IsDeleted);
 
@@ -668,9 +668,9 @@
 
         private async Task<EditAdDetailsViewModel> GetEditAdViewModelByIdAsync(int adId)
         {
-            var adFromDb = await this.GetAdByIdAsync(adId);
+            var adFromDb = await GetAdByIdAsync(adId);
 
-            var editAdDetailsViewModel = this.mapper.Map<EditAdDetailsViewModel>(adFromDb);
+            var editAdDetailsViewModel = mapper.Map<EditAdDetailsViewModel>(adFromDb);
 
             return editAdDetailsViewModel;
         }
@@ -689,16 +689,16 @@
 
         private async Task<EditAdAddressViewModel> GetEditAdAddressViewModelByIdAsync(int adId)
         {
-            var addressFromDb = await this.addressesService.GetAddressByIdAsync(adId);
+            var addressFromDb = await addressesService.GetAddressByIdAsync(adId);
 
-            var editAdAddressViewModel = this.mapper.Map<EditAdAddressViewModel>(addressFromDb);
+            var editAdAddressViewModel = mapper.Map<EditAdAddressViewModel>(addressFromDb);
 
             return editAdAddressViewModel;
         }
 
         private IQueryable<Ad> GetArchivedAdsByUserId(string userId)
         {
-            var adsByUser = this.context
+            var adsByUser = context
                 .Ads
                 .Where(x => x.SellerId == userId && x.IsDeleted);
 
@@ -707,7 +707,7 @@
 
         private IQueryable<Ad> GetActiveAdsByUserId(string userId)
         {
-            var adsByUser = this.context
+            var adsByUser = context
                 .Ads
                 .Where(x => x.SellerId == userId && !x.IsDeleted && x.IsApproved);
 
@@ -716,7 +716,7 @@
 
         private IQueryable<FavoriteAdViewModel> GetFavoriteAdViewModelsByUser(SellMeUser user)
         {
-            var favoriteAdsViewModels = this.context
+            var favoriteAdsViewModels = context
                 .SellMeUserFavoriteProducts
                 .Where(x => x.SellMeUserId == user.Id)
                 .OrderByDescending(x => x.CreatedOn)
@@ -734,7 +734,7 @@
                 CategoryId = categoryId,
                 CategoryName = categoryName,
                 AdsViewModels = paginatedAdViewModels,
-                AdsByCategorySubcategoryViewModels = subcategoryViewModels.ToList(),
+                AdsByCategorySubcategoryViewModels = subcategoryViewModels.ToList()
             };
 
             return adsByCategoryViewModel;
@@ -742,7 +742,7 @@
 
         private IQueryable<AdViewModel> GetAllAdsByCategory(int categoryId)
         {
-            var adsViewModel = this.context
+            var adsViewModel = context
                 .Ads
                 .Where(x => x.CategoryId == categoryId && x.IsApproved && !x.IsDeleted)
                 .To<AdViewModel>();
@@ -752,9 +752,9 @@
 
         private IQueryable<MyActiveAdsViewModel> GetMyAdsViewModels()
         {
-            string currentUserId = this.usersService.GetCurrentUserId();
+            string currentUserId = usersService.GetCurrentUserId();
 
-            var adsForCurrentUser = this.GetActiveAdsByUserId(currentUserId);
+            var adsForCurrentUser = GetActiveAdsByUserId(currentUserId);
 
             var adsForCurrentUserViewModels = adsForCurrentUser
                 .OrderBy(x => x.ActiveTo)

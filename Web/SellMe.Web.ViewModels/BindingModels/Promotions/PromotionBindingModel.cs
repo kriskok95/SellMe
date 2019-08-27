@@ -1,9 +1,9 @@
 ﻿namespace SellMe.Web.ViewModels.BindingModels.Promotions
 {
-    using SellMe.Web.ViewModels.ViewModels.Promotions;
-    using SellMe.Web.ViewModels.InputModels.Promotions;
-    using SellMe.Web.ViewModels.ViewModels;
     using System.Collections.Generic;
+    using InputModels.Promotions;
+    using ViewModels;
+    using ViewModels.Promotions;
 
     public class PromotionBindingModel : BaseViewModel
     {

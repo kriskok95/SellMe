@@ -1,11 +1,10 @@
-﻿using SellMe.Common;
-
-namespace SellMe.Data.Seeding
+﻿namespace SellMe.Data.Seeding
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Data.Models;
+    using Models;
+    using SellMe.Common;
 
     public class ConditionsSeeder : ISeeder
     {

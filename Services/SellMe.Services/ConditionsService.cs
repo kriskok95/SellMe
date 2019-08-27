@@ -1,12 +1,11 @@
 ﻿namespace SellMe.Services
 {
-    using System.Linq;
-
-    using SellMe.Services.Interfaces;
-    using SellMe.Data;
     using System.Collections.Generic;
-    using SellMe.Services.Mapping;
-    using SellMe.Web.ViewModels.ViewModels.Conditions;
+    using System.Linq;
+    using Data;
+    using Interfaces;
+    using Mapping;
+    using Web.ViewModels.ViewModels.Conditions;
 
     public class ConditionsService : IConditionsService
     {
@@ -19,7 +18,7 @@
 
         public ICollection<ConditionViewModel> GetConditionViewModels()
         {
-            var conditionViewModels = this.context
+            var conditionViewModels = context
                 .Conditions
                 .To<ConditionViewModel>()
                 .ToList();

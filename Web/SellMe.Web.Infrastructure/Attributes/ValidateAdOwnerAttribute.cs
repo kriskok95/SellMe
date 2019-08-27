@@ -18,7 +18,7 @@
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var senderId = (string)value;
-            var property = validationContext.ObjectType.GetProperty(this.recipientId);
+            var property = validationContext.ObjectType.GetProperty(recipientId);
             if (property == null)
                 throw new ArgumentException(RecipientIdNotFoundErrorMessage);
 

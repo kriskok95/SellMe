@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Services.Interfaces
 {
     using System.Collections.Generic;
-    using SellMe.Web.ViewModels.ViewModels.Subcategories;
     using System.Threading.Tasks;
+    using Web.ViewModels.ViewModels.Subcategories;
 
     public interface ISubCategoriesService
     {

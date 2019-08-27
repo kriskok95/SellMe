@@ -1,11 +1,11 @@
 ﻿namespace SellMe.Web.Areas.Administration.Controllers
 {
-    using SellMe.Services.Interfaces;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
-    using SellMe.Common;
     using System.Threading.Tasks;
+    using Common;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
+    using Services.Interfaces;
 
     public class HomeController : Controller
     {
@@ -16,20 +16,20 @@
         public HomeController(IStatisticsService statisticsService)
         {
             this.statisticsService = statisticsService;
-            this.jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+            jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [Area("Administration")]
         public async Task<IActionResult> Index()
         {
-            var administrationIndexStatisticViewModel = await this.statisticsService.GetAdministrationIndexStatisticViewModel();
+            var administrationIndexStatisticViewModel = await statisticsService.GetAdministrationIndexStatisticViewModel();
 
-            var adsByDaysStatisticPoints = await this.statisticsService.GetPointsForCreatedAds();
+            var adsByDaysStatisticPoints = await statisticsService.GetPointsForCreatedAds();
 
-            ViewBag.DataPoints = JsonConvert.SerializeObject(adsByDaysStatisticPoints, this.jsonSetting);
+            ViewBag.DataPoints = JsonConvert.SerializeObject(adsByDaysStatisticPoints, jsonSetting);
 
-            return this.View(administrationIndexStatisticViewModel);
+            return View(administrationIndexStatisticViewModel);
         }
     }
 }

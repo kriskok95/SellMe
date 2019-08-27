@@ -19,7 +19,7 @@
 
         public CreateAdDetailInputModel()
         {
-            this.Images = new List<IFormFile>();
+            Images = new List<IFormFile>();
         }
 
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength, ErrorMessage = TitleLengthErrorMessage)]

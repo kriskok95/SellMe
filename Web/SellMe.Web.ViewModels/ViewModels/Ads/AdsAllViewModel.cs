@@ -1,9 +1,6 @@
-﻿using SellMe.Services.Paging;
-
-namespace SellMe.Web.ViewModels.ViewModels.Ads
+﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
-    using SellMe.Web.ViewModels.ViewModels.Categories;
-    using System.Collections.Generic;
+    using Services.Paging;
 
     public class AdsAllViewModel : BaseViewModel
     {

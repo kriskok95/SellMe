@@ -1,9 +1,9 @@
 ﻿namespace SellMe.Data.Seeding
 {
     using System;
-    using Microsoft.EntityFrameworkCore;
     using System.Threading.Tasks;
-    using SellMe.Data.Models;
+    using Microsoft.EntityFrameworkCore;
+    using Models;
 
     class PromotionsSeeder : ISeeder
     {

@@ -1,13 +1,13 @@
 ﻿namespace SellMe.Tests
 {
-    using System.Threading.Tasks;
-    using Moq;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Tests.Common;
-    using Xunit;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using Common;
+    using Moq;
+    using Services;
+    using Services.Interfaces;
+    using Xunit;
 
     public class StatisticsServiceTests
     {
@@ -33,10 +33,10 @@
                 .ReturnsAsync(5);
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object);
+            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object);
 
             //Act
-            var actual = await this.statisticsService.GetAdministrationIndexStatisticViewModel();
+            var actual = await statisticsService.GetAdministrationIndexStatisticViewModel();
 
             //Assert
             Assert.Equal(expectedActiveAdsCount, actual.AllAdsCount);
@@ -56,10 +56,10 @@
             var moqUsersService = new Mock<IUsersService>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object);
+            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object);
 
             //Act
-            var actual = await this.statisticsService.GetPointsForCreatedAds();
+            var actual = await statisticsService.GetPointsForCreatedAds();
 
             //Assert
             Assert.Equal(expected, actual.Count());

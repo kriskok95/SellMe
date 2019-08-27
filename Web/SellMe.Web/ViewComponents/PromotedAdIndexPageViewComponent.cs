@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
+    using ViewModels.ViewModels.Ads;
 
     public class PromotedAdIndexPageViewComponent : ViewComponent
     {
@@ -13,7 +13,7 @@
                 viewModel.Title = result;
             
 
-            return this.View(viewModel);
+            return View(viewModel);
         }
     }
 }

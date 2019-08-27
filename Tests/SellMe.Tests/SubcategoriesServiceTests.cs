@@ -1,15 +1,14 @@
 ﻿namespace SellMe.Tests
 {
-    using System.Threading.Tasks;
-    using SellMe.Services.Interfaces;
-    using SellMe.Tests.Common;
-    using Moq;
-    using SellMe.Services;
-    using Xunit;
     using System;
     using System.Collections.Generic;
-    using SellMe.Data.Models;
-    using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using System.Threading.Tasks;
+    using Common;
+    using Data.Models;
+    using Services;
+    using Services.Interfaces;
+    using Web.ViewModels.ViewModels.Subcategories;
+    using Xunit;
 
     public class SubcategoriesServiceTests
     {
@@ -27,11 +26,11 @@
             var expectedErrorMessage = "Category with the given id doesn't exist!";
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.subcategoriesService = new SubCategoriesService(context);
+            subcategoriesService = new SubCategoriesService(context);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.subcategoriesService.GetSubcategoriesByCategoryIdAsync(1));
+                subcategoriesService.GetSubcategoriesByCategoryIdAsync(1));
             
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
@@ -45,7 +44,7 @@
                 new CreateAdSubcategoryViewModel
                 {
                     Id = 1,
-                    Name = "Phones",
+                    Name = "Phones"
                 },
                 new CreateAdSubcategoryViewModel
                 {
@@ -55,7 +54,7 @@
             };
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.subcategoriesService = new SubCategoriesService(context);
+            subcategoriesService = new SubCategoriesService(context);
 
             var testSubcategories = new List<SubCategory>
             {
@@ -84,7 +83,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.subcategoriesService.GetSubcategoriesByCategoryIdAsync(1);
+            var actual = await subcategoriesService.GetSubcategoriesByCategoryIdAsync(1);
 
             Assert.Collection(actual,
                 elem1 =>
@@ -108,11 +107,11 @@
             var expectedErrorMessage = "Category with the given id doesn't exist!";
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.subcategoriesService = new SubCategoriesService(context);
+            subcategoriesService = new SubCategoriesService(context);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.subcategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(1));
+                subcategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(1));
 
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
@@ -126,7 +125,7 @@
                 new AdsByCategorySubcategoryViewModel
                 {
                     Id = 1,
-                    Name = "Phones",
+                    Name = "Phones"
                 },
                 new AdsByCategorySubcategoryViewModel
                 {
@@ -136,7 +135,7 @@
             };
 
             var context = InitializeContext.CreateContextForInMemory();
-            this.subcategoriesService = new SubCategoriesService(context);
+            subcategoriesService = new SubCategoriesService(context);
 
             var testSubcategories = new List<SubCategory>
             {
@@ -165,7 +164,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.subcategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(1);
+            var actual = await subcategoriesService.GetAdsByCategorySubcategoryViewModelsAsync(1);
 
             Assert.Collection(actual,
                 elem1 =>

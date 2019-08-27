@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Reviews
 {
     using AutoMapper;
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
+    using Data.Models;
+    using Services.Mapping;
 
     public class ReviewViewModel : IMapFrom<Review>, IHaveCustomMappings
     {

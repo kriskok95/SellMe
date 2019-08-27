@@ -1,19 +1,18 @@
 ﻿namespace SellMe.Data.Models
 {
-    using System.Collections.Generic;
-    using Microsoft.AspNetCore.Identity;
     using System;
-    using SellMe.Data.Common;
-
+    using System.Collections.Generic;
+    using Common;
+    using Microsoft.AspNetCore.Identity;
 
     // Add profile data for application users by adding properties to the SellMeUser class
     public class SellMeUser : IdentityUser, IDeletableEntity
     {
         public SellMeUser()
         {
-            this.SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
-            this.SentBox = new HashSet<Message>();
-            this.Ads = new HashSet<Ad>();
+            SellMeUserFavoriteProducts = new HashSet<SellMeUserFavoriteProduct>();
+            SentBox = new HashSet<Message>();
+            Ads = new HashSet<Ad>();
         }
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;

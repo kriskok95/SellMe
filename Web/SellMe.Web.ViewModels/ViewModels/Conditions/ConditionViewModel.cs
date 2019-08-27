@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Conditions
 {
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
+    using Data.Models;
+    using Services.Mapping;
 
     public class ConditionViewModel : BaseViewModel, IMapFrom<Condition>
     {

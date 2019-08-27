@@ -1,8 +1,8 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Home
 {
     using System.Collections.Generic;
-    using SellMe.Web.ViewModels.ViewModels.Categories;
-    using SellMe.Web.ViewModels.ViewModels.Ads;
+    using Ads;
+    using Categories;
 
     public class IndexViewModel : BaseViewModel
     {

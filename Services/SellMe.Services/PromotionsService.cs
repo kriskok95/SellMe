@@ -1,17 +1,15 @@
 ﻿namespace SellMe.Services
 {
-    using SellMe.Common;
-    using SellMe.Services.Interfaces;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using SellMe.Web.ViewModels.BindingModels.Promotions;
-    using SellMe.Web.ViewModels.ViewModels.Promotions;
     using System;
-    using SellMe.Data.Models;
-    using System.Linq;
+    using System.Threading.Tasks;
+    using Common;
+    using Data;
+    using Data.Models;
+    using Interfaces;
+    using Mapping;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Data;
-    using SellMe.Services.Mapping;
+    using Web.ViewModels.BindingModels.Promotions;
+    using Web.ViewModels.ViewModels.Promotions;
 
     public class PromotionsService : IPromotionsService
     {
@@ -26,14 +24,14 @@
 
         public async Task<PromotionBindingModel> GetPromotionBindingModelByAdIdAsync(int adId)
         {
-            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
-            var adFromDb = await this.adsService.GetAdByIdAsync(adId);
+            var adFromDb = await adsService.GetAdByIdAsync(adId);
 
-            var promotionViewModels = await this.context
+            var promotionViewModels = await context
                 .Promotions
                 .To<PromotionViewModel>()
                 .ToListAsync();
@@ -42,7 +40,7 @@
             {
                 AdId = adFromDb.Id,
                 AdTitle = adFromDb.Title,
-                PromotionViewModels = promotionViewModels,
+                PromotionViewModels = promotionViewModels
             };
 
             return promotionBindingModel;
@@ -50,18 +48,18 @@
 
         public async Task CreatePromotionOrderAsync(int adId, int promotionId)
         {
-            if (!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
-            if (!await this.context.Promotions.AnyAsync(x => x.Id == promotionId))
+            if (!await context.Promotions.AnyAsync(x => x.Id == promotionId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidPromotionIdErrorMessage);
             }
 
-            var adFromDb = await this.adsService.GetAdByIdAsync(adId);
-            var promotionFromDb = await this.GetPromotionByIdAsync(promotionId);
+            var adFromDb = await adsService.GetAdByIdAsync(adId);
+            var promotionFromDb = await GetPromotionByIdAsync(promotionId);
 
             var promotionOrder = new PromotionOrder
             {
@@ -69,18 +67,18 @@
                 PromotionId = promotionId,
                 CreatedOn = DateTime.UtcNow,
                 ActiveTo = DateTime.UtcNow.AddDays(promotionFromDb.ActiveDays),
-                Price = promotionFromDb.Price,
+                Price = promotionFromDb.Price
             };
 
             adFromDb.Updates += promotionFromDb.Updates;
 
-            await this.context.PromotionOrders.AddAsync(promotionOrder);
-            await this.context.SaveChangesAsync();
+            await context.PromotionOrders.AddAsync(promotionOrder);
+            await context.SaveChangesAsync();
         }
 
         private async Task<Promotion> GetPromotionByIdAsync(int promotionId)
         {
-            var promotion = await this.context
+            var promotion = await context
                 .Promotions
                 .FirstOrDefaultAsync(x => x.Id == promotionId);
 

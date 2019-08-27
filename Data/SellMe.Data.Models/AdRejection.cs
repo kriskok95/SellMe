@@ -1,6 +1,6 @@
 ﻿namespace SellMe.Data.Models
 {
-    using SellMe.Data.Common;
+    using Common;
 
     public class AdRejection : BaseDeletableModel<int>
     {

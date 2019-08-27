@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ad in @Model)
+                        @foreach (var ad in Model)
                         {
                             <tr class="trElm">
                                 <td>
@@ -29,7 +29,7 @@
                                     <div>
                                         <img style="height: 40px; width: 60px" src="@ad.ImageUrl" />
                                     </div>
-                                    @if (@ad.IsPromoted)
+                                    @if (ad.IsPromoted)
                                     {
                                         <div class="mt-2">
                                             <span class="label warning">Promo</span>

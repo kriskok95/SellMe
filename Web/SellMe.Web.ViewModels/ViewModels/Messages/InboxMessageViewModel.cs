@@ -1,9 +1,9 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Messages
 {
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
     using System;
     using AutoMapper;
+    using Data.Models;
+    using Services.Mapping;
 
     public class InboxMessageViewModel : BaseViewModel, IMapFrom<Message>, IHaveCustomMappings
     {

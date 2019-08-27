@@ -1,13 +1,12 @@
 ﻿namespace SellMe.Services
 {
-    using SellMe.Services.Interfaces;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using SellMe.Data;
-    using SellMe.Web.ViewModels.ViewModels.Statistics;
     using System;
     using System.Collections.Generic;
-    using SellMe.Web.Infrastructure.Models;
+    using System.Threading.Tasks;
+    using Data;
+    using Interfaces;
+    using Web.Infrastructure.Models;
+    using Web.ViewModels.ViewModels.Statistics;
 
     public class StatisticsService : IStatisticsService
     {
@@ -26,13 +25,13 @@
 
         public async Task<AdministrationIndexStatisticViewModel> GetAdministrationIndexStatisticViewModel()
         {
-            var allUsersCount = await this.usersService.GetCountOfAllUsersAsync();
-            var allAdsCount = await this.adsService.GetAllActiveAdsCountAsync();
+            var allUsersCount = await usersService.GetCountOfAllUsersAsync();
+            var allAdsCount = await adsService.GetAllActiveAdsCountAsync();
 
             var administrationIndexStatisticViewModel = new AdministrationIndexStatisticViewModel
             {
                 AllAdsCount = allAdsCount,
-                AllUsersCount = allUsersCount,
+                AllUsersCount = allUsersCount
             };
 
             return administrationIndexStatisticViewModel;
@@ -40,8 +39,8 @@
 
         public async Task<IEnumerable<DataPoint>> GetPointsForCreatedAds()
         {
-            var lsatTenDates = this.GetLastTenDaysAsString();
-            var countOfCreatedAds = await this.adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
+            var lsatTenDates = GetLastTenDaysAsString();
+            var countOfCreatedAds = await adsService.GetTheCountForTheCreatedAdsForTheLastTenDaysAsync();
 
             var dataPoints = new List<DataPoint>();
 

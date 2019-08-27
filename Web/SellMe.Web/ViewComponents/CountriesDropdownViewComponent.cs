@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Web.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
+    using Services.Interfaces;
 
     public class CountriesDropdownViewComponent : ViewComponent
     {
@@ -9,13 +9,13 @@
 
         public CountriesDropdownViewComponent(IAddressesService addressesService)
         {
-            this._addressesService = addressesService;
+            _addressesService = addressesService;
         }
 
         public IViewComponentResult Invoke()
         {
-            var countries = this._addressesService.GetAllCountries();
-            return this.View(countries);
+            var countries = _addressesService.GetAllCountries();
+            return View(countries);
         }
     }
 }

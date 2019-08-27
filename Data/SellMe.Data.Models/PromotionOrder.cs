@@ -1,7 +1,7 @@
 ﻿namespace SellMe.Data.Models
 {
-    using SellMe.Data.Common;
     using System;
+    using Common;
 
     public class PromotionOrder : BaseDeletableModel<int>
     {
@@ -13,7 +13,7 @@
 
         public decimal Price { get; set; }
 
-        public bool IsActive => DateTime.UtcNow <= this.ActiveTo;
+        public bool IsActive => DateTime.UtcNow <= ActiveTo;
 
         public DateTime ActiveTo { get; set; }
     }

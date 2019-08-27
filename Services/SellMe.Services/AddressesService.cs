@@ -1,14 +1,14 @@
 ﻿namespace SellMe.Services
 {
     using System;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using System.Linq;
     using System.Collections.Generic;
-    using SellMe.Services.Interfaces;
     using System.Globalization;
-    using SellMe.Data.Models;
-    using SellMe.Data;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Data;
+    using Data.Models;
+    using Interfaces;
+    using Microsoft.EntityFrameworkCore;
 
     public class AddressesService : IAddressesService
     {
@@ -49,11 +49,11 @@
 
         public async Task<Address> GetAddressByIdAsync(int addressId)
         {
-            if (!this.context.Addresses.Any(x => x.Id == addressId))
+            if (!context.Addresses.Any(x => x.Id == addressId))
             {
                 throw new ArgumentException(InvalidAddressIdErrorMessage);
             }
-            var address = await this.context
+            var address = await context
                 .Addresses
                 .FirstOrDefaultAsync(x => x.Id == addressId);
 

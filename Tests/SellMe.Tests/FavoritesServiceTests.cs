@@ -1,17 +1,14 @@
 ﻿namespace SellMe.Tests
 {
     using System;
-    using Moq;
     using System.Collections.Generic;
-    using Xunit;
     using System.Threading.Tasks;
-
-    using SellMe.Data;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using SellMe.Tests.Common;
-    using SellMe.Data.Models;
-    
+    using Common;
+    using Data.Models;
+    using Moq;
+    using Services;
+    using Services.Interfaces;
+    using Xunit;
 
     public class FavoritesServiceTests
     {
@@ -31,10 +28,10 @@
 
             var moqUserService = new Mock<IUsersService>();
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => this.favoritesService.AddToFavoritesAsync(1));
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => favoritesService.AddToFavoritesAsync(1));
 
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
@@ -51,12 +48,12 @@
                 .ReturnsAsync(new SellMeUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = "Ivan",
+                    UserName = "Ivan"
                 });
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.favoritesService.AddToFavoritesAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => favoritesService.AddToFavoritesAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -71,10 +68,10 @@
                 .ReturnsAsync(new SellMeUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = "Ivan",
+                    UserName = "Ivan"
                 });
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
             var testingAd = new Ad
             {
                 Id = 1,
@@ -124,12 +121,12 @@
                     {
                         new SellMeUserFavoriteProduct
                         {
-                            AdId = 1,
+                            AdId = 1
                         }
                     }
                 });
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
             var testingAd = new Ad
             {
                 Id = 1,
@@ -148,15 +145,15 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => this.favoritesService.AddToFavoritesAsync(1));
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => favoritesService.AddToFavoritesAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -169,10 +166,10 @@
 
             var moqUserService = new Mock<IUsersService>();
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
 
             //Act and assert
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => this.favoritesService.RemoveFromFavoritesAsync(1));
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => favoritesService.RemoveFromFavoritesAsync(1));
 
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
@@ -189,12 +186,12 @@
                 .ReturnsAsync(new SellMeUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = "Ivan",
+                    UserName = "Ivan"
                 });
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.favoritesService.RemoveFromFavoritesAsync(1));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => favoritesService.RemoveFromFavoritesAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -215,12 +212,12 @@
                     {
                         new SellMeUserFavoriteProduct
                         {
-                            AdId = 1,
+                            AdId = 1
                         }
                     }
                 });
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
             var testingAd = new Ad
             {
                 Id = 1,
@@ -239,8 +236,8 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
 
             var sellMeUserFavoriteProduct = new SellMeUserFavoriteProduct
@@ -254,7 +251,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.favoritesService.RemoveFromFavoritesAsync(1);
+            var actual = await favoritesService.RemoveFromFavoritesAsync(1);
 
             //Assert
             Assert.True(actual);
@@ -272,10 +269,10 @@
                 .ReturnsAsync(new SellMeUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = "Ivan",
+                    UserName = "Ivan"
                 });
 
-            this.favoritesService = new FavoritesService(context, moqUserService.Object);
+            favoritesService = new FavoritesService(context, moqUserService.Object);
             var testingAd = new Ad
             {
                 Id = 1,
@@ -294,8 +291,8 @@
                     District = "Student city",
                     ZipCode = 1000,
                     PhoneNumber = "0895335532",
-                    EmailAddress = "Ivan@gmail.com",
-                },
+                    EmailAddress = "Ivan@gmail.com"
+                }
             };
 
             await context.Ads.AddAsync(testingAd);
@@ -303,7 +300,7 @@
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                this.favoritesService.RemoveFromFavoritesAsync(1));
+                favoritesService.RemoveFromFavoritesAsync(1));
 
             Assert.Equal(expectedErrorMessage, ex.Message);
         }

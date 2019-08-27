@@ -1,18 +1,18 @@
 ﻿namespace SellMe.Tests
 {
     using System;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using Moq;
-    using SellMe.Services;
-    using SellMe.Services.Interfaces;
-    using Xunit;
-    using SellMe.Tests.Common;
     using System.Collections.Generic;
     using System.Linq;
-    using SellMe.Data.Models;
-    using SellMe.Web.ViewModels.BindingModels.Messages;
-    using SellMe.Web.ViewModels.ViewModels.Messages;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using Common;
+    using Data.Models;
+    using Moq;
+    using Services;
+    using Services.Interfaces;
+    using Web.ViewModels.BindingModels.Messages;
+    using Web.ViewModels.ViewModels.Messages;
+    using Xunit;
 
     public class MessagesServiceTests
     {
@@ -34,11 +34,11 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.messagesService.GetMessageViewModelByAdIdAsync(1));
+                messagesService.GetMessageViewModelByAdIdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -85,7 +85,7 @@
             moqUsersService.Setup(x => x.GetCurrentUserId())
                 .Returns("SenderId");
 
-            var adFroMock = this.CreateTestingAd();
+            var adFroMock = CreateTestingAd();
             var moqMapper = new Mock<IMapper>();
             moqMapper.Setup(x => x.Map<SendMessageViewModel>(It.IsAny<Ad>()))
                 .Returns(new SendMessageViewModel
@@ -99,14 +99,14 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqMapper.Object);
 
-            var testingAd = this.CreateTestingAd();
+            var testingAd = CreateTestingAd();
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.messagesService.GetMessageViewModelByAdIdAsync(1);
+            var actual = await messagesService.GetMessageViewModelByAdIdAsync(1);
 
             Assert.Equal(expected.AdId, actual.AdId);
             Assert.Equal(expected.AdPrice, actual.AdPrice);
@@ -127,11 +127,11 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.messagesService.GetMessageBindingModelByAdIdAsync(1));
+                messagesService.GetMessageBindingModelByAdIdAsync(1));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -194,14 +194,14 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqMapper.Object);
 
-            var testingAd = this.CreateTestingAd();
+            var testingAd = CreateTestingAd();
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.messagesService.GetMessageBindingModelByAdIdAsync(1);
+            var actual = await messagesService.GetMessageBindingModelByAdIdAsync(1);
 
             Assert.Equal(expectedResult.ViewModel.AdId,actual.ViewModel.AdId);
             Assert.Equal(expectedResult.ViewModel.AdTitle, actual.ViewModel.AdTitle);
@@ -222,11 +222,11 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.messagesService.CreateMessageAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 1, Guid.NewGuid().ToString()));
+                messagesService.CreateMessageAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 1, Guid.NewGuid().ToString()));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -263,14 +263,14 @@
 
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqMapper.Object);
 
-            var testingAd = this.CreateTestingAd();
+            var testingAd = CreateTestingAd();
             await context.Ads.AddAsync(testingAd);
             await context.SaveChangesAsync();
 
             //Act and assert
-            var actual = await this.messagesService.CreateMessageAsync("SenderId", "RecipientId",
+            var actual = await messagesService.CreateMessageAsync("SenderId", "RecipientId",
                 1, "Content for the message");
 
             Assert.Equal(expected.AdTitle, actual.AdTitle);
@@ -290,11 +290,11 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             //Act and assert
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId"));
+                messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId"));
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -309,7 +309,7 @@
                 {
                     AdTitle = "Iphone 6s",
                     Content = "Content1",
-                    Sender = "Pesho",
+                    Sender = "Pesho"
                 },
                 new MessageDetailsViewModel
                 {
@@ -324,9 +324,9 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
-            var testingAd = this.CreateTestingAd();
+            var testingAd = CreateTestingAd();
 
             var messages = new List<Message>
             {
@@ -350,7 +350,7 @@
                     SenderId = "FakeSenderId",
                     RecipientId = "FakeRecipientId",
                     Content = "Content3"
-                },
+                }
             };
 
             var sender = new SellMeUser
@@ -365,7 +365,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var actual = this.messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId").GetAwaiter().GetResult().ToList();
+            var actual = messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId").GetAwaiter().GetResult().ToList();
 
             //Assert
             Assert.Equal(expectedCollectionCount, actual.Count);
@@ -396,9 +396,9 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
-            var testingAd = this.CreateTestingAd();
+            var testingAd = CreateTestingAd();
 
             var messages = new List<Message>
             {
@@ -422,7 +422,7 @@
                     SenderId = "FakeSenderId",
                     RecipientId = "FakeRecipientId",
                     Content = "Content3"
-                },
+                }
             };
 
             var sender = new SellMeUser
@@ -437,7 +437,7 @@
             await context.SaveChangesAsync();
 
             //Act
-            var result = this.messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId");
+            var result = messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId");
 
             //Assert
             Assert.Equal(2, context.Messages.Count(x => x.IsRead));
@@ -455,11 +455,11 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             //Assert and act
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                this.messagesService.GetInboxMessagesViewModelsAsync());
+                messagesService.GetInboxMessagesViewModelsAsync());
             Assert.Equal(expectedErrorMessage, ex.Message);
         }
 
@@ -474,13 +474,13 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             //Assert and act
             var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.messagesService.GetUnreadMessagesCountAsync(string.Empty));
+                messagesService.GetUnreadMessagesCountAsync(string.Empty));
             var ex2 = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.messagesService.GetUnreadMessagesCountAsync(null));
+                messagesService.GetUnreadMessagesCountAsync(null));
             Assert.Equal(expectedErrorMessage, ex.Message);
             Assert.Equal(expectedErrorMessage, ex2.Message);
         }
@@ -496,7 +496,7 @@
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 
-            this.messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
 
             var messages = new List<Message>
             {
@@ -506,7 +506,7 @@
                     SenderId = "SenderId",
                     RecipientId = "RecipientId",
                     Content = "Content1",
-                    IsRead = false,
+                    IsRead = false
                 },
                 new Message
                 {
@@ -514,7 +514,7 @@
                     SenderId = "SenderId",
                     RecipientId = "RecipientId",
                     Content = "Content2",
-                    IsRead = false,
+                    IsRead = false
 
                 },
                 new Message
@@ -523,7 +523,7 @@
                     SenderId = "SenderId",
                     RecipientId = "FakeRecipientId",
                     Content = "Content3",
-                    IsRead = false,
+                    IsRead = false
                 },
                 new Message
                 {
@@ -531,15 +531,15 @@
                     SenderId = "SenderId",
                     RecipientId = "RecipientId",
                     Content = "Content3",
-                    IsRead = true,
-                },
+                    IsRead = true
+                }
             };
 
             await context.Messages.AddRangeAsync(messages);
             await context.SaveChangesAsync();
 
             //Act
-            var actual = await this.messagesService.GetUnreadMessagesCountAsync("RecipientId");
+            var actual = await messagesService.GetUnreadMessagesCountAsync("RecipientId");
 
             //Assert
             Assert.Equal(expected, actual);

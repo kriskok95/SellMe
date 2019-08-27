@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace SellMe.Web.Controllers
+﻿namespace SellMe.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Identity;
-    using SellMe.Data.Models;
-    using SellMe.Services.Interfaces;
-    using System;
     using System.Threading.Tasks;
-    using System.Linq;
-
+    using Data.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Services.Interfaces;
 
     public class FavoritesController : Controller
     {
@@ -31,17 +27,17 @@ namespace SellMe.Web.Controllers
         [Authorize]
         public async Task<IActionResult> MyFavorites(int? pageNumber)
         {
-            var loggedInUserId = this.userManager.GetUserId(this.User);
+            var loggedInUserId = userManager.GetUserId(User);
 
-            var favoriteAdsViewModels = await this.adsService.GetFavoriteAdsViewModelsAsync(loggedInUserId, pageNumber?? DefaultPageNumber, DefaultPageSize);
+            var favoriteAdsViewModels = await adsService.GetFavoriteAdsViewModelsAsync(loggedInUserId, pageNumber?? DefaultPageNumber, DefaultPageSize);
 
-            return this.View(favoriteAdsViewModels);
+            return View(favoriteAdsViewModels);
         }
 
         [Authorize]
         public async Task<IActionResult> Add(int adId)
         {
-            bool isAdded = await this.favoritesService.AddToFavoritesAsync(adId);
+            bool isAdded = await favoritesService.AddToFavoritesAsync(adId);
 
             return Json(isAdded);
         }
@@ -49,7 +45,7 @@ namespace SellMe.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Remove(int adId)
         {
-            bool isRemoved = await this.favoritesService.RemoveFromFavoritesAsync(adId);
+            bool isRemoved = await favoritesService.RemoveFromFavoritesAsync(adId);
 
             return Json(isRemoved);
         }

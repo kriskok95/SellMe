@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using AutoMapper;
-
-namespace SellMe.Web.ViewModels.ViewModels.Promotions
+﻿namespace SellMe.Web.ViewModels.ViewModels.Promotions
 {
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
+    using System.Linq;
+    using AutoMapper;
+    using Data.Models;
+    using Services.Mapping;
 
     public class PromotionViewModel : IMapFrom<Promotion>, IHaveCustomMappings
     {

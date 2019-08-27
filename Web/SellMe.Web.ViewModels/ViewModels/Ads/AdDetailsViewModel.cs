@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using SellMe.Web.ViewModels.ViewModels.Addresses;
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
     using System.Linq;
+    using Addresses;
     using AutoMapper;
+    using Data.Models;
+    using Services.Mapping;
 
     public class AdDetailsViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {

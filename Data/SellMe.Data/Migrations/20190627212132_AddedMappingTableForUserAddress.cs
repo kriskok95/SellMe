@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace SellMe.Data.Migrations
+﻿namespace SellMe.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddedMappingTableForUserAddress : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,8 +55,8 @@ namespace SellMe.Data.Migrations
                 name: "SellMeUserAddresses",
                 columns: table => new
                 {
-                    SellMeUserId = table.Column<string>(nullable: false),
-                    AddressId = table.Column<int>(nullable: false)
+                    SellMeUserId = table.Column<string>(),
+                    AddressId = table.Column<int>()
                 },
                 constraints: table =>
                 {

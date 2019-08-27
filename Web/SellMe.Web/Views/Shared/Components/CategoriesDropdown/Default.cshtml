@@ -1,6 +1,6 @@
 ﻿@model ICollection<CreateAdCategoryViewModel>
 
-@foreach (var category in @Model)
+@foreach (var category in Model)
 {
     <option value="@category.Id">@category.Name</option>
 }

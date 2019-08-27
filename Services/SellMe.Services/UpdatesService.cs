@@ -2,12 +2,11 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Common;
+    using Data;
+    using Data.Models;
+    using Interfaces;
     using Microsoft.EntityFrameworkCore;
-
-    using SellMe.Common;
-    using SellMe.Data;
-    using SellMe.Data.Models;
-    using SellMe.Services.Interfaces;
 
     public class UpdatesService : IUpdatesService
     {
@@ -20,7 +19,7 @@
 
         public async Task CreateUpdateAdAsync(int adId)
         {
-            if(!await this.context.Ads.AnyAsync(x => x.Id == adId))
+            if(!await context.Ads.AnyAsync(x => x.Id == adId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
@@ -29,8 +28,8 @@
             {
                 AdId = adId
             };
-            await this.context.UpdateAds.AddAsync(updateAd);
-            await this.context.SaveChangesAsync();
+            await context.UpdateAds.AddAsync(updateAd);
+            await context.SaveChangesAsync();
         }
     }
 }

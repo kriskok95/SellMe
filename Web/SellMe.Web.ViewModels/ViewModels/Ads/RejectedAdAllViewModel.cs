@@ -1,13 +1,10 @@
-﻿using System;
-using System.Security.Policy;
-
-namespace SellMe.Web.ViewModels.ViewModels.Ads
+﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
+    using System;
     using System.Linq;
     using AutoMapper;
-
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
+    using Data.Models;
+    using Services.Mapping;
 
     public class RejectedAdAllViewModel : IMapFrom<Ad>, IHaveCustomMappings
     {

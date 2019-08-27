@@ -1,10 +1,10 @@
 ﻿namespace SellMe.Web.Controllers
 {
     using System.Diagnostics;
-    using Microsoft.AspNetCore.Mvc;
-    using SellMe.Web.ViewModels;
-    using SellMe.Services.Interfaces;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Services.Interfaces;
+    using ViewModels;
 
     public class HomeController : Controller
     {
@@ -17,7 +17,7 @@
 
         public async Task<IActionResult> Index()
         {
-            var indexViewModel = await this.homeService.GetIndexViewModelAsync();
+            var indexViewModel = await homeService.GetIndexViewModelAsync();
 
             return View(indexViewModel);
         }

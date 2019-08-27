@@ -2,7 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using SellMe.Data.Models;
+    using Models;
 
     public class ImageConfiguration : IEntityTypeConfiguration<Image>
     {

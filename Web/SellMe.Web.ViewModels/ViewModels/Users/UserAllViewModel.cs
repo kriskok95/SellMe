@@ -1,11 +1,9 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Users
 {
     using System;
-    using Microsoft.AspNetCore.Identity;
     using AutoMapper;
-
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
+    using Data.Models;
+    using Services.Mapping;
 
     public class UserAllViewModel : IMapFrom<SellMeUser>, IHaveCustomMappings
     {

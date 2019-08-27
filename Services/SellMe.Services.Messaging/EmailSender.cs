@@ -23,7 +23,7 @@
         public Task Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            var msg = new SendGridMessage
             {
                 From = new EmailAddress("kristian.sell.me@gmail.com", "Kristian Slavchev"),
                 Subject = subject,

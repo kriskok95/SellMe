@@ -1,11 +1,10 @@
 ﻿namespace SellMe.Web.ViewModels.ViewModels.Ads
 {
-    using SellMe.Data.Models;
-    using SellMe.Services.Mapping;
+    using System;
     using System.Linq;
     using AutoMapper;
-    using System;
-
+    using Data.Models;
+    using Services.Mapping;
 
     public class MyActiveAdsViewModel : BaseViewModel, IMapFrom<Ad>, IHaveCustomMappings
     {

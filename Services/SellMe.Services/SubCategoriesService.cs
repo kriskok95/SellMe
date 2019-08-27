@@ -1,15 +1,14 @@
 ﻿namespace SellMe.Services
 {
     using System;
-    using System.Linq;
-    using SellMe.Data;
-    using SellMe.Data.Models;
-    using SellMe.Services.Interfaces;
     using System.Collections.Generic;
-    using SellMe.Services.Mapping;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Data;
+    using Interfaces;
+    using Mapping;
     using Microsoft.EntityFrameworkCore;
-    using SellMe.Web.ViewModels.ViewModels.Subcategories;
+    using Web.ViewModels.ViewModels.Subcategories;
 
     public class SubCategoriesService : ISubCategoriesService
     {
@@ -24,12 +23,12 @@
 
         public async Task<ICollection<CreateAdSubcategoryViewModel>> GetSubcategoriesByCategoryIdAsync(int categoryId)
         {
-            if (!this.context.Categories.Any(x => x.Id == categoryId))
+            if (!context.Categories.Any(x => x.Id == categoryId))
             {
                 throw new ArgumentException(InvalidCategoryIdErrorMessage);
             }
 
-            var subcategoryViewModels = await this.context
+            var subcategoryViewModels = await context
                 .SubCategories
                 .Where(x => x.CategoryId == categoryId)
                 .To<CreateAdSubcategoryViewModel>()
@@ -40,12 +39,12 @@
 
         public async Task<ICollection<AdsByCategorySubcategoryViewModel>> GetAdsByCategorySubcategoryViewModelsAsync(int categoryId)
         {
-            if (!this.context.Categories.Any(x => x.Id == categoryId))
+            if (!context.Categories.Any(x => x.Id == categoryId))
             {
                 throw new ArgumentException(InvalidCategoryIdErrorMessage);
             }
 
-            var subcategoryViewModels = await this.context
+            var subcategoryViewModels = await context
                 .SubCategories
                 .Where(x => x.CategoryId == categoryId)
                 .To<AdsByCategorySubcategoryViewModel>()

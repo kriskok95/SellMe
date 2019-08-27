@@ -1,11 +1,9 @@
 ﻿namespace SellMe.Data.Seeding
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using SellMe.Data.Models;
     using Microsoft.EntityFrameworkCore;
-
+    using Models;
 
     internal class CategoriesSeeder : ISeeder
     {

@@ -2,8 +2,8 @@
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using SellMe.Services.Interfaces;
-    using SellMe.Web.ViewModels.ViewModels.Notifications;
+    using Services.Interfaces;
+    using ViewModels.ViewModels.Notifications;
 
     public class UnreadMessagesViewComponent : ViewComponent
     {
@@ -18,13 +18,13 @@
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var userId = this.usersService.GetCurrentUserId();
+            var userId = usersService.GetCurrentUserId();
 
-            var unreadMessagesCount = await this.messagesService.GetUnreadMessagesCountAsync(userId);
+            var unreadMessagesCount = await messagesService.GetUnreadMessagesCountAsync(userId);
 
             var notificationViewModel = new NotificationViewModel {Count = unreadMessagesCount};
 
-            return this.View(notificationViewModel);
+            return View(notificationViewModel);
         }
     }
 }
