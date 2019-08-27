@@ -22,26 +22,31 @@
 
             today = mm + '/' + dd + '/' + yyyy + ' ' + time + ' ' + ampm;
 
-            $('#messages').append(
-                '<div class="row mb-3">' +
-                '<div class="offset-1 col-10">' +
-                '<p>' +
-                '<div class="row">' +
-                '<div class="offset-1 col-2">Me' +
-                '</div>' +
-                '<div class="offset-6 col-3">' +
-                today +
-                '</div>' +
-                '<div class="offset-1 col-11 card bg-warning">' +
-                '<div class="card-body">' +
-                $('#message-content').val() +
-                '</div>' +
-                '</div>' +
-                '</p>' +
-                '</div>' +
-                '</div>');
+            const messageLength = 2;
+            var message = $('#message-content').val();
 
-            $('#message-content').val('');
+            if (message.length > messageLength) {
+                $('#messages').append(
+                    '<div class="row mb-3">' +
+                    '<div class="offset-1 col-10">' +
+                    '<p>' +
+                    '<div class="row">' +
+                    '<div class="offset-1 col-2">Me' +
+                    '</div>' +
+                    '<div class="offset-6 col-3">' +
+                    today +
+                    '</div>' +
+                    '<div class="offset-1 col-11 card bg-warning">' +
+                    '<div class="card-body">' +
+                    $('#message-content').val() +
+                    '</div>' +
+                    '</div>' +
+                    '</p>' +
+                    '</div>' +
+                    '</div>');
+
+                $('#message-content').val('');
+            }
         }
     });
 });
