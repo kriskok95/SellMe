@@ -13,6 +13,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using Paging;
     using Web.ViewModels.ViewModels.Users;
 
     public class UsersService : IUsersService
@@ -52,15 +53,17 @@
             return user;
         }
 
-        public async Task<IEnumerable<UserAllViewModel>> GetAllUserViewModelsAsync()
+        public async Task<PaginatedList<UserAllViewModel>> GetAllUserViewModelsAsync(int pageNumber, int pageSize)
         {
-            var userAllViewModels = await context.SellMeUsers
+            var userAllViewModels = context.SellMeUsers
                 .Where(x => !x.IsDeleted)
-                .To<UserAllViewModel>()
                 .OrderByDescending(x => x.CreatedOn)
-                .ToListAsync();
+                .To<UserAllViewModel>();
 
-            return userAllViewModels;
+            var paginatedList =
+                await PaginatedList<UserAllViewModel>.CreateAsync(userAllViewModels, pageNumber, pageSize);
+
+            return paginatedList;
         }
 
         public async Task<bool> BlockUserByIdAsync(string userId)
@@ -102,6 +105,37 @@
             var allUsersCount = await context.Users.CountAsync(x => !x.IsDeleted);
 
             return allUsersCount;
+        }
+
+        public async Task<PaginatedList<BlockedUserAllViewModel>> GetAllBlockedUserViewModels(int pageNumber, int pageSize)
+        {
+            var blockedUsers = this.context
+                .SellMeUsers
+                .Where(x => x.IsDeleted)
+                .OrderByDescending(x => x.CreatedOn)
+                .To<BlockedUserAllViewModel>();
+
+            var paginatedList =
+                await PaginatedList<BlockedUserAllViewModel>.CreateAsync(blockedUsers, pageNumber, pageSize);
+
+            return paginatedList;
+        }
+
+        public async Task<bool> UnblockUserByIdAsync(string userId)
+        {
+            if (!await this.context.SellMeUsers.AnyAsync(x => x.Id == userId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
+            var userFromDb = await context.SellMeUsers.FirstOrDefaultAsync(x => x.Id == userId);
+
+            userFromDb.IsDeleted = false;
+
+            context.SellMeUsers.Update(userFromDb);
+            await context.SaveChangesAsync();
+
+            return true;
         }
 
         private async Task DeleteAdsByUserId(string userId)

@@ -1,0 +1,105 @@
+﻿@model PaginatedList<BlockedUserAllViewModel>
+
+<h3 class="text-center">Blocked users:</h3>
+<hr class="hr-sell-me" />
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Administration" asp-controller="Users" asp-action="Active">Active users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Blocked users</a>
+            </li>
+        </ul>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Registered On</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Is Confirmed</th>
+                            <th scope="col">Block</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr class="elm">
+                                <td>
+                                    Registered On: @user.CreatedOn.ToString("MM/dd/yyyy hh:mm tt")
+                                </td>
+                                <td>
+                                    @user.Username
+                                </td>
+                                <td>
+                                    @(user.EmailConfirmed ? "Yes" : "No")
+                                </td>
+                                <td>
+                                    <button class="btn btn-success unblock-user" value="@user.Id">Unblock</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="row mt-3">
+    <nav class="col d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="Blocked"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @prevDisabled">
+                    &laquo;
+                </a>
+            </li>
+            @if (Model.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (Model.PageIndex == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" asp-action="Blocked"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Blocked"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="Blocked"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn page-link btn-default @nextDisabled">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<partial name="_ModalPartial" />
+
+@section Scripts
+{
+    <script src="~/js/unblock-user.js" asp-append-version="true"></script>
+}

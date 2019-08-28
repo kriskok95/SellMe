@@ -17,11 +17,20 @@
 
         [Area("Administration")]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Active(int? pageNumber)
         {
-            var allUserViewModels = await usersService.GetAllUserViewModelsAsync();
+            var allUserViewModels = await usersService.GetAllUserViewModelsAsync(pageNumber ?? GlobalConstants.DefaultPageNumber, GlobalConstants.DefaultPageSize);
 
             return View(allUserViewModels);
+        }
+
+        [Area("Administration")]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> Blocked(int? pageNumber)
+        {
+            var allBlockedUserViewModels = await this.usersService.GetAllBlockedUserViewModels(pageNumber ?? GlobalConstants.DefaultPageNumber, GlobalConstants.DefaultPageSize);
+
+            return this.View(allBlockedUserViewModels);
         }
 
         [HttpPost]
@@ -32,6 +41,16 @@
             var isBlocked = await usersService.BlockUserByIdAsync(userId);
 
             return Json(isBlocked);
+        }
+
+        [HttpPost]
+        [Area("Administration")]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> Unblock(string userId)
+        {
+            var isUnblocked = await this.usersService.UnblockUserByIdAsync(userId);
+
+            return Json(isUnblocked);
         }
     }
 }
