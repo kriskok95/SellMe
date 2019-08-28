@@ -60,7 +60,6 @@
             var lastTenDates = this.GetLastTenDaysAsString();
             var countOfPromotions = await this.promotionsService.GetTheCountOfPromotionsForTheLastTenDaysAsync();
 
-
             var dataPoints = new List<DataPoint>();
 
             for (int i = 0; i < GlobalConstants.PromotionsBoughtStatisticDaysCount; i++)

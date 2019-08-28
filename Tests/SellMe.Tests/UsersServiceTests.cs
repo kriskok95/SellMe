@@ -30,9 +30,9 @@
 
             var moqHttpContext = new Mock<IHttpContextAccessor>();
             var userStore = new Mock<IUserStore<SellMeUser>>();
-            var userManager = new UserManager<SellMeUser>(userStore.Object, null, null, null, null, null, null, null, null);
+            var userManager = new Mock<UserManager<SellMeUser>>(userStore.Object, null, null, null, null, null, null, null, null);
             var context = InitializeContext.CreateContextForInMemory();
-            this.usersService = new UsersService(context, moqHttpContext.Object, userManager);
+            this.usersService = new UsersService(context, moqHttpContext.Object, userManager.Object);
 
             var testingUsers = new List<SellMeUser>
             {
@@ -117,7 +117,7 @@
                 IsDeleted = false,
                 EmailConfirmed = true,
                 CreatedOn = DateTime.UtcNow.AddDays(-25),
-                Ads = new List<Ad> { new Ad(), new Ad()}
+                Ads = new List<Ad> { new Ad(), new Ad() }
             };
 
             await context.SellMeUsers.AddAsync(testingUser);
@@ -144,8 +144,46 @@
             this.usersService = new UsersService(context, moqHttpContext.Object, userManager);
 
             //Act and act
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.usersService.GetRatingByUser("UserId"));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => this.usersService.GetRatingByUserAsync("UserId"));
             Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
+        public async Task GetRatingByUserAsync_WithValidData_ShouldReturnCorrectResult()
+        {
+            //Arrange
+            var expected = 2;
+
+            var moqHttpContext = new Mock<IHttpContextAccessor>();
+            var userStore = new Mock<IUserStore<SellMeUser>>();
+            var userManager = new Mock<UserManager<SellMeUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+            userManager.Setup(x => x.FindByIdAsync("UserId"))
+                .ReturnsAsync(new SellMeUser
+                {
+                    Id = "UserId",
+                    UserName = "Username",
+                    OwnedReviews = new List<Review>
+                    {
+                        new Review{Comment = "Comment1", Rating = 5},
+                        new Review{Comment = "Comment2", Rating = 2},
+                        new Review{Comment = "Comment3", Rating = 1},
+                        new Review{Comment = "Comment4", Rating = 1},
+                        new Review{Comment = "Comment5", Rating = 1},
+                    }
+                });
+            var context = InitializeContext.CreateContextForInMemory();
+            this.usersService = new UsersService(context, moqHttpContext.Object, userManager.Object);
+
+            var testingUser = new SellMeUser{Id = "UserId", UserName = "Username"};
+
+            await context.SellMeUsers.AddAsync(testingUser);
+            await context.SaveChangesAsync();
+
+            //Act
+            var actual = await this.usersService.GetRatingByUserAsync("UserId");
+
+            //Assert
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

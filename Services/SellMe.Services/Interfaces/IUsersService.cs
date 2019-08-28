@@ -17,7 +17,7 @@
 
         Task<bool> BlockUserByIdAsync(string userId);
 
-        Task<double> GetRatingByUser(string userId);
+        Task<double> GetRatingByUserAsync(string userId);
 
         Task<int> GetCountOfAllUsersAsync();
     }

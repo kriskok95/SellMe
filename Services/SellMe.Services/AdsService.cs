@@ -105,7 +105,7 @@
 
             var adDetailsViewModel = mapper.Map<AdDetailsViewModel>(adFromDb);
 
-            var rating = await usersService.GetRatingByUser(adFromDb.SellerId);
+            var rating = await usersService.GetRatingByUserAsync(adFromDb.SellerId);
 
             adDetailsViewModel.Rating = rating;
 

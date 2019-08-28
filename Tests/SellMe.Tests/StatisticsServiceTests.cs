@@ -45,7 +45,7 @@
         }
 
         [Fact]
-        public async Task GetPointsForCreatedAds_WithValidData_ShouldReturnCorrectCountOfDataPoints()
+        public async Task GetPointsForCreatedAdsAsync_WithValidData_ShouldReturnCorrectCountOfDataPoints()
         {
             //Assert
             var expected = 10;
@@ -62,6 +62,28 @@
 
             //Act
             var actual = await statisticsService.GetPointsForCreatedAdsAsync();
+
+            //Assert
+            Assert.Equal(expected, actual.Count());
+        }
+
+        [Fact]
+        public async Task GetPointsForPromotionsAsync_WithValidData_ShouldReturnCorrectCountOfDataPoints()
+        {
+            //Assert
+            var expected = 10;
+
+            var moqAdsService = new Mock<IAdsService>();
+            var moqUsersService = new Mock<IUsersService>();
+            var moqPromotionsService = new Mock<IPromotionsService>();
+            moqPromotionsService.Setup(x => x.GetTheCountOfPromotionsForTheLastTenDaysAsync())
+                .ReturnsAsync(new List<int> { 1, 0, 1, 0, 2, 0, 0, 0, 1, 1 });
+            var context = InitializeContext.CreateContextForInMemory();
+
+            statisticsService = new StatisticsService(context, moqAdsService.Object, moqUsersService.Object, moqPromotionsService.Object);
+
+            //Act
+            var actual = await statisticsService.GetPointsForPromotionsAsync();
 
             //Assert
             Assert.Equal(expected, actual.Count());

@@ -83,14 +83,14 @@
             return true;
         }
 
-        public async Task<double> GetRatingByUser(string userId)
+        public async Task<double> GetRatingByUserAsync(string userId)
         {
             if (!await this.context.SellMeUsers.AnyAsync(x => x.Id == userId))
             {
                 throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
             }
 
-            var user = await GetUserByIdAsync(userId);
+            var user = await userManager.FindByIdAsync(userId);
 
             var rating = user.OwnedReviews.Any() ? user.OwnedReviews.Average(x => x.Rating) : 0;
 
