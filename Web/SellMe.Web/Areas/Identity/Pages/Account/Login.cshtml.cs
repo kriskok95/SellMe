@@ -55,8 +55,7 @@
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                var requestUrl = Request.Headers["Referer"].ToString();
-                this.Response.Redirect(requestUrl);
+                this.Response.Redirect("/");
             }
 
             if (!string.IsNullOrEmpty(ErrorMessage))

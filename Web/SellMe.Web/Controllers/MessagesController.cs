@@ -71,6 +71,7 @@
             return View(sentBoxMessagesBindingModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> Details(MessageDetailsBindingModel bindingModel)
         {
             bindingModel.ViewModels = await messagesService.GetMessageDetailsViewModelsAsync(bindingModel.AdId, bindingModel.SenderId, bindingModel.RecipientId);

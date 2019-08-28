@@ -299,6 +299,31 @@
         }
 
         [Fact]
+        public async Task GetMessageDetailsViewModelsAsync_WithCurrentUserNotParticipantInConversation_ShouldThrowAnInvalidOperationException()
+        {
+            //Arrange
+            var expectedErrorMessage = "You are not participant in this conversation!";
+
+            var moqAdsService = new Mock<IAdsService>();
+            var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("FakeUserId");
+            var moqIMapper = new Mock<IMapper>();
+            var context = InitializeContext.CreateContextForInMemory();
+
+            var testingAd = CreateTestingAd();
+            await context.AddAsync(testingAd);
+            await context.SaveChangesAsync();
+
+            messagesService = new MessagesService(context, moqAdsService.Object, moqUsersService.Object, moqIMapper.Object);
+
+            //Act and assert
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                messagesService.GetMessageDetailsViewModelsAsync(1, "SenderId", "RecipientId"));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+        }
+
+        [Fact]
         public async Task GetMessageDetailsViewModelsAsync_WithValidData_ShouldReturnCorrectResult()
         {
             //Arrange
@@ -321,6 +346,8 @@
 
             var moqAdsService = new Mock<IAdsService>();
             var moqUsersService = new Mock<IUsersService>();
+            moqUsersService.Setup(x => x.GetCurrentUserId())
+                .Returns("SenderId");
             var moqIMapper = new Mock<IMapper>();
             var context = InitializeContext.CreateContextForInMemory();
 

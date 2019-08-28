@@ -69,7 +69,7 @@
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                this.Response.Redirect(Request.Headers["Referer"].ToString());
+                this.Response.Redirect("/");
             }
 
             ReturnUrl = returnUrl;

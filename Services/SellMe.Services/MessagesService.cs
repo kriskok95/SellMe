@@ -17,6 +17,8 @@
 
     public class MessagesService : IMessagesService
     {
+        private const string NotParticipantInConversationErrorMessage = "You are not participant in this conversation!";
+
         private readonly IAdsService adsService;
         private readonly IMapper mapper;
         private readonly IUsersService usersService;
@@ -96,9 +98,15 @@
             {
                 throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
+            var currentUserId = usersService.GetCurrentUserId();
+
+            if (currentUserId != senderId && currentUserId != recipientId)
+            {
+                throw new InvalidOperationException(NotParticipantInConversationErrorMessage);
+            }
 
             var messagesFromFb = GetMessagesDetailsByAd(adId, senderId, recipientId);
-            var currentUserId = usersService.GetCurrentUserId();
+            
             if (currentUserId == recipientId)
             {
                 foreach (var message in messagesFromFb)
