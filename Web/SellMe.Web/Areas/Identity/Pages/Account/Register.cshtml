@@ -6,29 +6,29 @@
 
 <h1 class="text-center mb-3">@ViewData["Title"]</h1>
 <div class="row">
-    <div class="offset-3 col-md-6">
+    <div class="offset-md-3 col-md-6 offset-sm-0 col-sm-12">
         <hr class="hr-sell-me" />
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4 class="text-center">Create a new account.</h4>
             <hr class="hr-sell-me" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.Username"></label>
+                <label class="required" asp-for="Input.Username"></label>
                 <input asp-for="Input.Username" class="form-control" />
                 <span asp-validation-for="Input.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Email"></label>
+                <label class="required" asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Password"></label>
+                <label class="required" asp-for="Input.Password"></label>
                 <input asp-for="Input.Password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
+                <label class="required" asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
