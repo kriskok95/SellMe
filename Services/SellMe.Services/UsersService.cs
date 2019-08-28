@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Common;
     using Data;
     using Data.Models;
     using Interfaces;
@@ -20,7 +21,7 @@
         private readonly UserManager<SellMeUser> userManager;
         private readonly SellMeDbContext context;
 
-        public UsersService(IHttpContextAccessor contextAccessor, UserManager<SellMeUser> userManager, SellMeDbContext context)
+        public UsersService(SellMeDbContext context, IHttpContextAccessor contextAccessor, UserManager<SellMeUser> userManager)
         {
             this.contextAccessor = contextAccessor;
             this.userManager = userManager;
@@ -56,6 +57,7 @@
             var userAllViewModels = await context.SellMeUsers
                 .Where(x => !x.IsDeleted)
                 .To<UserAllViewModel>()
+                .OrderByDescending(x => x.CreatedOn)
                 .ToListAsync();
 
             return userAllViewModels;
@@ -63,6 +65,11 @@
 
         public async Task<bool> BlockUserByIdAsync(string userId)
         {
+            if (!await this.context.SellMeUsers.AnyAsync(x => x.Id == userId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
             var userFromDb = await context.SellMeUsers.FirstOrDefaultAsync(x => x.Id == userId);
 
             userFromDb.IsDeleted = true;
@@ -76,9 +83,14 @@
             return true;
         }
 
-        public async Task<double> GetRatingByUser(string sellerId)
+        public async Task<double> GetRatingByUser(string userId)
         {
-            var user = await GetUserByIdAsync(sellerId);
+            if (!await this.context.SellMeUsers.AnyAsync(x => x.Id == userId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
+            var user = await GetUserByIdAsync(userId);
 
             var rating = user.OwnedReviews.Any() ? user.OwnedReviews.Average(x => x.Rating) : 0;
 

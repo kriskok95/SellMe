@@ -147,7 +147,7 @@
         {
             if (userId.IsNullOrEmpty())
             {
-                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+                throw new ArgumentException(GlobalConstants.NullOrEmptyUserIdErrorMessage);
             }
 
             var unreadMessagesCount = await context
