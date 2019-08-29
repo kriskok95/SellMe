@@ -1,7 +1,6 @@
 ﻿namespace SellMe.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -48,6 +47,11 @@
 
         public async Task<SellMeUser> GetUserByIdAsync(string userId)
         {
+            if (!await this.context.SellMeUsers.AnyAsync(x => x.Id == userId))
+            {
+                throw new ArgumentException(GlobalConstants.InvalidUserIdErrorMessage);
+            }
+
             var user = await userManager.FindByIdAsync(userId);
 
             return user;

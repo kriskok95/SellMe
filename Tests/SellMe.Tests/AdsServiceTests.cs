@@ -2260,10 +2260,10 @@
             adsService = new AdsService(context, moqAddressService.Object, moqUsersService.Object, moqCategoriesService.Object, moqUpdatesService.Object, moqSubcategoriesService.Object, moqMapper.Object, moqCloudinaryService.Object);
 
             //Act
-            var actual = await adsService.GetAdsBySearchViewModelsAsync("phone", 1, 10);
+            var actual = await adsService.GetAdsBySearchViewModelAsync("phone", 1, 10);
 
             //Assert
-            Assert.Equal(expectedCount, actual.Count);
+            Assert.Equal(expectedCount, actual.Ads.Count);
         }
 
         [Fact]

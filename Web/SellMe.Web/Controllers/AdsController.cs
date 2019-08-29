@@ -161,7 +161,7 @@
 
         public async Task<IActionResult> BySearch(AdsBySearchInputModel inputModel)
         {
-            var adsBySearchViewModels = await adService.GetAdsBySearchViewModelsAsync(inputModel.Search, DefaultPageNumber, DefaultPageSize);
+            var adsBySearchViewModels = await adService.GetAdsBySearchViewModelAsync(inputModel.Search, DefaultPageNumber, DefaultPageSize);
 
              return View(adsBySearchViewModels);
         }

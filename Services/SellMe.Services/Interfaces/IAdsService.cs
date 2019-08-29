@@ -40,7 +40,7 @@
 
         Task<PaginatedList<MyArchivedAdsViewModel>> GetArchivedAdsViewModelsAsync(int pageNumber, int pageSize);
 
-        Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber, int pageSize);
+        Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText, int pageNumber, int pageSize);
 
         Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber, int pageSize);
 

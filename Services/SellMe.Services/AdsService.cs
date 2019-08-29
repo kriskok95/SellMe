@@ -338,7 +338,7 @@
             return paginatedArchivedAdViewModels;
         }
 
-        public async Task<PaginatedList<AdViewModel>> GetAdsBySearchViewModelsAsync(string searchText, int pageNumber,
+        public async Task<AdsBySearchViewModel> GetAdsBySearchViewModelAsync(string searchText, int pageNumber,
             int pageSize)
         {
             var adViewModels = context
@@ -349,7 +349,13 @@
             var paginatedAdsBySearchViewModels =
                 await PaginatedList<AdViewModel>.CreateAsync(adViewModels, pageNumber, pageSize);
 
-            return paginatedAdsBySearchViewModels;
+            var adsBySearchViewModel = new AdsBySearchViewModel
+            {
+                Search = searchText,
+                Ads = paginatedAdsBySearchViewModels
+            };
+
+            return adsBySearchViewModel;
         }
 
         public async Task<AdsByUserBindingModel> GetAdsByUserBindingModelAsync(string userId, int pageNumber,
