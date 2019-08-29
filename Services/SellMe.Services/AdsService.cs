@@ -55,7 +55,7 @@
         {
             var imageUrls = inputModel.CreateAdDetailInputModel.Images
                 .Select(async x =>
-                    await cloudinaryService.UploadPictureAsync(x, inputModel.CreateAdDetailInputModel.Title))
+                    await cloudinaryService.UploadPictureAsync(x, x.FileName))
                 .Select(x => x.Result)
                 .ToList();
 

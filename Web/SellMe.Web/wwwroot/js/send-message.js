@@ -1,6 +1,6 @@
 ﻿$('#send-message-form').on('submit keypress', function (e) {
     var key = e.which;
-    if (key == 13) {
+    if (key === 13) {
         e.preventDefault();
 
         let form = $(this);
