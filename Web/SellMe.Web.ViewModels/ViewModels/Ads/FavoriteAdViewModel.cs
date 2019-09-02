@@ -32,7 +32,7 @@
         {
             configuration.CreateMap<SellMeUserFavoriteProduct, FavoriteAdViewModel>()
                 .ForMember(x => x.ImageUrl,
-                    cfg => cfg.MapFrom(x => x.Ad.Images.Select(y => y.ImageUrl).FirstOrDefault()))
+                    cfg => cfg.MapFrom(x => x.Ad.Images.Any() ? x.Ad.Images.FirstOrDefault().ImageUrl : "/img/no-image.png"))
                 .ForMember(x => x.Country, cfg => cfg.MapFrom(x => x.Ad.Address.Country))
                 .ForMember(x => x.City, cfg => cfg.MapFrom(x => x.Ad.Address.City))
                 .ForMember(x => x.Id, cfg => cfg.MapFrom(x => x.Ad.Id))

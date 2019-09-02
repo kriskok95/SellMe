@@ -18,7 +18,7 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Ad, PromotedAdViewModel>()
-                .ForMember(x => x.MainPictureUrl, cfg => cfg.MapFrom(x => x.Images.FirstOrDefault().ImageUrl));
+                .ForMember(x => x.MainPictureUrl, cfg => cfg.MapFrom(x => x.Images.Any() ? x.Images.FirstOrDefault().ImageUrl : "/img/no-image.png"));
         }
     }
 }

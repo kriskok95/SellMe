@@ -655,7 +655,8 @@
         {
             var adsBySubcategory = context
                 .Ads
-                .Where(x => x.SubCategoryId == subcategoryId && x.IsApproved && !x.IsDeleted);
+                .Where(x => x.SubCategoryId == subcategoryId && x.IsApproved && !x.IsDeleted)
+                .OrderByDescending(x => x.ActiveTo);
 
             return adsBySubcategory;
         }
@@ -758,6 +759,7 @@
             var adsViewModel = context
                 .Ads
                 .Where(x => x.CategoryId == categoryId && x.IsApproved && !x.IsDeleted)
+                .OrderByDescending(x => x.ActiveTo)
                 .To<AdViewModel>();
 
             return adsViewModel;

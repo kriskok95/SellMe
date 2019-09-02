@@ -22,7 +22,7 @@
             configuration.CreateMap<AdRejection, RejectedByUserAdViewModel>()
                 .ForMember(x => x.AdId, cfg => cfg.MapFrom(x => x.AdId))
                 .ForMember(x => x.AdTitle, cfg => cfg.MapFrom(x => x.Ad.Title))
-                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Ad.Images.FirstOrDefault().ImageUrl));
+                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Ad.Images.Any() ? x.Ad.Images.FirstOrDefault().ImageUrl : "/img/no-image.png"));
         }
     }
 }

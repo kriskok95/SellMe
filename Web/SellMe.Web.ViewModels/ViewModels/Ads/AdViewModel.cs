@@ -31,7 +31,7 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Ad, AdViewModel>()
-                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.Select(y => y.ImageUrl).FirstOrDefault()))
+                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(x => x.Images.Any() ? x.Images.FirstOrDefault().ImageUrl : "/img/no-image.png"))
                 .ForMember(x => x.Country, cfg => cfg.MapFrom(x => x.Address.Country))
                 .ForMember(x => x.City, cfg => cfg.MapFrom(x => x.Address.City));
 
