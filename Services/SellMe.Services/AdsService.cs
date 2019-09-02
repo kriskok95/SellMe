@@ -22,7 +22,6 @@
 
     public class AdsService : IAdsService
     {
-        private const string InvalidAdIdErrorMessage = "Ad with the given id doesn't exist!";
         private const string InvalidRejectionIdMessage = "Ad Rejection with the given id doesn't exist!";
         private const string AlreadyApprovedAdErrorMessage = "The given ad is already approved!";
         private const string CommentNullOrEmptyErrorMessage = "The comment can't be null or empty string!";
@@ -387,7 +386,7 @@
 
             if (adFromDb == null)
             {
-                throw new ArgumentException(InvalidAdIdErrorMessage);
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
             var imageUrls = inputModel.EditAdDetailsInputModel.Images
@@ -441,7 +440,7 @@
 
             if (adFromDb == null)
             {
-                throw new ArgumentException(InvalidAdIdErrorMessage);
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
             if (adFromDb.IsApproved)
@@ -463,7 +462,7 @@
 
             if (adFromDb == null)
             {
-                throw new ArgumentException(InvalidAdIdErrorMessage);
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
             var rejectAdViewModel = mapper.Map<RejectAdViewModel>(adFromDb);
@@ -480,7 +479,7 @@
         {
             if (!await context.Ads.AnyAsync(x => x.Id == adId))
             {
-                throw new ArgumentException(InvalidAdIdErrorMessage);
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
             if (comment.IsNullOrEmpty())
@@ -550,7 +549,7 @@
 
             if (!await context.Ads.AnyAsync(x => x.Id == rejectionFromDb.AdId))
             {
-                throw new ArgumentException(InvalidAdIdErrorMessage);
+                throw new ArgumentException(GlobalConstants.InvalidAdIdErrorMessage);
             }
 
             var adFromDb = await context
@@ -771,7 +770,7 @@
             var adsForCurrentUser = GetActiveAdsByUserId(currentUserId);
 
             var adsForCurrentUserViewModels = adsForCurrentUser
-                .OrderBy(x => x.ActiveTo)
+                .OrderByDescending(x => x.ActiveTo)
                 .To<MyActiveAdsViewModel>();
 
             return adsForCurrentUserViewModels;

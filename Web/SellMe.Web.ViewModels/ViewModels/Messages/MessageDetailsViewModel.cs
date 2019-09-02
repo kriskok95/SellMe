@@ -18,7 +18,7 @@
         {
             configuration.CreateMap<Message, MessageDetailsViewModel>()
                 .ForMember(x => x.Sender, cfg => cfg.MapFrom(x => x.Sender.UserName))
-                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn.AddHours(2).ToString("MM/dd/yyyy hh:mm tt")));
+                .ForMember(x => x.SentOn, cfg => cfg.MapFrom(x => x.CreatedOn.AddHours(3).ToString("MM/dd/yyyy hh:mm tt")));
         }
     }
 }

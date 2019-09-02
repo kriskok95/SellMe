@@ -30,7 +30,7 @@
             await dbContext.SubCategories.AddAsync(new SubCategory
                 { Name = "Automobiles", CategoryId = 1, CreatedOn = DateTime.UtcNow });
             await dbContext.SubCategories.AddAsync(new SubCategory
-                { Name = "motorcycles", CategoryId = 1, CreatedOn = DateTime.UtcNow });
+                { Name = "Motorcycles", CategoryId = 1, CreatedOn = DateTime.UtcNow });
 
             //Subcategories for Sport/books/hoby
 
